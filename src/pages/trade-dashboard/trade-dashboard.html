@@ -1,0 +1,179 @@
+<ion-content lightgrey padding has-header trade-mob>
+<ion-row main-breadcrumb ion-fixed> 
+	<ion-col *ngIf="from_smail != '1'"> 
+	  <ol class="breadcrumb">
+	    <li (click)="root()"><a>Home</a></li>
+	    <li (click)="goToJobs()"><a>Jobs</a></li>
+	    <li class="active">{{active_job_breadcrumb}}</li>
+	  </ol>
+	</ion-col>
+	<ion-col *ngIf="from_smail == '1'">
+	  <ol class="breadcrumb">
+	    <li (click)="root()"><a>Home</a></li>
+	    <li (click)="backToSmail()"><a>Smail</a></li>
+	    <li class="active">{{active_job_breadcrumb}}</li>
+	  </ol>
+	</ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-grid>
+  <ion-row>
+    <ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2>
+	<div class="circle-tile" (click) = "goTotrades()">
+	<a class="tile-head">
+	 <ion-icon name="apps"></ion-icon>  
+	 </a>
+	 <div class="tile-content">
+	<h5 fnt-light>Trades</h5>
+	<h3 fnt-bold>{{total_trades}}</h3>
+	<a  class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2>
+	<div (click) = "goToContracts()" class="circle-tile">
+	<a class="tile-head">
+	 <ion-icon name="paper"></ion-icon>  
+	 </a>
+	 <div class="tile-content">
+	<h5 fnt-light>Contracts</h5>
+	<h3 fnt-bold>{{total_contracts}}</h3>
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+  
+    <ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2>
+	<div (click) = "goToFiles('0')" class="circle-tile">
+	<a class="tile-head">
+	 <ion-icon name="photos"></ion-icon>
+	 </a>
+	 <div class="tile-content">
+	<h5 fnt-light>Photos</h5>
+	<h3 fnt-bold>{{total_photos}}</h3>
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2>
+	<div (click) = "goToFiles('1')" class="circle-tile">
+	<a  class="tile-head">
+	 <ion-icon name="document"></ion-icon>
+	 </a>
+	 <div class="tile-content">
+	<h5 fnt-light>Docs</h5>
+	<h3 fnt-bold>{{total_docs}}</h3>
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2>
+	<div (click) = "tradeContacts()" class="circle-tile">
+	<a class="tile-head">
+	 <ion-icon name="call"></ion-icon>
+	 </a>
+	 <div class="tile-content">
+	<h5 fnt-light>Contacts</h5>
+	<h3 fnt-bold>{{total_contacts}}</h3> 
+	<a class="circle-tile-footer" >More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 [ngClass]="is_any_trade_posted == 0 ? 'grayed_out' : ''">
+	<div (click) = "goToAdendums()"  class="circle-tile">
+	<a class="tile-head ">
+	 <ion-icon name="briefcase"></ion-icon>
+	 </a>
+	 <div class="tile-content"> 
+	<h5 fnt-light>Adendums</h5>
+	<h3 fnt-bold>{{total_adendums}}</h3>
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 [ngClass]="is_any_trade_posted == 0 ? 'grayed_out' : ''">
+	<div (click)="goToSmails()" class="circle-tile">
+	<a class="tile-head">
+	 <ion-icon name="mail"></ion-icon>
+	 </a>
+	 <div class="tile-content">
+	<h5 fnt-light>Smail</h5>
+	<h3 fnt-bold>{{total_smails}}</h3>
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 [ngClass]="is_any_trade_posted == 0 ? 'grayed_out' : ''">
+	<div (click)="goToEmails()" class="circle-tile">
+	<a class="tile-head ">
+	 <ion-icon name="mail-open"></ion-icon>
+	 </a>
+	 <div class="tile-content ">
+	<h5 fnt-light>Email</h5>
+	<h3 fnt-bold>{{total_emails}}</h3>
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 [ngClass]="is_any_trade_posted == 0 ? 'grayed_out' : ''">
+	<div (click) = "goToDownloads()" class="circle-tile">
+	<a class="tile-head ">
+	 <ion-icon name="download"></ion-icon>
+	 </a>
+	 <div class="tile-content ">
+	<h5 fnt-light>Downloads</h5>
+	<h3 fnt-bold>{{total_downloads}}</h3> 
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 [ngClass]="is_any_trade_posted == 0 ? 'grayed_out' : ''">
+	<div (click)="goToTransmittals()" class="circle-tile">
+	<a class="tile-head ">
+	 <ion-icon name="paper-plane"></ion-icon>
+	 </a>
+	 <div class="tile-content ">
+	<h5 fnt-light>Transmittals</h5>
+	<h3 fnt-bold>{{total_transmittals}}</h3>
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 [ngClass]="is_any_trade_posted == 0 ? 'grayed_out' : ''">
+	<div (click) = "goToBids()" class="circle-tile">
+	<a class="tile-head ">
+	 <ion-icon><img style="width: 16px;" src="assets/img/bid_icon_blue.png"></ion-icon>
+	 </a>
+	 <div class="tile-content ">
+	<h5 fnt-light>Bids</h5>
+	<h3 fnt-bold>{{total_bids}}</h3>
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+
+	<ion-col col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 [ngClass]="is_any_trade_posted == 0 ? 'grayed_out' : ''">
+	<div (click)="goToRFIs()" class="circle-tile">
+	<a class="tile-head ">
+	 <ion-icon name="pricetag"></ion-icon>
+	 </a>
+	 <div class="tile-content ">
+	<h5 fnt-light>RFI</h5>
+	<h3 fnt-bold>{{total_rfis}}</h3>
+	<a class="circle-tile-footer">More Info  <ion-icon name="arrow-dropright-circle"></ion-icon></a>
+	</div>
+	</div>
+	</ion-col>
+  </ion-row>
+</ion-grid>  <!-- <button ion-button block color="danger" (click)="doCheckbox()">Show Checkbox Alert</button> -->
+<div footer-height></div> 
+</ion-content>

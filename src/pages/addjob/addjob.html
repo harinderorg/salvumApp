@@ -1,0 +1,134 @@
+<ion-content padding lightgrey manage-job (window:resize)="ionViewDidLoad()" has-header> 
+<div ion-fixed id="calc_height{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="jobPage()"><a>Jobs</a></li>
+      <li class="active">Add Job</li>
+    </ol>
+  </ion-col> 
+</ion-row>
+</div>
+ <div class="clearfix" id="custom_height{{timestamp}}"></div>
+ <ion-row> 
+<ion-col col-lg-8 offset-lg-2>
+<div stepwizard-form>
+ 
+<div stepwizard>
+	 <div stepwizard-row setup-panel>
+				  <div stepwizard-step [ngClass]="step > '0' ? 'active' : ''">
+					<a href="javascript:void(0)"  btn btn-default   btn-circle><ion-icon class="ion-ios-paper"></ion-icon></a>
+					<p>Step 1</p>
+				  </div>
+				  <div stepwizard-step [ngClass]="step > '1' ? 'active' : ''">
+					<a href="javascript:void(0)" btn btn-default btn-circle disabled="disabled"><ion-icon class="ion-ios-briefcase"></ion-icon></a>
+					<p>Step 2</p>
+				  </div>
+				  <div stepwizard-step [ngClass]="step > '2' ? 'active' : ''">
+					<a href="javascript:void(0)" btn btn-default btn-circle disabled="disabled"><ion-icon class="ion-ios-people"></ion-icon></a>
+					<p>Step 3</p>
+				  </div> 
+				  <div stepwizard-step [ngClass]="step > '3' ? 'active' : ''">
+					<a href="javascript:void(0)" btn btn-default btn-circle disabled="disabled"><ion-icon class="ion-ios-settings"></ion-icon></a>
+					<p>Step 4</p>
+				  </div> 
+				    <div stepwizard-step [ngClass]="step > '4' ? 'active' : ''">
+					<a href="javascript:void(0)" btn btn-default btn-circle disabled="disabled"><ion-icon class="ion-ios-pricetags"></ion-icon></a>
+					<p>Step 5 </p>
+				  </div> 
+		</div>
+	</div>
+<div step-main>
+  <div class="step1 job_steps" >
+    <ion-item p-lr-0> 
+      <ion-label stacked fnt-regular>Enter Job/PO No*</ion-label>
+      <ion-input type="text" [(ngModel)] = "job_number"></ion-input>
+    </ion-item>
+  </div>
+  <div class="step2 job_steps" style="display: none;">
+    <ion-item  p-lr-0>
+      <ion-label stacked fnt-regular>Enter Job Name*</ion-label>
+      <ion-input type="text" [(ngModel)] = "job_title"></ion-input>
+    </ion-item>
+  </div>
+  <div class="step3 job_steps" style="display: none;">
+    <p>Add Coworkers</p>
+			<tag-input [ngModel]="all_coworkers" [onlyFromAutocomplete]="true"  placeholder="" secondaryPlaceholder="Type names..." (onAdd)="onCoworkerAdd($event)" (onRemove)="removeCoworker($event)">
+			  <tag-input-dropdown [showDropdownIfEmpty]="true" 
+								  [autocompleteItems]="all_employees">
+			  </tag-input-dropdown>
+			</tag-input>
+
+    <ng-container *ngFor="let cowerker of cowerkers">
+	     <div coworkers-inner>
+			  <p>{{cowerker.email}}</p>
+			  <!--ion-item-->
+			  <ion-item no-border>
+					  <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)] = "cowerker.privilege" >
+						<ion-option value="0">Linked</ion-option>   
+						<ion-option value="1">Admin</ion-option>   
+						<ion-option value="2">Manager</ion-option>   
+						<ion-option value="3">Project Manager</ion-option>   
+						<ion-option value="4">Secretary</ion-option>   
+					  </ion-select>
+			</ion-item>
+		</div>	  
+      <!--/ion-item-->
+    </ng-container>
+  </div>
+  <div class="step4 job_steps" style="display: none;">
+    <p>Add Additional Job Roles <button ion-button color="darkblue" fnt-regular type="button" (click)="addExternalContacts()">Add external</button></p>
+    <tag-input [ngModel]="all_roles" placeholder="" secondaryPlaceholder="Type emails..." (onAdd)="onRolesAdd($event)" (onRemove)="removeRoles($event)" [validators]="validators" [errorMessages]="errorMessages" >
+    <!-- [addOnBlur]="true" -->
+      <tag-input-dropdown [showDropdownIfEmpty]="true"  
+                          [autocompleteItems]="all_emps">
+      </tag-input-dropdown>
+    </tag-input>
+    <ng-container *ngFor="let role of roles">
+       <div coworkers-inner>
+        <p>{{role.value}}</p>
+        <ion-item no-border>
+            <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)] = "role.privilege" >
+            <ion-option value="0">Engineer</ion-option>   
+            <ion-option value="1">Architect</ion-option>   
+            <ion-option value="3">Project Manager</ion-option>   
+            <ion-option value="2">Other</ion-option>    
+            </ion-select>
+      </ion-item>
+    </div>    
+    </ng-container>
+  </div>
+  <div class="step5 job_steps" style="display: none;">
+    <p>Would you like to add trade under this job?</p>
+    <button ion-button color="darkblue" fnt-regular type="button" (click)="goToTrade()">Yes, Sure</button>
+
+    <button ion-button color="darkblue" fnt-regular type="button" (click)="jobPage()">No, Take me to jobs</button>
+  </div>
+ <!--  <ion-item *ngIf="form.get('job_number').touched && form.get('job_number').errors && form.get('job_number').hasError('required')" class="error-text-danger">Please enter a valid Job/PO number</ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label floating fnt-light fnt-regular>Job Name*</ion-label>
+    <ion-input type="text" [(ngModel)] = "job_title" name="job_title" formControlName="job_title"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="form.get('job_title').touched && form.get('job_title').errors && form.get('job_title').hasError('required')" class="error-text-danger">Please enter a valid job title</ion-item> -->
+
+	<!-- <ion-item p-lr-0>
+   <ion-label floating fnt-light fnt-regular>Company Name*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "company_id" name="company_id" formControlName="company_id">
+      <ion-option *ngFor="let company of companies" value="{{company._id}}">{{company.company_name}}</ion-option>   
+    </ion-select>
+  </ion-item> -->
+  <!-- <ion-item *ngIf="form.get('company_id').touched && form.get('company_id').errors && form.get('company_id').hasError('required')" class="error-text-danger">Please select a valid company</ion-item> -->
+ </div> 
+  <div padding p-b-0 p-lr-0>
+    <!-- <button *ngIf="first_step == false" ion-button color="darkblue" fnt-regular type="button" (click)="prev()">Prev</button> -->
+    <button ion-button color="darkblue" fnt-regular type="button" *ngIf="isSkip == true && isLast == false" (click)="next('0')">Skip</button>
+    <button *ngIf="isLast == false" ion-button color="darkblue" fnt-regular type="button" (click)="next('1')">Next</button>
+    <button *ngIf="isLast == true && step != 5" ion-button color="darkblue" fnt-regular type="button" (click)="finish()">Finish</button>
+  </div>
+  </div> 
+ </ion-col>
+  </ion-row>
+  <div footer-height></div> 
+</ion-content>

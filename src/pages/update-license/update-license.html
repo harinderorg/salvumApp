@@ -1,0 +1,26 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Activate License</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss(tradeId)">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+<ion-row>
+<ion-col col-12>  
+<form (ngSubmit)="addKey(license_key)">
+	<ion-item p-lr-0>     
+	<ion-label stacked>License Key</ion-label>
+	<ion-input type="text" [(ngModel)] = "license_key" name="license_key" fnt14></ion-input>
+  <ion-icon item-end name="close" (click)="clearVal()" class="cross_lk"></ion-icon>
+	</ion-item>
+	<button ion-button type="submit" color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left >
+      <ion-icon name="checkmark" m-r-5></ion-icon>
+      <span>Save</span>
+   </button>
+</form>
+</ion-col>
+</ion-row>
+</ion-content>

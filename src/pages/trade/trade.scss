@@ -1,0 +1,98 @@
+page-trade {
+ ion-content
+{ 
+	margin-top: $value10;
+	@include respond-to(handhelds2)
+    {
+	&[padd-mob-all-5]
+	{
+	  padding:$value5!important; 
+	}
+	[padd-mob-lr-10]
+	{	  
+	      padding-left:$value10!important; 
+		  padding-right:$value10!important; 
+	
+	}
+	[button-hide]
+	{
+	  button
+	  {
+	  box-shadow:none;
+	  ion-icon
+	  {
+	   margin:$value0;
+	  }
+	  }
+	}
+      margin-top: $value0;
+    }
+}
+[fixed-top-div]
+{
+    width: 100%;
+    background: #e6e6e6;
+    /*padding: $value0 $value0 $value0  12px;*/
+   
+    @include respond-to(handhelds2)
+    {
+      padding: $value0;
+      ion-list
+      {
+      margin: $value0;
+      }
+    }
+}
+[p-5]
+	{
+			padding:$value5;
+	}
+	[p-0-3]
+	{
+		padding:$value0 3px;
+	}
+
+}
+ion-badge
+{ 
+font-weight: 400;
+font-family:$font-regular
+}
+
+.toolbar-ios
+{@include respond-to(handhelds2)
+{border-top: none!important;
+}
+ .segment-ios 
+ {
+@include respond-to(handhelds2)
+{
+    position: inherit;
+	    /*margin-top: $value10;*/
+		ion-segment-button
+		{border: none;
+		 border-radius: 0 !important;
+		 max-width: 100%;
+		 height: 4.2rem;
+		 line-height: 4rem;
+		 ion-icon
+		 {    line-height: 4rem;
+		 font-size:24px!important;
+		 }
+		}
+}
+}
+
+}
+[tradingmob]
+{ 
+		
+		@include respond-to(handhelds2)
+		{
+			margin-top: $value10;
+		.scroll-content
+		{
+		  padding:$value5!important; 
+		}
+	  }
+}

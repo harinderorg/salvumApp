@@ -1,0 +1,190 @@
+page-submitbid {
+[footer-height] {
+    height: 70px;
+    @include respond-to(handhelds2)
+    {
+     height: 130px;
+    }
+}
+@include respond-to(handhelds2)
+    {
+       [btn-footer]
+		  {
+	 		     padding:$value5 $value15!important; 
+		  }
+    
+    }
+[mrgn_btm]{
+	margin-bottom: 30px;
+}
+	.append_dollar{
+		position: relative;
+		ion-icon{
+		    position: absolute;
+		    bottom: 11px;
+		    color: #a8a8a8;
+		}
+		input {
+		    padding-left: 12px;
+		    font-size: 16px !important;
+		}
+	}
+	.append_dollar_n{
+		position: relative;
+		ion-icon{
+		    position: absolute;
+		    bottom: 27px;
+    		color: #001643;
+		}
+		input {
+		    padding-left: 12px;
+		    font-size: 16px !important;
+		}
+	}
+.scrollable{
+	max-height: 560px;
+    overflow-y: scroll;
+}
+	[head-profile]
+	{
+		  background:$whitecolor;
+		  [btn-footer]
+		  {
+	 		      display: inline-block;
+                  width: 100%;
+		  }
+		  [submitbid-list]
+		  {	
+		  padding:$value0 $value15;
+		  margin-top:$value15;
+		
+		[submitbid-main]
+		{
+		    border: 1px solid $br-lt-grey;
+			width:100%;
+			display:inline-block;
+			ion-list-header
+			{
+			 border-bottom: 1px solid $br-lt-grey;	
+			}
+			[ submitbid-inner]
+			{
+		width:100%;
+			display:inline-block;
+			[ table-submit ]
+			{   padding-right:$value55;
+				[th-head]
+				{
+					font-weight:600;
+				}
+			}
+				[ table-inner ]
+			{  
+			  [td-data]
+			  {
+				    button
+					{
+						border-radius:$br-ra50;
+						width: $value30;
+                        height:$value30;
+						    margin: $value0;
+					}
+			  }
+			}
+				ion-item{
+			
+				 
+				 &[filetype]
+				 {    
+					   margin-top:$value0!important;
+				 }
+				}
+		[radio-group]
+		{
+			 border-bottom: 1px solid  $br-lt-grey;
+			     display: inline-block;
+                 width: 100%;
+	        margin-bottom:$value0;
+			ion-item{
+				 border:none;
+				 
+				 &[filetype]
+				 {    border: 1px dashed #ccc;
+				 }
+				 &.item-radio
+				 {
+					 display:inline-block;
+					 float:left;    width: auto;
+				 }
+			}
+				}
+			}
+			
+		}
+		  }
+	}
+[error]{
+	color: red;
+}
+[width_100]{
+	width: 100%;
+}
+}
+[filetype]
+{
+
+ion-icon
+{
+font-size:$value50;
+}
+h4
+{
+font-size:$value15;
+white-space: initial;
+font-family:$font-regular
+}
+		.item-inner
+		{
+		border:$none!important;
+		@include respond-to(handhelds2)
+		{
+		  padding:$value0!important;
+		}
+		}  
+		margin-bottom:$value10;
+		border: 1px dashed #ccc;
+		margin-top:$value10;
+		padding:$value15 $value0;
+	    min-height: 120px;
+		cursor:pointer;
+		@include respond-to(handhelds2)
+		{
+		  padding:$value15;
+		  margin: $value0;
+		}
+}
+
+@include respond-to(handhelds2)
+  {
+		 [p-lr-10]
+          {
+		  padding:$value0 $value10;
+		  }
+		  [norecord] 
+		  {
+		  ion-label {
+			margin: 0 0 15px;
+			text-align: center;
+		  }
+		}
+  }
+ion-list-header
+{
+
+ion-label
+{
+font-family:$font-bold;
+font-weight:700;
+}
+
+}

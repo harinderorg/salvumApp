@@ -1,0 +1,40 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Set Employee Portal Timing</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+<ion-row>
+	<ion-col>Days</ion-col>
+	<ion-col>Full day</ion-col>
+	<ion-col>Start Time</ion-col>
+	<ion-col>End Time</ion-col>
+</ion-row>
+<ion-row *ngFor="let time of timing; let indx = index ">
+
+	<ion-col col-3>  
+	{{all_days[indx]}}
+	</ion-col>
+
+	<ion-col col-3>  
+		<ion-checkbox color="blue" [(ngModel)]="time.isFullDay"></ion-checkbox>
+	</ion-col>
+
+	<ion-col col-3>  
+		<ion-datetime [disabled]="time.isFullDay" displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="time.start"></ion-datetime>
+	</ion-col>
+
+	<ion-col col-3>  
+		<ion-datetime [disabled]="time.isFullDay" min="{{time.start}}" displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="time.end"></ion-datetime>
+	</ion-col>
+
+</ion-row>
+<ion-row>
+<button ion-button color="blue" (click)="saveTiming()">Save</button>
+<button ion-button color="blue" (click)="dismiss()">Cancel</button>
+</ion-row>
+</ion-content>

@@ -1,0 +1,100 @@
+<ion-content padding lightgrey (window:resize)="caclHeight()" has-header>
+<div ion-fixed id="calc_height_mnggrp{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb>
+  <ion-col> 
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="contact()"><a>Contact</a></li>
+      <li class="active">Groups</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<ion-searchbar (ionInput)="getItems($event)" p-lr-5 padding-top0></ion-searchbar>
+<div float-left top-group>
+   <div  float-left *ngIf="level1 == 'false' " class="check" style="">
+      <ion-checkbox [(ngModel)]="selectedFirst" (ionChange)="updateCbValue('1', $event)" [checked]="selectedFirst"></ion-checkbox>1
+   </div>
+   <div float-left *ngIf="level2 == 'false' " class="check" style="">
+      <ion-checkbox [(ngModel)]="selectedSecond" (ionChange)="updateCbValue('2', $event)" [checked]="selectedSecond"></ion-checkbox>2
+   </div>
+   <div float-left *ngIf="level3 == 'false' " class="check" style="">
+      <ion-checkbox [(ngModel)]="selectedthird" (ionChange)="updateCbValue('3', $event)" [checked]="selectedthird"></ion-checkbox>3
+   </div>
+   <div float-left *ngIf="level4 == 'false' " class="check" style="">
+      <ion-checkbox [(ngModel)]="selectedForth" (ionChange)="updateCbValue('4', $event)" [checked]="selectedForth"></ion-checkbox>4
+   </div>
+</div>
+  <button btn-hide m-l-5 ion-button (click) = "goToSmail()" >
+  <ion-icon name="checkbox"></ion-icon>
+  <span btn-text>Select</span>
+  </button>
+  <button btn-hide  m-l-5  ion-button (click) = "groupListing()" >
+    <ion-icon name="person"></ion-icon>
+  <span btn-text>Select Group</span>
+  
+  </button>
+   <button btn-hide  m-l-5  ion-button (click) = "goToManageGroup()" >
+     <ion-icon name="people"></ion-icon>
+   <span btn-text>Create Group</span>
+   </button>
+</div>
+<div clearfix id="fixed_height_mnggrp{{timestamp}}"></div>
+  <!-- <button btn-hide m-l-5  ion-button (click) = "goToeditGroup()" >
+    <ion-icon name="create"></ion-icon>  
+  <span btn-text>Edit Group</span>
+  </button> -->
+ 
+     
+  <ion-list list-top>
+    <ion-grid>
+      <ion-row>
+        <ng-container *ngFor="let x of items; let i = index ">
+         <ion-col col-12 col-md-6 col-lg-4 >
+            <ion-item-sliding #item br-lt-grey  >
+               <ion-item   border-none  wallet-main>
+                  <ion-thumbnail item-start icon-ionic >
+                     <ion-icon name="people" text-center></ion-icon>
+                  </ion-thumbnail>
+                  <h2 fnt-bold>{{x.name}}</h2>
+                  <p fnt-light>{{x.created_on | date : 'short'}}</p>
+                  <p fnt-light>
+                     <ion-badge fnt-light color="light">Level {{x.userLevel}}</ion-badge>
+                  </p>
+                  <button ion-button clear item-end margin0 (click)="editgroup(x)" *ngIf="isBrowser ==  'true' ">
+                     <ion-icon name="create" fnt20></ion-icon>
+                  </button>
+                  <button ion-button clear item-end margin0 (click)="showConfirm(x, i)" *ngIf="isBrowser ==  'true' ">
+                     <ion-icon name="trash" fnt20></ion-icon>
+                  </button>
+               </ion-item>
+               <ion-item-options side="right" *ngIf="isBrowser ==  'false' ">
+                  <button ion-button color="danger" (click)="showConfirm(x, i)">
+                     <ion-icon name="trash"></ion-icon>
+                     Delete
+                  </button>
+                  <button ion-button color="secondary"  (click)="editgroup(x)">
+                     <ion-icon name="create"></ion-icon>
+                     Edit
+                  </button>
+               </ion-item-options>
+            </ion-item-sliding>
+         </ion-col>
+         </ng-container>
+         <!-- <div *ngIf="items.length == 0" white-bg br-lt-grey padding> No Group Found.</div> -->
+         <!-- <div *ngIf="selectedFirst != 1 && selectedSecond != 2 && selectedthird != 3 &&  selectedForth != 4 && items.length != 0" white-bg br-lt-grey padding> No Group Found. </div> -->
+
+         <div *ngIf="items.length == 0" white-bg br-lt-grey padding> No Group Found.</div>
+
+         <!-- <div *ngIf="selectedFirst == 1 && array1.length == 0 && selectedSecond != 2 && items.length != 0" white-bg br-lt-grey padding> No Group Found.</div>
+
+         <div *ngIf="selectedSecond == 2 && array2.length == 0 && array1.length == 0 && selectedthird != 3 && items.length != 0 " white-bg br-lt-grey padding> No Group Found.</div>
+
+         <div *ngIf="selectedthird == 3 && array3.length == 0 && array1.length == 0 && array2.length == 0 && selectedForth != '4' && items.length != 0" white-bg br-lt-grey padding> No Group Found.</div>
+
+         <div *ngIf="selectedForth == 4 && array4.length == 0 && array1.length == 0 && array2.length == 0 && array3.length == 0 && items.length != 0" white-bg br-lt-grey padding> No Group Found.</div> -->
+
+      </ion-row>
+   </ion-grid>
+   </ion-list>
+<div footer-height></div> 
+</ion-content>

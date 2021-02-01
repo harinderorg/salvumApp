@@ -1,0 +1,43 @@
+.my-drop-zone { 
+border: dotted 2px lightgray; }
+.nv-file-over { border: dotted 2px red; } 
+.another-file-over-class { border: dotted 2px green; }
+.well{min-height : 140px !important;color : #000;}
+[error-file]
+{
+    display: inline-block;
+    border: 1px solid #1f75d2;
+    padding: $value10+2 $value10  $value5 $value10;
+    margin-bottom: $value15;
+button
+{
+    margin-top: -1px;
+    margin-left: $value10;
+}  
+}
+page-addadendum
+{
+	@include respond-to(handhelds2)
+	{
+	    [visible-xs]
+		{
+		 display:block!important;
+		}
+		[fileschoose]
+		{
+		.item-inner
+		{   border:$none!important;
+	        padding:$value0!important;
+			ion-label
+			{
+			margin-right:$value0;
+			}
+				label + input[type="file"]
+				{  
+				  display:none; 
+				}
+		    
+	      } 
+	   }
+	}
+}

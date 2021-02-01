@@ -1,0 +1,64 @@
+page-editprofile
+ {
+	 [profile-top]
+	 {
+		 position:relative;
+		 display:inline-block;
+		 }
+ [uploadImage]
+ {
+	position: absolute;
+    top: 39px;
+    right: -$value4;
+
+ion-icon
+ {
+   /* position: absolute;
+    top: $value0;
+    right: $value4;*/
+  	@include wh30;
+    border-radius:  $br-ra50;
+    background: $darkblue2;
+    border: 2px solid $fnt-white;
+    color: $fnt-white;    
+    line-height: 26px;
+	cursor:pointer;
+&:hover
+	{
+		/*opacity:0.7;*/
+		    background: #086dd2;
+	}
+ }
+ }
+ [group-head]
+ {
+ @include respond-to(handhelds2)
+ {
+ margin-bottom:$value10;
+ }
+ }
+[mx-w-190]	 
+{
+max-width:190px;
+}	
+	 
+.item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner , 
+.list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child, .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child
+{
+border:$none;
+box-shadow:$none;
+border-bottom: 1px solid #dedede;
+}
+input[type="file"] {
+    color:$fnt-white;
+    font-weight: 400;
+}
+[select-gender]
+{
+	ion-label
+	{
+		margin-left:$value5+3;
+	}
+}
+
+}

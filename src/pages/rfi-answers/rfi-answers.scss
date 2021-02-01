@@ -1,0 +1,85 @@
+page-rfi-answers {
+ion-card
+{
+	overflow:visible;
+	@include respond-to(handhelds2)
+	{
+	  box-shadow:none!important;
+	}
+}
+hr {
+    background-color: #000 !important;
+}
+[clear_fix]{
+	clear:both;
+}
+[right-adendum]
+{
+ .item 
+ {
+ 	   contain:none!important;
+overflow:visible;
+
+ }
+ ion-fab
+ {
+ position: relative;
+ z-index: 9999;
+ top:$value0; 
+	button
+	{
+	&.fab
+	{
+    width: $value20;
+    height:  $value20;
+    line-height:  $value20;
+	    border-radius: 0;
+    margin-top: $value0;
+	ion-icon
+	{
+	 font-size:$value14;  
+	 line-height:  $value20!important;	
+	}
+	}	
+		
+	}	
+	ion-fab-list
+	{
+		margin-top:$value20+5;
+	    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2);
+		background:$fnt-white;
+		   width: $value100*2;
+		   min-height:auto;
+	}	
+	.item
+	{
+			       border-bottom: 1px solid #ddd;
+				a[download]
+				{
+	margin-top:$value0;
+	
+	margin-bottom:$value0;
+				}				
+				   ion-label
+				   {
+				margin-top:$value0;
+				white-space: normal;
+                word-break: break-all;
+              display: flex;
+	         margin-bottom:$value0;
+				   }
+	}
+	&[not-answered]
+	{
+			ion-fab-list
+			{
+	          @include respond-to(handhelds2)
+			  {			  
+				/*right:$value0*/
+			  }
+     
+	 }
+	}
+ }
+}
+}

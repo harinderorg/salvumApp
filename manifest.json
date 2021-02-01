@@ -1,0 +1,7 @@
+{
+  "name": "Salvum",
+  "short_name": "Salvum",
+  "gcm_sender_id": "580988510078",
+  "display": "standalone",
+  "gcm_user_visible_only": true
+}

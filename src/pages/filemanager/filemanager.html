@@ -1,0 +1,745 @@
+<ion-split-pane file-split [when]="md"  [class.actives]="isParaActive">
+    
+
+   <ion-menu [content]="content" side="left" class="show-menu">
+  		    <ion-header>  
+         <ion-toolbar> 
+            <ion-title>Files</ion-title> 
+         </ion-toolbar>
+      </ion-header> 
+	        <ion-content>
+
+  			<ion-list>
+			<div class="outer-filter " padding  p-b-0  w-100>
+			<div>Filter levels</div> 
+			<ion-grid no-padding m-t-10> 
+	  			<ion-row no-padding>   
+				    <ion-col col-2 *ngIf="enable_level1 == 'false'">1 <ion-checkbox (ionChange)="filterlevels($event,'level1')" checked="{{this.allowed_levels.indexOf('level1') >= 0 ? 'true' : 'false'}}"></ion-checkbox></ion-col>
+				    <ion-col col-2 *ngIf="enable_level2 == 'false'">2 <ion-checkbox (ionChange)="filterlevels($event,'level2')" checked="{{this.allowed_levels.indexOf('level2') >= 0 ? 'true' : 'false'}}"></ion-checkbox></ion-col>
+				    <ion-col  col-2 *ngIf="enable_level3 == 'false'">3 <ion-checkbox (ionChange)="filterlevels($event,'level3')" checked="{{this.allowed_levels.indexOf('level3') >= 0 ? 'true' : 'false'}}"></ion-checkbox></ion-col>
+				    <ion-col col-2 *ngIf="enable_level4 == 'false'">4 <ion-checkbox (ionChange)="filterlevels($event,'level4')" checked="{{this.allowed_levels.indexOf('level4') >= 0 ? 'true' : 'false'}}"></ion-checkbox></ion-col>
+				</ion-row>
+					</ion-grid>
+				</div>
+
+  		
+  		
+			<ion-item *ngIf="related_files_data != 'shared_data'" no-border>
+	  		<button (click) = "addFolders('0')" ion-button add-share-btn><ion-icon name="add"></ion-icon></button>
+			<button (click) = "removeFolders()" ion-button color="danger" remove-share-btn><ion-icon name="remove"></ion-icon></button>
+			<button (click) = "shareFolders()"  ion-button color="secondary"  share-btn><ion-icon name="share" ></ion-icon></button>
+			</ion-item>
+			<div height_15 *ngIf="related_files_data == 'shared_data'"></div>
+ 
+
+  		<!-- share folder start -->
+		<div share-div>
+	
+		  <button ion-item detail-none no-lines (click) = "getSharedFolders()"  icon-left [ngClass]="{active: related_files_data=='shared_data'}">
+		    <ion-grid no-padding>
+		      <ion-row >
+		        <!--ion-col width-10-->
+		          <!-- <span item-left *ngIf="n.children" >
+		            <ion-icon [color]="isSelected(n) ? 'primary' : 'gray'" [name]="isSelected(n) ? 'ios-arrow-down' : 'ios-arrow-forward'"></ion-icon>
+		          </span> --> 
+		        <!--/ion-col-->
+		        <ion-col col-2>
+		            <ion-icon name="folder" color="blue"></ion-icon>              
+		        </ion-col>
+		        <ion-col  col-10>
+		            Shared
+		        </ion-col>
+		      </ion-row>
+		    </ion-grid>                              
+		  </button>
+
+		</div>
+		<!-- share folder end --> 
+  		 
+ 
+
+	<tree-root  #tree [nodes]="pages" [options]="options" (moveNode)="onMoveNode($event)" [focused]="true">
+		<!-- <ng-template #treeNodeTemplate let-node let-index="index" >
+		    <span>{{ node.data.name.split('_--_').pop(-1) }}</span>
+		    <ng-container *ngIf="all_levels.indexOf(node.data.name) == -1">
+			    <button>
+			   	    <ion-icon color="blue" name="create"></ion-icon> 
+			    </button>
+			</ng-container>
+
+		</ng-template> -->
+
+		<ng-template #treeNodeFullTemplate
+          let-node
+          let-index="index"
+          let-templates="templates">
+		  <div
+		    [class]="node.getClass()"
+		    [class.tree-node]="true"
+		    [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
+		    [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren"
+		    [class.tree-node-leaf]="node.isLeaf"
+		    [class.tree-node-active]="node.isActive"
+		    [class.tree-node-focused]="node.isFocused" *ngIf="node.data.type == 'directory' && node.data.isHidden != true" [ngClass]="{'active_node':file_path == node.data.path, 'level1_border': node.data.name == 'level1', 'level2_border':node.data.name == 'level2', 'level3_border':node.data.name == 'level3', 'level4_border':node.data.name == 'level4'}"> 
+<div class="tree-file" (click)="openTreeNodes($event,node.data.path)">
+		    <tree-node-expander id="showpanel2{{node.data.path.split('/').join('_')}}" *ngIf="node.data.children != null && node.data.children.every(checkDir) == false" class="custom_tree_expander" [node]="node"></tree-node-expander>
+
+		    <tree-node-wrapper   id="showpanel1{{node.data.path.split('/').join('_')}}"  [node]="node" [index]="index" [templates]="templates">
+
+		    </tree-node-wrapper> 
+
+		    <ng-container *ngIf="all_levels.indexOf(node.data.name) == -1">
+		    	<span  edit-icons id="showpanel{{node.data.path.split('/').join('_')}}"> 
+				    <!-- <button>
+				   	    <ion-icon color="blue" name="move"></ion-icon> 
+				    </button> -->
+				    <button (click) = "editFolders(node.data,node.data.children.every(checkDir))">
+				   	    <ion-icon color="blue" name="create"></ion-icon> 
+				    </button>
+			    </span>
+
+			    <ion-grid id="editpanel{{node.data.path.split('/').join('_')}}" style="display: none;" class="edit_grids" no-padding>
+			      <ion-row>
+			        <ion-col col-8>
+			          <input type="text" w-100 id = "input{{node.data.path.split('/').join('_')}}" value="" class="no_clicks_avail">
+			        </ion-col>
+
+			              <ion-col col-4  text-right dis-flex>
+		                  <ion-icon  btn-check name="close" (click) = "editFolders(node.data,node.data.children.every(checkDir))" ></ion-icon>
+		                  <ion-icon btn-check name="checkmark" (click) = "saveEditNode(node.data,null,node.data.children.every(checkDir))" ></ion-icon>
+		                  </ion-col>
+			      </ion-row>
+			    </ion-grid>
+			</ng-container>
+
+</div>
+
+		    <tree-node-children [node]="node" [templates]="templates">
+		    </tree-node-children>
+		    <tree-node-drop-slot [dropIndex]="node.index + 1" [node]="node.parent">
+		    </tree-node-drop-slot>
+		    
+		  </div>
+		</ng-template>
+
+		
+	</tree-root>
+					</ion-list>
+		   </ion-content>
+  	</ion-menu>
+	</ion-split-pane>
+
+
+
+   <!---ion-buttons end header-icon hide-icon  btn-tree>
+      <button btn-grid  fnt-white  [class.actives]="isBtnActive" (click)="toggleClass()">
+     <ion-icon class="ion-md-arrow-dropleft-circle" hide-t-icon white-color ></ion-icon>
+	      <ion-icon class="ion-md-arrow-dropright-circle" show-t-icon white-color style=""></ion-icon>
+      </button>
+   </ion-buttons-->   
+
+<ion-row main-breadcrumb ion-fixed style="top:60px">
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li *ngIf="breadcrums != ''"><a (click)="files()">Files</a></li>
+        <li *ngIf="breadcrums == ''" class="active">Files</li>
+        <li *ngFor="let bread of breadcrums; let indx = index; let last = last " [ngClass]="last == true ? 'active' : ''">
+        	<ng-container *ngIf="last!=true">
+				<a  bread-top class="text-capitalize" *ngIf="bread == 'shared'" (click) = "getSharedFolders()">{{bread.split('_--_').pop(-1)}}</a>
+				<a bread-top class="{{all_levels.indexOf(bread) >= 0 ? 'text-capitalize' : ''}}" *ngIf="bread != 'shared'" (click) = "breadCrumbsClick(bread)">{{bread.split('_--_').pop(-1)}}</a>
+				</ng-container>
+				<ng-container *ngIf="last==true">
+				<a  bread-top class="{{all_levels.indexOf(bread) >= 0 ? 'text-capitalize' : ''}} {{bread == 'shared' ? 'text-capitalize' : ''}}" >{{bread.split('_--_').pop(-1)}}</a>
+				</ng-container>
+        </li>
+
+      </ol>
+    </ion-col> 
+ </ion-row>
+
+
+<ion-content file-content has-header [class.actives]="isParaActive" lightgrey file-list style="">
+ <div breadcrumb-height></div>
+
+<ion-grid> 
+  <ion-row>
+  	<ion-col col-12 col-md-12 col-lg-12 col-xl-12>
+  	<ion-row>
+  	<ion-col col-1>
+  		<ion-buttons header-icon hide-icon  btn-tree>
+      <button btn-grid  fnt-white  [class.actives]="isBtnActive" (click)="toggleClass()">
+     <ion-icon class="ion-md-arrow-dropleft-circle" hide-t-icon color="blue" ></ion-icon>
+	      <ion-icon class="ion-md-arrow-dropright-circle" show-t-icon color="blue" style=""></ion-icon>  
+      </button>
+   </ion-buttons>
+  	</ion-col>
+  		<ion-col col-11 col-md-12 col-lg-12 col-xl-12 *ngIf="file_path != 'nopath' && related_files_data != 'shared_data'">
+			<ion-item border-none br-lt-grey filemanager_top>
+				<ng-container *ngIf="isBrowser ==  'false' ">
+			        <ng-container *ngFor="let bread of breadcrums; let indx = index; let last = last; let first = first ">
+			        {{first != true ? '>' : ''}} 
+			        	<ng-container *ngIf="last!=true">
+						<a  bread-top class="text-capitalize" *ngIf="bread == 'shared'" (click) = "getSharedFolders()">{{bread.split('_--_').pop(-1)}}</a>
+						<a bread-top class="{{all_levels.indexOf(bread) >= 0 ? 'text-capitalize' : ''}}" *ngIf="bread != 'shared'" (click) = "breadCrumbsClick(bread)">{{bread.split('_--_').pop(-1)}}</a>
+						</ng-container>
+						<ng-container *ngIf="last==true">
+						<a  bread-top class="{{all_levels.indexOf(bread) >= 0 ? 'text-capitalize' : ''}} {{bread == 'shared' ? 'text-capitalize' : ''}}" >{{bread.split('_--_').pop(-1)}}</a>
+						</ng-container>
+			        </ng-container>
+				</ng-container>
+
+				<ng-container *ngIf="related_files != 'shared_data' && related_files_data != 'shared_data'">
+				<!-- <button class="pull-right" (click) = "modalupload()" ion-button color="secondary" *ngIf="isBrowser == 'false'">Upload</button > -->
+				<div width100 text-right>
+
+				<button (click) = "addFiles('0')" title="Upload from Local"><img src="assets/img/upload_local.png"></button><!-- *ngIf="isBrowser == 'true'" -->
+				<button (click) = "addFilesSmail('0')" title="Upload from Smail"><img src="assets/img/upload_smail.png"></button>
+				<button (click) = "addFilesJobs('0')" title="Upload from Jobs"><img src="assets/img/upload_jobs.png"></button>
+
+				</div><!-- *ngIf="isBrowser == 'true'" -->
+				</ng-container>
+			</ion-item>
+		</ion-col>
+		<ion-col col-11 col-md-12 col-lg-12 col-xl-12 *ngIf="related_files_data == 'shared_data' && (show_add_folder == '1' || show_add_folder == '2')">
+		<ion-item border-none br-lt-grey filemanager_top>
+			<ng-container *ngIf="isBrowser ==  'false' ">
+		        <ng-container *ngFor="let bread of breadcrums; let indx = index; let last = last; let first = first ">
+		        {{first != true ? '>' : ''}} 
+		        	<ng-container *ngIf="last!=true">
+					<a  bread-top class="text-capitalize" *ngIf="bread == 'shared'" (click) = "getSharedFolders()">{{bread.split('_--_').pop(-1)}}</a>
+					<a bread-top class="{{all_levels.indexOf(bread) >= 0 ? 'text-capitalize' : ''}}" *ngIf="bread != 'shared'" (click) = "breadCrumbsClick(bread)">{{bread.split('_--_').pop(-1)}}</a>
+					</ng-container>
+					<ng-container *ngIf="last==true">
+					<a  bread-top class="{{all_levels.indexOf(bread) >= 0 ? 'text-capitalize' : ''}} {{bread == 'shared' ? 'text-capitalize' : ''}}" >{{bread.split('_--_').pop(-1)}}</a>
+					</ng-container>
+		        </ng-container>
+			</ng-container>
+			<div padd_bw_icons>
+			<button *ngIf="isAccept_check == '1'" class="pull-right" (click) = "addFolders('1')" title="Add Folder"><img src="assets/img/add_folder.png"></button>
+			<button class="pull-right" (click) = "addFiles('1')" *ngIf="isAccept_check == '1'" title="Upload from Local"><img src="assets/img/upload_local.png"></button>
+			<button class="pull-right" (click) = "uploadFileManager('1')"  *ngIf="isAccept_check == '1'" title="Upload from File Manager"><img src="assets/img/upload_filemanager.png"></button><!-- isBrowser == 'true' &&  -->
+			<button *ngIf="isAccept_check == '1'" class="pull-right" (click) = "addFilesSmail('1')" title="Upload from Smail"><img src="assets/img/upload_smail.png"></button>
+			<button *ngIf="isAccept_check == '1'" class="pull-right" (click) = "addFilesJobs('1')" title="Upload from Jobs"><img src="assets/img/upload_jobs.png"></button><!-- *ngIf="isBrowser == 'true'" -->
+			</div>
+		</ion-item>
+		</ion-col>
+		</ion-row> 
+		<ion-row>
+		<ng-container *ngIf="related_files != 'shared_data'">
+		<ion-col col-6 col-md-4 col-lg-4 col-xl-2 text-center file-manager *ngFor="let related_file of related_files; let i = index ">
+		<ng-container *ngIf="related_file.toLevel == '' || related_file.toLevel == null">
+		<div [dragData]="related_file" dnd-draggable  [dragEnabled]="true" *ngIf="related_file.type == 'file'" [treeDrag]="{data : related_file, is_panel : 1}" [treeDragEnabled]="true" >
+		<!-- (onPressStart)="pressed()" (onPressing)="active()" (onPressEnd)="released()" -->
+			<div class="white-box " margin0 (click)="openIt(related_file.path,related_file.type,null,related_file)" (dblclick)="doubleClick(related_file.type,related_file.path,related_file.size,related_file.name)"> 
+				<div>
+				<ng-container *ngIf="related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0">
+				<img *ngIf="is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0" text-center src="{{APIURL}}/salvum/directory/thumbnails/{{related_file.name.substr(0, related_file.name.lastIndexOf('.'))}}-thumbnail-320x240-0001.png"/>
+				<img *ngIf="is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1" text-center src="{{APIURL}}/salvum/{{related_file.path}}"/>
+				</ng-container> 
+
+				<img *ngIf="related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1" text-center src="assets/img/{{this.file_types.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0 ? related_file.name.split('.').pop().toLowerCase() : 'txt'}}.png"/> 
+
+				<img *ngIf="related_file.type == 'directory'" text-center src="assets/img/folder.png"/>  
+			</div>
+			<ng-container *ngIf="related_files_data == 'shared_data'">
+				<span *ngIf="4 <= custom_level" class="files-level4-indicator"></span>
+				<span *ngIf="3 <= custom_level" class="files-level3-indicator"></span>
+				<span *ngIf="2 <= custom_level" class="files-level2-indicator"></span>
+				<span *ngIf="1 <= custom_level" class="files-level1-indicator"></span>
+			</ng-container>
+			</div>
+			<!-- *ngIf="related_file.type == 'file' || related_file.path.search('shared') >= 0" -->
+			<ion-icon *ngIf="isBrowser == 'true'" class="drag_handle" name="move" dnd-draggable-handle></ion-icon>
+			<ion-icon *ngIf="isBrowser != 'true'" class="drag_handle visibility_hidden" name="move" dnd-draggable-handle></ion-icon>
+
+			<!-- <ion-icon *ngIf="isBrowser != 'true'" draggable [dragData]="related_file" class="drag_handle first_prev" name="move" [treeDrag]="{data : related_file, is_panel : 1}" [treeDragEnabled]="true">
+			</ion-icon> -->
+
+			<ng-container *ngIf="related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0">
+
+			<ion-icon *ngIf="isBrowser != 'true' && is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0" draggable [dragData]="related_file" class="drag_handle first_prev" name="move" [treeDrag]="{data : related_file, is_panel : 1}" [treeDragEnabled]="true" [dragImage]="APIURL+'/salvum/directory/thumbnails/'+related_file.name.substr(0, related_file.name.lastIndexOf('.'))+'-thumbnail-320x240-0001.png'">
+			</ion-icon>
+
+			<ion-icon *ngIf="isBrowser != 'true' && is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1" draggable [dragData]="related_file" class="drag_handle first_prev" name="move" [treeDrag]="{data : related_file, is_panel : 1}" [treeDragEnabled]="true" [dragImage]="APIURL+'/salvum/'+related_file.path">
+			</ion-icon>
+			</ng-container> 
+
+			<ion-icon *ngIf="isBrowser != 'true' && related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1 && related_file.type == 'directory'" draggable [dragData]="related_file" class="drag_handle first_prev" name="move" [treeDrag]="{data : related_file, is_panel : 1}" [treeDragEnabled]="true" [dragImage]="'assets/img/'+((file_types.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0) ? related_file.name.split('.').pop().toLowerCase() : txt_file)">
+			</ion-icon>
+
+			<ion-icon *ngIf="isBrowser != 'true' && related_file.type == 'directory'" draggable [dragData]="related_file" class="drag_handle first_prev" name="move" [treeDrag]="{data : related_file, is_panel : 1}" [treeDragEnabled]="true" [dragImage]="'assets/img/folder.png'">
+			</ion-icon>
+
+
+			<!-- [ngClass]="related_files_data == 'shared_data' ? 'hide_handle' : ''" -->
+			<ion-fab right top *ngIf="all_levels.indexOf(related_file.name) == -1" >
+			    <button title="Dropdown" ion-fab color="light" mini><ion-icon name="list"></ion-icon></button>
+			    <ion-fab-list side="left">
+			      	<button title="Delete"  mini color="danger" (click) = "deleteFile(related_file.path,related_file.type)" ion-fab><ion-icon name="trash"></ion-icon></button>
+			    </ion-fab-list>
+			    <ion-fab-list side="top" *ngIf="related_file.type == 'file' && related_file.name.split('.').pop().toLowerCase() != 'csv' && related_file.name.split('.').pop().toLowerCase() != 'zip' && related_file.name.split('.').pop().toLowerCase() != 'xlsx' && related_file.name.split('.').pop().toLowerCase() != 'xls'">
+			      	<button  title="View"  color="dark" mini (click) = "viewFile(related_file.path,related_file.size)" ion-fab><ion-icon name="eye"></ion-icon></button>
+			    </ion-fab-list>
+			    <ion-fab-list side="top" *ngIf="related_file.type == 'directory'">
+			      	<a title="Download"  (click) = "downloadFolders(related_file.path)"><button  mini ion-fab color="primary"><ion-icon name="download"></ion-icon></button></a>
+			    </ion-fab-list>
+			    <ion-fab-list side="bottom" *ngIf="related_file.path.search('shared') == -1">
+			      	<button   title="Share"  mini color="secondary" (click) = "shareFolders(related_file.path)" ion-fab><ion-icon name="share" ></ion-icon></button>
+			    </ion-fab-list>
+			    <ion-fab-list side="right" *ngIf="related_file.type == 'file'">
+
+			      	<a id="bro_{{related_file.name}}" title="Download"  *ngIf="isBrowser == 'true'" href="{{baseUrl}}/download?file={{APIURL +'/salvum/'+related_file.path}}&ext={{related_file.name.split('.').pop().toLowerCase()}}" (click) = "downloadFile()" ><button mini ion-fab color="primary"><ion-icon name="download"></ion-icon></button></a>
+			      	<a id="and_{{related_file.name}}" title="Download"  *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/'+related_file.path,related_file.name)" href="javascript:void(0)" ><button mini ion-fab color="primary"><ion-icon name="download"></ion-icon></button></a>
+
+			    </ion-fab-list>
+			    <ion-fab-list side="right" *ngIf="related_file.type == 'directory'">
+			      	<a  title="Edit"  (click) = "editSharedFolders(i,related_file.name)"><button color="primary"  mini ion-fab><ion-icon name="create"></ion-icon></button></a>
+			    </ion-fab-list>
+			    
+			</ion-fab>
+
+			<p id="editpanel{{i}}" style="display: none;"> 
+			<ion-grid no-padding>
+			<ion-row>
+			<ion-col col-8>
+				<input br-clr-grey w-100 type="text" [(ngModel)] = "edit_file_name">
+				</ion-col>
+				<ion-col col-4 text-right>
+		          <ion-icon  btn-check1 name="close" (click) = "editSharedFolders(i,related_file.name)" ></ion-icon>
+		          <ion-icon  btn-check1  name="checkmark" (click) = "saveEdit(related_file,edit_file_name,i,'0')" ></ion-icon>
+			</ion-col>
+			</ion-row>
+		    </ion-grid>
+			</p>
+			<p id="showpanel{{i}}" fnt-regular class="{{all_levels.indexOf(related_file.name) >= 0 ? 'text-capitalize' : ''}}">{{related_file.name.search('_--_') >= 0 ? related_file.name.split('_--_').pop(-1) : related_file.name.split('____').pop(-1)}}
+			
+			</p>
+			<p fnt-regular>
+
+			{{(related_file.shared_date != '' && related_file.shared_date != null) ? 'Created on ' + (related_file.shared_date | date : 'medium') : ''}}
+
+			<br *ngIf="related_file.shared_date != '' && related_file.shared_date != null">
+
+			{{(related_file.date_updated != '' && related_file.date_updated != null) ? 'Updated on ' + (related_file.date_updated | date : 'medium') : ''}}
+			</p>
+		</div>
+
+		<div droppable (onDrop)="fileDroped($event,related_file.path)" dnd-droppable (onDropSuccess)="fileDroped($event,related_file.path)" *ngIf="related_file.type != 'file'">
+		<div [dragData]="related_file" dnd-draggable [dragEnabled]="related_files_data == 'shared_data' ? false : true" [treeDrag]="{data : related_file, is_panel : 1}" [treeDragEnabled]="true">
+			<div class="white-box " margin0 (click)="openIt(related_file.path,related_file.type,null,related_file)" (dblclick)="doubleClick(related_file.type,related_file.path,related_file.size,related_file.name)"> 
+				<div>
+
+					<ng-container *ngIf="related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0">
+					<img *ngIf="is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0" text-center src="{{APIURL}}/salvum/directory/thumbnails/{{related_file.name.substr(0, related_file.name.lastIndexOf('.'))}}-thumbnail-320x240-0001.png"/>
+					<img *ngIf="is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1" text-center src="{{APIURL}}/salvum/{{related_file.path}}"/>
+					</ng-container> 
+
+					<img *ngIf="related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1" text-center src="assets/img/{{this.file_types.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0 ? related_file.name.split('.').pop().toLowerCase() : 'txt'}}.png"/> 
+
+					<img *ngIf="related_file.type == 'directory'" text-center src="assets/img/folder.png"/>  
+				</div>
+			<ng-container *ngIf="related_files_data == 'shared_data'">
+				<span *ngIf="4 <= custom_level" class="files-level4-indicator"></span>
+				<span *ngIf="3 <= custom_level" class="files-level3-indicator"></span>
+				<span *ngIf="2 <= custom_level" class="files-level2-indicator"></span>
+				<span *ngIf="1 <= custom_level" class="files-level1-indicator"></span>
+			</ng-container>
+			</div>
+			<!-- *ngIf="related_file.type == 'file' || related_file.path.search('shared') >= 0" -->
+			<ng-container *ngIf="all_levels.indexOf(related_file.name) >= 0">
+			<ion-icon class="drag_handle visibility_hidden" name="move" dnd-draggable-handle></ion-icon>
+			</ng-container>
+
+			<ng-container *ngIf="all_levels.indexOf(related_file.name) == -1">
+				<ion-icon *ngIf="isBrowser == 'true'"  class="drag_handle" name="move" dnd-draggable-handle></ion-icon>
+				<ion-icon *ngIf="isBrowser != 'true'"  class="drag_handle visibility_hidden" name="move" dnd-draggable-handle></ion-icon>
+				<ion-icon [dragData]="related_file" *ngIf="isBrowser != 'true'"  class="drag_handle" name="move" draggable [treeDrag]="{data : related_file, is_panel : 1}" [treeDragEnabled]="true"></ion-icon>
+			</ng-container>
+			<!-- [ngClass]="related_files_data == 'shared_data' ? 'hide_handle' : ''" -->
+			<ion-fab right top *ngIf="all_levels.indexOf(related_file.name) == -1" >
+			    <button title="Dropdown" ion-fab color="light" mini><ion-icon name="list"></ion-icon></button>
+			    <ion-fab-list side="left">
+			      	<button title="Delete"  mini color="danger" (click) = "deleteFile(related_file.path,related_file.type)" ion-fab><ion-icon name="trash"></ion-icon></button>
+			    </ion-fab-list>
+			    <ion-fab-list side="top" *ngIf="related_file.type == 'file' && related_file.name.split('.').pop().toLowerCase() != 'csv' && related_file.name.split('.').pop().toLowerCase() != 'zip' && related_file.name.split('.').pop().toLowerCase() != 'xlsx' && related_file.name.split('.').pop().toLowerCase() != 'xls'">
+			      	<button  title="View"  color="dark" mini (click) = "viewFile(related_file.path,related_file.size)" ion-fab><ion-icon name="eye"></ion-icon></button>
+			    </ion-fab-list>
+			    <ion-fab-list side="top" *ngIf="related_file.type == 'directory'">
+			      	<a  title="Download"  (click) = "downloadFolders(related_file.path)"><button  mini ion-fab color="primary"><ion-icon name="download"></ion-icon></button></a>
+			    </ion-fab-list>
+			    <ion-fab-list side="bottom" *ngIf="related_file.path.search('shared') == -1">
+			      	<button   title="Share"  mini color="secondary" (click) = "shareFolders(related_file.path)" ion-fab><ion-icon name="share" ></ion-icon></button>
+			    </ion-fab-list>
+			    <ion-fab-list side="right" *ngIf="related_file.type == 'file'">
+
+			      	<a id="bro_{{related_file.name}}" title="Download"  *ngIf="isBrowser == 'true'" href="{{baseUrl}}/download?file={{APIURL +'/salvum/'+related_file.path}}&ext={{related_file.name.split('.').pop().toLowerCase()}}" (click) = "downloadFile()" ><button mini ion-fab color="primary"><ion-icon name="download"></ion-icon></button></a>
+			      	<a id="and_{{related_file.name}}" title="Download" *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/'+related_file.path,related_file.name)" href="javascript:void(0)" ><button mini ion-fab color="primary"><ion-icon name="download"></ion-icon></button></a>
+
+			    </ion-fab-list>
+			    <ion-fab-list side="right" *ngIf="related_file.type == 'directory'">
+			      	<a  title="Edit"  (click) = "editSharedFolders(i,related_file.name)"><button color="primary"  mini ion-fab><ion-icon name="create"></ion-icon></button></a>
+			    </ion-fab-list>
+			    
+			</ion-fab>
+
+			<p id="editpanel{{i}}" style="display: none;"> 
+			<ion-grid no-padding>
+			<ion-row>
+			<ion-col col-8>
+				<input br-clr-grey w-100 type="text" [(ngModel)] = "edit_file_name">
+				</ion-col>
+				<ion-col col-4 text-right>
+		          <ion-icon  btn-check1 name="close" (click) = "editSharedFolders(i,related_file.name)" ></ion-icon>
+		          <ion-icon  btn-check1  name="checkmark" (click) = "saveEdit(related_file,edit_file_name,i,'0')" ></ion-icon>
+			</ion-col>
+			</ion-row>
+		    </ion-grid>
+			</p>
+			<p id="showpanel{{i}}" fnt-regular class="{{all_levels.indexOf(related_file.name) >= 0 ? 'text-capitalize' : ''}}">{{related_file.name.search('_--_') >= 0 ? related_file.name.split('_--_').pop(-1) : related_file.name.split('____').pop(-1)}}
+			
+			</p>
+			<p fnt-regular>
+
+			{{(related_file.shared_date != '' && related_file.shared_date != null) ? 'Created on ' + (related_file.shared_date | date : 'medium') : ''}}
+
+			<br *ngIf="related_file.shared_date != '' && related_file.shared_date != null">
+
+			{{(related_file.date_updated != '' && related_file.date_updated != null) ? 'Updated on ' + (related_file.date_updated | date : 'medium') : ''}}
+			</p>
+		</div>
+		</div>
+
+		</ng-container>
+
+		<ng-container *ngIf="related_file.toLevel != '' && related_file.toLevel != null">
+			<!-- <ng-container *ngIf="related_file.isAllowed == '0'">	
+				<div class="white-box" margin0 (click)="higherLevelFiles()">
+					<div>
+						<img text-center src="assets/img/hidden.png"/>
+					</div>
+				</div>
+				<p fnt-regular>{{related_file.count}} {{related_file.name}}
+				<ion-badge color="blue" m-t-5 fnt-normal  *ngIf="related_file.unread > 0">new ({{related_file.unread}})</ion-badge>
+				</p>
+			</ng-container> -->
+
+			
+		
+			<!-- <ng-container *ngIf="related_file.isAllowed == '1'"> -->
+			<div [dragData]="related_file" dnd-draggable [dragEnabled]="true" [treeDrag]="{data : related_file, is_panel : 1, shared_id: related_file._id}" [treeDragEnabled]="true">
+				<div class="white-box " margin0 (click)="openIt(related_file.path,related_file.type,related_file._id,related_file,related_file.toLevel)" (dblclick)="doubleClick(related_file.type,related_file.path,related_file.size,related_file.name)"> 
+				<div>
+					<ng-container *ngIf="related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0">
+					<img *ngIf="is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0" text-center src="{{APIURL}}/salvum/directory/thumbnails/{{related_file.name.substr(0, related_file.name.lastIndexOf('.'))}}-thumbnail-320x240-0001.png"/>
+					<img *ngIf="is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1" text-center src="{{APIURL}}/salvum/{{related_file.path}}"/>
+					</ng-container> 
+
+					<img *ngIf="related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1" text-center src="assets/img/{{this.file_types.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0 ? related_file.name.split('.').pop().toLowerCase() : 'txt'}}.png"/> 
+
+					<img *ngIf="related_file.type == 'directory'" text-center src="assets/img/folder.png"/>
+				</div>
+				<ng-container *ngIf="related_files_data == 'shared_data'">
+					<span *ngIf="4 <= related_file.toLevel" class="files-level4-indicator"></span>
+					<span *ngIf="3 <= related_file.toLevel" class="files-level3-indicator"></span>
+					<span *ngIf="2 <= related_file.toLevel" class="files-level2-indicator"></span>
+					<span *ngIf="1 <= related_file.toLevel" class="files-level1-indicator"></span>
+				</ng-container>
+			</div>
+
+			<ion-icon *ngIf="isBrowser == 'true'" class="drag_handle" name="move" dnd-draggable-handle></ion-icon>
+			<ion-icon *ngIf="isBrowser != 'true'" class="drag_handle visibility_hidden" name="move" dnd-draggable-handle></ion-icon>
+			<ion-icon [dragData]="related_file" *ngIf="isBrowser != 'true'" class="drag_handle" name="move" draggable [treeDrag]="{data : related_file, is_panel : 1, shared_id: related_file._id}" [treeDragEnabled]="true"></ion-icon>
+			<ion-fab right top *ngIf="related_file.type == 'file' || related_file.path.search('shared') >= 0" (click)="readThis(related_file.isRead.indexOf(userId),related_file._id)"> 
+			    <button  title="Dropdown"   ion-fab color="light" mini><ion-icon name="list"></ion-icon></button>
+			    <ion-fab-list side="left">
+			      	<button (click) = "deleteFile(related_file.path,related_file.type,related_file._id,'1',related_file.isRoot)" mini ion-fab color="danger"><ion-icon name="trash"></ion-icon></button>
+			    </ion-fab-list>
+			    <ion-fab-list side="top" *ngIf="related_file.type == 'file' && related_file.name.split('.').pop().toLowerCase() != 'csv' && related_file.name.split('.').pop().toLowerCase() != 'zip' && related_file.name.split('.').pop().toLowerCase() != 'xlsx' && related_file.name.split('.').pop().toLowerCase() != 'xls'">
+			      	<button  title="View" color="dark" (click) = "viewFile(related_file.path)" mini ion-fab><ion-icon name="eye"></ion-icon></button>
+			    </ion-fab-list>
+			    <ion-fab-list side="right" *ngIf="related_file.type == 'file'">
+
+			      	<a id="bro_{{related_file.name}}" title="Download" *ngIf="isBrowser == 'true'" href="{{baseUrl}}/download?file={{APIURL +'/salvum/'+related_file.path}}&ext={{related_file.name.split('.').pop().toLowerCase()}}" (click) = "downloadFile()"><button mini ion-fab color="primary"><ion-icon name="download"></ion-icon></button></a>
+			      	<a id="and_{{related_file.name}}" title="Download" *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/'+related_file.path,related_file.name)" href="javascript:void(0)"><button mini ion-fab color="primary"><ion-icon name="download"></ion-icon></button></a>
+
+			    </ion-fab-list>
+			    <ion-fab-list side="right" *ngIf="related_file.type == 'directory' && related_file.path.search('shared') >= 0">
+			      	<a  title="Edit"  (click) = "editSharedFolders(i,related_file.name)"><button  mini ion-fab color="primary"><ion-icon name="create"></ion-icon></button></a>
+			    </ion-fab-list>
+			    <ion-fab-list side="bottom" *ngIf="related_file.type == 'directory'">
+			      	<a  title="Download"  (click) = "downloadFolders(related_file.path)"><button  mini ion-fab color="primary"><ion-icon name="download"></ion-icon></button></a>
+			    </ion-fab-list>
+			    
+			</ion-fab>
+
+			<p id="editpanel{{i}}" style="display: none;"> 
+				<input  br-clr-grey type="text" [(ngModel)] = "edit_file_name">
+		          <ion-icon name="close" (click) = "editSharedFolders(i,related_file.name)" ></ion-icon>
+		          <ion-icon name="checkmark" (click) = "saveEdit(related_file,edit_file_name,i,'1')" ></ion-icon>
+			</p>
+			<p id="showpanel{{i}}" fnt-regular>{{related_file.name.search('_--_') >= 0 ? related_file.name.split('_--_').pop(-1) : related_file.name.split('____').pop(-1)}}
+			<ng-container *ngIf="related_file.isRead != '' && related_file.isRead != null">
+			<ion-badge color="danger" m-t-5 fnt-normal  *ngIf="related_file.isAccept == '2'">Rejected</ion-badge>
+			<ion-badge id="fid{{related_file._id}}" color="blue" m-t-5 fnt-normal  *ngIf="related_file.isRead.indexOf(userId) >= 0">New</ion-badge>
+			</ng-container>
+			</p>
+			<p fnt-regular >
+
+			{{(related_file.shared_date != '' && related_file.shared_date != null) ? 'Created on ' + (related_file.shared_date | date : 'medium') : ''}}<br>
+			{{(related_file.date_updated != '' && related_file.date_updated != null) ? 'Updated on ' + (related_file.date_updated | date : 'medium') : ''}}
+			</p>
+
+			</div>
+
+			<!-- </ng-container> -->
+		</ng-container>
+		</ion-col>
+		<ng-container *ngIf="levels_hiddens?.level1_hiddens > '0' && allowed_levels?.indexOf('level1') >= 0">
+		<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager >
+			<div class="white-box" margin0 (click)="higherLevelFiles()">
+				<div>
+					<img text-center src="assets/img/hidden.png"/>
+				</div>
+				<ng-container *ngIf="related_files_data == 'shared_data'">
+					<span class="files-level1-indicator"></span>
+				</ng-container>
+			</div>
+			<p fnt-regular txt-cent>
+			<ion-badge color="blue" m-t-5 fnt-normal>Level 1 files ({{levels_hiddens?.level1_hiddens}})</ion-badge>
+			</p>
+		</ion-col>
+		</ng-container>
+		<ng-container *ngIf="levels_hiddens?.level2_hiddens > '0' && allowed_levels?.indexOf('level1') >= 0">
+		<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager >
+			<div class="white-box" margin0 (click)="higherLevelFiles()">
+				<div>
+					<img text-center src="assets/img/hidden.png"/>
+				</div>
+				<ng-container *ngIf="related_files_data == 'shared_data'">
+					<span class="files-level2-indicator"></span>
+					<span class="files-level1-indicator"></span>
+				</ng-container>
+			</div>
+			<p fnt-regular txt-cent>
+			<ion-badge color="blue" m-t-5 fnt-normal>Level 2 files ({{levels_hiddens?.level2_hiddens}})</ion-badge>
+			</p>
+		</ion-col>
+		</ng-container>
+		<ng-container *ngIf="levels_hiddens?.level3_hiddens > '0' && allowed_levels?.indexOf('level1') >= 0">
+		<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager >
+			<div class="white-box" margin0 (click)="higherLevelFiles()">
+				<div>
+					<img text-center src="assets/img/hidden.png"/>
+				</div>
+				<ng-container *ngIf="related_files_data == 'shared_data'">
+					<span class="files-level3-indicator"></span>
+					<span class="files-level2-indicator"></span>
+					<span class="files-level1-indicator"></span>
+				</ng-container>
+			</div>
+			<p fnt-regular txt-cent>
+			<ion-badge color="blue" m-t-5 fnt-normal>Level 3 files ({{levels_hiddens?.level3_hiddens}})</ion-badge>
+			</p>
+		</ion-col>
+		</ng-container>
+		<ng-container *ngIf="levels_hiddens?.level4_hiddens > '0' && allowed_levels?.indexOf('level1') >= 0">
+		<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager >
+			<div class="white-box" margin0 (click)="higherLevelFiles()">
+				<div>
+					<img text-center src="assets/img/hidden.png"/>
+				</div>
+				<ng-container *ngIf="related_files_data == 'shared_data'">
+					<span class="files-level4-indicator"></span>
+					<span class="files-level3-indicator"></span>
+					<span class="files-level2-indicator"></span>
+					<span class="files-level1-indicator"></span>
+				</ng-container>
+			</div>
+			<p fnt-regular txt-cent>
+			<ion-badge color="blue" m-t-5 fnt-normal>Level 4 files ({{levels_hiddens?.level4_hiddens}})</ion-badge>
+			</p>
+		</ion-col>
+		</ng-container>
+
+		</ng-container>
+
+		<ion-col col-12 col-md-12 col-lg-12 col-xl-12 text-center file-manager *ngIf="related_files == '' && file_path == 'nopath' && related_files != 'shared_data' && levels_hiddens?.level1_hiddens == '0' && levels_hiddens?.level2_hiddens == '0' && levels_hiddens?.level3_hiddens == '0' && levels_hiddens?.level4_hiddens == '0'">
+			<ion-item>
+				Please open levels and click on folders to view details.
+			</ion-item>
+		</ion-col>
+
+		<ion-col col-12 col-md-12 col-lg-12 col-xl-12 text-center file-manager *ngIf="related_files == '' && file_path != 'nopath' && related_files != 'shared_data' && levels_hiddens?.level1_hiddens == '0' && levels_hiddens?.level2_hiddens == '0' && levels_hiddens?.level3_hiddens == '0' && levels_hiddens?.level4_hiddens == '0'">
+			<ion-item border-none br-lt-grey>
+				No Files Found In This Folder.
+			</ion-item>
+		</ion-col>
+
+		<ion-col col-12 col-md-12 col-lg-12 col-xl-12 text-center file-manager *ngIf="related_files == 'shared_data'">
+		<ion-row>
+		<ng-container *ngFor = "let shared_file of rest_shared_files">
+
+				<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager>
+				<div class="white-box " margin0 (click) = "clickSharedFoldersUsers(shared_file.split('##')[1],shared_file.split('##')[2],userId,shared_file.split('##')[3],shared_file.split('##')[0],'1',shared_file.split('##')[8])">
+					
+					<!-- <ion-icon name="person" color="dark"></ion-icon>  -->
+					<ion-avatar item-start img-mrgn>
+					    <ion-icon *ngIf="shared_file.split('##')[6] == '' || shared_file.split('##')[6] == null"  circle-pic name="person" text-center></ion-icon>
+					    <img w-h-img circle-pic *ngIf="shared_file.split('##')[6] != '' && shared_file.split('##')[6] != null" src="{{APIURL}}/images/{{shared_file.split('##')[6]}}">
+				    </ion-avatar>
+				<ng-container *ngIf="related_files_data == 'shared_data'">
+					<span *ngIf="4 <= shared_file.split('##')[8]" class="files-level4-indicator"></span>
+					<span *ngIf="3 <= shared_file.split('##')[8]" class="files-level3-indicator"></span>
+					<span *ngIf="2 <= shared_file.split('##')[8]" class="files-level2-indicator"></span>
+					<span *ngIf="1 <= shared_file.split('##')[8]" class="files-level1-indicator"></span>
+				</ng-container>
+				</div>
+				<p>
+					{{shared_file.split('##')[0]}}
+					<ion-badge color="blue" m-t-5 fnt-normal  *ngIf="unread_users[shared_file.split('##')[1]] > 0">New ({{unread_users[shared_file.split('##')[1]]}})</ion-badge>
+				</p>
+				<p *ngIf="shared_file.split('##')[2] == '0' && userId != shared_file.split('##')[3]"> 
+					<button small (click) = "ChangeSharingStatus(shared_file.split('##')[3],userId,'1',shared_file.split('##')[5])" ion-button>Accept</button>
+					<button  small (click) = "ChangeSharingStatus(shared_file.split('##')[3],userId,'2',shared_file.split('##')[5])" ion-button>Reject</button>
+				</p>
+				</ion-col>
+		</ng-container>
+		<ng-container *ngFor = "let shared_file of non_grouped_shared_files , let indx = index ;" >
+			<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager >
+			<div class="white-box " margin0 *ngIf="shared_file.isGroup == '1'" (click) = "clickSharedFolders(shared_file.folder_path.split('/').slice(0, -1).join('/'),shared_file.folder_path.split('/').reverse()[1],'0',shared_file._id,userId != shared_file.fromId && (shared_file.groupAccept.indexOf(userId) == -1 && shared_file.groupCancel.indexOf(userId) == -1) && shared_file.is_check == false,shared_file.toLevel,shared_file.isAccept)">
+				<div>
+					<img text-center src="assets/img/folder.png"/>
+				</div>
+			<ng-container *ngIf="related_files_data == 'shared_data'">
+				<span *ngIf="4 <= shared_file.fromLevel" class="files-level4-indicator"></span>
+				<span *ngIf="3 <= shared_file.fromLevel" class="files-level3-indicator"></span>
+				<span *ngIf="2 <= shared_file.fromLevel" class="files-level2-indicator"></span>
+				<span *ngIf="1 <= shared_file.fromLevel" class="files-level1-indicator"></span>
+			</ng-container>
+			</div>
+
+			<ion-fab right top [style.z-index]="999-indx" *ngIf="shared_file.isAccept != '4'">
+			    <button ion-fab color="light" mini>
+				<ion-icon name="people"></ion-icon>
+				</button>
+			<ion-fab-list   group-dropdown  side="bottom"> 
+		      	<ion-item *ngFor="let groupUser of shared_file.groupUsers; let indx = index ">
+				<!--{{groupUser}}-->
+				<span [innerHTML]="groupUser"></span>
+				<span *ngIf="shared_file.sharedByYou == '1' && shared_file.isAccept != '3'" (click)="removeMembers(shared_file._id,shared_file.toId[indx])">
+				<ion-icon name="close" color="danger"></ion-icon>
+				</span>
+				</ion-item> 
+				<ion-item *ngIf="shared_file.sharedByYou == '1' && shared_file.isAccept != '3'" point-cursor (click) = "addNewGroupMember(shared_file._id,shared_file.groupEmails)">Add New Members</ion-item>
+				<ion-item *ngIf="shared_file.sharedByYou != '1'" point-cursor (click) = "exitGroup(shared_file._id)">Exit Group</ion-item>
+
+				<!-- <ion-icon name="people" color="dark" (click) = "showGroupUsers(shared_file._id)"></ion-icon>
+				<ion-row>
+					<ion-col class="popover-users " id="sh{{shared_file._id}}" style="display: none;">
+						<ion-item *ngFor="let groupUser of shared_file.groupUsers">{{groupUser}}</ion-item>
+						<ion-item (click) = "exitGroup(shared_file._id)">Exit group</ion-item>
+					</ion-col>
+				</ion-row> -->
+		    </ion-fab-list>  
+			</ion-fab>
+			<p>
+			{{shared_file.folder_path.split('/').reverse()[1].split('_--_').pop(-1)}}
+			<ion-badge color="blue" m-t-5 fnt-normal  *ngIf="shared_file.isRead.indexOf(userId) >= 0">New</ion-badge>
+			<ion-badge color="danger" m-t-5 fnt-normal  *ngIf="shared_file.isAccept == '3'">Expired</ion-badge>
+			<br>
+				{{shared_file.date_created | date : 'medium'}}<br>
+				Shared by {{shared_file.sharedByYou == '1' ? 'you' : shared_file.shared_user_name}}
+				<!-- Shared Documents between you and {{shared_file.shared_user_name}}
+				<p>shared by {{shared_file.sharedByYou == '1' ? 'you' : shared_file.shared_user_name}} on {{shared_file.date_created | date : 'medium'}}</p> -->
+			</p>
+			<p *ngIf="userId != shared_file.fromId && (shared_file.groupAccept.indexOf(userId) == -1 && shared_file.groupCancel.indexOf(userId) == -1) && shared_file.is_check == false">  
+			There are some unconnected users on the group file share. Want to continue?
+			<br>
+				<button small (click) = "ChangeGroupStatus(shared_file._id,'1')" ion-button>Yes</button>
+				<button small (click) = "ChangeGroupStatus(shared_file._id,'2')" ion-button>No</button>
+			</p>
+			</ion-col>
+		</ng-container>
+			<ng-container *ngIf="level_hiddens.level1_hiddens != '0' && allowed_levels.indexOf('level1') >= 0">
+			<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager >
+				<div class="white-box" margin0 (click)="higherLevelFiles()">
+					<div>
+						<img text-center src="assets/img/hidden.png"/>
+					</div>
+					<ng-container *ngIf="related_files_data == 'shared_data'">
+						<span class="files-level1-indicator"></span>
+					</ng-container>
+				</div>
+				<p fnt-regular>
+				<ion-badge color="blue" m-t-5 fnt-normal>Level 1 files ({{level_hiddens.level1_hiddens}})</ion-badge>
+				</p>
+			</ion-col>
+			</ng-container>
+			<ng-container *ngIf="level_hiddens.level2_hiddens != '0' && allowed_levels.indexOf('level1') >= 0">
+			<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager >
+				<div class="white-box" margin0 (click)="higherLevelFiles()">
+					<div>
+						<img text-center src="assets/img/hidden.png"/>
+					</div>
+					<ng-container *ngIf="related_files_data == 'shared_data'">
+						<span class="files-level2-indicator"></span>
+						<span class="files-level1-indicator"></span>
+					</ng-container>
+				</div>
+				<p fnt-regular>
+				<ion-badge color="blue" m-t-5 fnt-normal>Level 2 files ({{level_hiddens.level2_hiddens}})</ion-badge>
+				</p>
+			</ion-col>
+			</ng-container>
+			<ng-container *ngIf="level_hiddens.level3_hiddens != '0' && allowed_levels.indexOf('level1') >= 0">
+			<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager >
+				<div class="white-box" margin0 (click)="higherLevelFiles()">
+					<div>
+						<img text-center src="assets/img/hidden.png"/>
+					</div>
+					<ng-container *ngIf="related_files_data == 'shared_data'">
+						<span class="files-level3-indicator"></span>
+						<span class="files-level2-indicator"></span>
+						<span class="files-level1-indicator"></span>
+					</ng-container>
+				</div>
+				<p fnt-regular>
+				<ion-badge color="blue" m-t-5 fnt-normal>Level 3 files ({{level_hiddens.level3_hiddens}})</ion-badge>
+				</p>
+			</ion-col>
+			</ng-container>
+			<ng-container *ngIf="level_hiddens.level4_hiddens != '0' && allowed_levels.indexOf('level1') >= 0">
+			<ion-col col-6 col-md-4 col-lg-4 col-xl-2 file-manager >
+				<div class="white-box" margin0 (click)="higherLevelFiles()">
+					<div>
+						<img text-center src="assets/img/hidden.png"/>
+					</div>
+					<ng-container *ngIf="related_files_data == 'shared_data'">
+						<span class="files-level4-indicator"></span>
+						<span class="files-level3-indicator"></span>
+						<span class="files-level2-indicator"></span>
+						<span class="files-level1-indicator"></span>
+					</ng-container>
+				</div>
+				<p fnt-regular>
+				<ion-badge color="blue" m-t-5 fnt-normal>Level 4 files ({{level_hiddens.level4_hiddens}})</ion-badge>
+				</p>
+			</ion-col>
+			</ng-container>
+		</ion-row>
+		
+
+			<ion-item *ngIf = "rest_shared_files == '' && non_grouped_shared_files == '' && level_hiddens.level1_hiddens == '0' && level_hiddens.level2_hiddens == '0' && level_hiddens.level3_hiddens == '0' && level_hiddens.level4_hiddens == '0'" >
+			No shared folders found on this levels.
+			</ion-item>
+		</ion-col>
+
+ 
+	</ion-row>
+	</ion-col>
+  </ion-row>
+</ion-grid>
+<a download="{{downloaded_href.split('_--_').pop(-1)}}" href="{{downloaded_href}}" id="download_zip_file"  style="visibility: hidden;"></a>
+<div footer-height></div>
+</ion-content>

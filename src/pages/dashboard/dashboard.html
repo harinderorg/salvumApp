@@ -1,0 +1,223 @@
+<ion-content lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+     <ol class="breadcrumb">
+        <li class="active">Home</li>
+     </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-list margin0 company-detail>
+<!-- <ng-gantt [options]="editorOptions" [data]="data2"></ng-gantt> -->
+  <ion-item  left margin0 col-6 col-md-3 col-lg-3 col-xl-3 dashboard brhover (click)="openSmailPage()" >
+    <ion-icon  name="mail-outline" item-start></ion-icon> 
+      Smail
+    <p fnt-light>
+    Compose, Send, and Receive Internal Salvum Messages
+    </p>
+  </ion-item >  
+  <ion-item (click) = "openContacts()" left margin0  col-6 col-md-3 col-lg-3 col-xl-3 dashboard brhover>
+    <ion-icon name="ios-contact-outline" item-start></ion-icon>
+      Contacts
+    <p fnt-light>
+    Manage, View and Update Connected Users
+    </p>
+  </ion-item >
+  <ion-item (click) = "openFilesPage()" left margin0  col-6 col-md-3 col-lg-3 col-xl-3 dashboard brhover>
+    <ion-icon name="document-outline" item-start></ion-icon>
+      Files
+    <p fnt-light>
+    Manage Your Personal and Profession Files
+    </p>
+  </ion-item > 
+  <ion-item (click) = "openBidPage()" left margin0  col-6 col-md-3 col-lg-3 col-xl-3 dashboard brhover>
+    <!-- <ion-icon name="paper-plane-outline" item-start></ion-icon> -->
+    <ion-icon item-start><img style="margin-top: 8px;" src="assets/img/bid_icon_white.png"></ion-icon>
+      Bidding
+    <p fnt-light>
+    Bid on Invited Jobs
+    </p>
+  </ion-item >   
+</ion-list>
+
+<ion-grid>
+  <ion-row>
+    <ion-col col-12 col-md-6 col-xl-6 company-detail>
+    <ion-item (click) = "openJobsPage()" left margin0 dashboard dash-btm brhover>
+    <ion-icon name="briefcase-outline" item-start></ion-icon>
+        Job Management
+      <p fnt-light>
+      Create Jobs, View Posted Jobs, Submit Proposal
+      </p>
+    </ion-item >
+   </ion-col>
+   <ion-col col-12 col-md-6 col-xl-6>
+    <div class="white-box activity-widget switchcompany" *ngIf="companies != ''">
+      <ion-item>
+        <ion-label>Switch Company</ion-label>
+        <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)]="companyId">
+          <ion-option value="{{company._id}}" *ngFor="let company of companies" >{{company.company_name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <button small color="blue" ion-button (click)="switchCompany()">Switch company</button>
+    </div>
+   </ion-col>
+
+   <ion-col col-12  col-md-12 col-xl-6 hide-mobile>
+    <div class="white-box activity-widget min-h-382">
+        <h4 class="box-title">Friend Request Log</h4>
+        <div class="steamline">
+            <div class="sl-item" *ngFor="let member of members  | slice:0:4; let i=index "> 
+                <div class="sl-left">
+                    <div>
+                      <ion-avatar item-start class="card-img" left>
+                        <img src="assets/img/user-dummy.png" *ngIf="member.image == ''">
+                        <img src="{{APIURL}}/images/{{member.image}}"  *ngIf="member.image !== ''">
+                      </ion-avatar>
+                    </div>
+                </div>
+                <div class="sl-right">
+                    <div><b class="text-link font-semibold">{{member.name}}</b> sent you friend request   <div class="sl-btn">
+                      <button ion-button color="green" outline round (click)="acceptContact(member)">Accept</button>
+                      <button ion-button color="danger"  (click)="rejectContact(member)" outline round>Reject</button>
+                        </div></div>
+                    <p>{{member.created_on | timeAgo}}</p>
+                    <!-- <p>{{member.created_on }}</p> -->
+                </div>
+            </div>
+            <div class="sl-item" *ngIf="members.length == 0" text-center>No Friend Request Yet!</div>
+              
+           
+        </div>
+    </div>
+  
+  </ion-col>
+  <ion-col col-12  col-md-12 col-xl-6 padd-mob-lr-0>  
+  <ion-row> 
+  <ion-col col-6 p-t-0  col-md-6 col-xl-6 padding-left0>
+  
+  <ion-item left margin0   dashboard dashboard-right1 border-no (click)="openUpgradePack()" cursor-enb>
+Current Membership
+
+<p style="min-height : auto" fnt-light *ngIf="subscription_amount == '0'">
+{{subscription == '' ? 'Expired' : subscription_title}}</p>
+<p style="min-height : auto" fnt-light *ngIf="subscription_amount != '0' && is_recurring_billing == '1'">
+{{subscription == '' ? 'Expired' : subscription_title}} &nbsp;&nbsp;&nbsp;( {{subscription_expiry == '1' ? 'Auto renewing today' : 'Auto renew in '+(subscription_expiry - 1)+' days'}})</p>
+<p style="min-height : auto" fnt-light *ngIf="subscription_amount != '0' && is_recurring_billing != '1'">
+{{subscription == '' ? 'Expired' : subscription_title}} &nbsp;&nbsp;&nbsp;({{subscription_expiry == '1' ? 'expired today' : (subscription_expiry - 1)+' days left'}})</p> 
+
+<p style="min-height : auto" fnt-light *ngIf="is_license_activated == '0'">
+No active license</p> 
+<p style="min-height : auto" fnt-light *ngIf="is_license_activated > '0'">
+Active license &nbsp;&nbsp;&nbsp;(expired {{license_expiry == '1' ? 'today' : 'in '+(license_expiry - 1)+' days'}})</p> 
+
+<ion-row>
+  <ion-col col-10 col-xl-9 col-lg-9 col-md-8> 
+  <h2 fnt-regular>
+  <sup>
+  <small><ion-icon class="icon-dashboard" name="arrow-up"></ion-icon></small></sup>
+<span upgrade-now>{{is_recurring_billing == '1' ? 'Cancel Recurring' : (subscription_amount > '0' ? 'Renew Now' : 'Upgrade Now')}}</span>
+  </h2>
+   </ion-col>
+   
+      <ion-col col-2 col-xl-3 col-lg-3 col-md-4 text-right>  
+   <ion-icon class="icon-right" name="arrow-dropup-circle" item-end margin0></ion-icon>
+   </ion-col>
+   </ion-row>
+   
+   
+  </ion-item > </ion-col> 
+ <ion-col col-6 p-t-0  col-md-6 col-xl-6 padding-right0>
+  
+  <ion-item left margin0   dashboard dashboard-right2 border-no (click)="openExtraspace()"> 
+Space Stats
+    
+
+<p fnt-light m-b-3em>
+  {{stats?.consumed_space}} ({{consumed_percent}}%) of {{stats?.total_space > 1000 ? (stats?.total_space/1000).toFixed(2) : stats?.total_space}} {{stats?.total_space > 1000 ? 'TB' : stats?.space_type}} used
+</p><ion-row>
+  <ion-col col-10 col-xl-9 col-lg-9 col-md-8> 
+  <h2 fnt-regular>
+  <sup>
+  <small><ion-icon class="icon-dashboard" name="arrow-up"></ion-icon></small></sup>
+<span upgrade-now>Buy More Space</span>
+  </h2>
+   </ion-col>
+   
+    <ion-col col-2 col-xl-3 col-lg-3 col-md-4 text-right> 
+   <ion-icon class="icon-right" name="pie" item-end margin0></ion-icon>
+   </ion-col>
+   </ion-row>
+   
+   
+  </ion-item > </ion-col>
+   <ion-col col-6 col-sm-6 col-xl-6>
+    <ion-item border-none br-lt-grey dashboard-bottom cursor-enb (click)="openContacts()">
+   <ion-thumbnail item-start>
+    <ion-icon name="phone-portrait"    text-center></ion-icon>
+    </ion-thumbnail>
+
+    <h2 fnt-bold> Total Contacts</h2>  
+
+     <p fnt-light>{{total_contacts}}</p>
+
+  
+    </ion-item>
+     </ion-col>
+  <ion-col col-6 col-sm-6 col-xl-6>
+    <ion-item border-none br-lt-grey  dashboard-bottom cursor-enb (click) = "openJobsPage()">
+   <ion-thumbnail item-start >
+    <ion-icon name="briefcase-outline" text-center   text-center></ion-icon>
+    </ion-thumbnail>
+
+    <h2 fnt-bold> Total Job Posted</h2>  
+
+     <p fnt-light>{{total_jobs_posted}}</p>
+
+  
+    </ion-item>
+     </ion-col>
+   <ion-col col-6 col-sm-6 col-xl-6>
+    <ion-item border-none br-lt-grey  dashboard-bottom cursor-enb (click) = "openBidPage()">
+   <ion-thumbnail item-start>
+    <ion-icon name="paper-plane-outline" text-center   text-center></ion-icon>
+    </ion-thumbnail>
+
+    <h2 fnt-bold> Job Invitations
+  </h2>  
+
+     <p fnt-light>{{total_jobs_invitation}}</p>
+
+  
+    </ion-item>
+     </ion-col>
+   <ion-col col-6 col-sm-6 col-xl-6>
+    <ion-item border-none br-lt-grey  dashboard-bottom cursor-enb (click) = "openBidPage()">
+   <ion-thumbnail item-start>
+    <ion-icon name="checkbox-outline" text-center red text-center></ion-icon>
+    </ion-thumbnail>
+
+    <h2 fnt-bold> Total Applied Jobs</h2>  
+
+     <p fnt-light>{{total_applied_jobs}}</p>
+
+  
+    </ion-item>
+     </ion-col>
+  </ion-row>
+
+  </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item advertise>
+        <p> I am <br> advertisement</p>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<div footer-height></div> 
+</ion-content>
+
+
+

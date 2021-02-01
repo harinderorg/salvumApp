@@ -1,0 +1,287 @@
+<ion-content  lightgrey padding big-detail has-header>
+<ion-row ion-fixed main-breadcrumb *ngIf="state != '1'"> 
+  <ion-col>
+    <ol class="breadcrumb"> 
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="goToBids()"><a>Bidding</a></li>
+      <li (click)="backPage()"><a>{{bid_job_name}}</a></li>
+      <li class="active">View Contract</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-grid no-padding>
+<ion-row>	
+<ion-col col-12 col-md-12 col-lg-8 col-xl-9>
+<ion-row> 
+ <ion-col col-12 col-md-6 col-lg-4>
+<ion-list br-lt-grey margin0 company-detail> 
+<ion-list-header margin0 no-border br-btm color="light">
+Main Contacts
+  </ion-list-header>
+  <ion-item fnt14 no-border>
+    <ion-avatar item-start>
+    <ion-icon *ngIf="main_image == '' || main_image == null"  circle-pic name="person" text-center></ion-icon>
+    <img w-h-img circle-pic *ngIf="main_image != '' && main_image != null" src="{{APIURL}}/images/{{main_image}}">
+    </ion-avatar>
+    <h2>{{main_name}}</h2>
+    <p>{{main_email}}</p>
+  </ion-item>
+</ion-list>
+
+<ion-list br-lt-grey m-t-10 m-b-0 company-detail> 
+<ion-list-header margin0 no-border br-btm color="light">
+With
+  </ion-list-header>
+  <ion-item fnt14 no-border>
+    <ion-avatar item-start>
+    <ion-icon *ngIf="user_image == '' || user_image == null"  circle-pic name="person" text-center></ion-icon>
+    <img w-h-img circle-pic *ngIf="user_image != '' && user_image != null" src="{{APIURL}}/images/{{user_image}}">
+    </ion-avatar>
+    <h2>{{user_name}}</h2>
+    <p>{{user_email}}</p>
+  </ion-item>
+</ion-list>
+
+<ion-list br-lt-grey m-t-10 m-b-0  company-detail> 
+<ion-list-header margin0 no-border br-btm color="light">
+Project Manager
+  </ion-list-header>
+
+   <ion-item fnt14>
+   
+   Name
+    <ion-note  item-end fnt14>{{pm_name}}</ion-note>
+  </ion-item>
+
+   <ion-item fnt14>
+ Contact
+    <ion-note  item-end fnt14>{{pm_contact}}</ion-note>
+  </ion-item>
+ 
+
+</ion-list>
+
+
+<ion-list br-lt-grey m-t-10 m-b-0  company-detail> 
+<ion-list-header margin0 no-border br-btm color="light">
+Job Info
+  </ion-list-header>
+   <ion-item fnt14> 
+   PO/Job
+    <ion-note  item-end fnt14>{{job_number}}</ion-note>
+  </ion-item>
+
+   <ion-item fnt14>
+  Job Title
+    <ion-note  item-end fnt14>{{job_title}}</ion-note>
+  </ion-item>
+    <ion-item fnt14>
+  Trade
+    <ion-note  item-end fnt14>{{trade_name}}</ion-note>
+  </ion-item> 
+  <ion-item fnt14>
+  Contract Date
+    <ion-note  item-end fnt14>{{contract_date}}</ion-note>
+  </ion-item> 
+</ion-list>
+
+<ion-list br-lt-grey m-t-10 m-b-0   company-detail> 
+<ion-list-header margin0 no-border br-btm color="light">
+Site Location
+  </ion-list-header>
+   <ion-item fnt14>  
+   Street Address
+    <ion-note  item-end fnt14>{{site_address}}</ion-note>
+  </ion-item>
+   <ion-item fnt14>
+ 2nd Address
+    <ion-note  item-end fnt14>{{site_address2}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ City
+    <ion-note  item-end fnt14>{{site_city}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ State
+    <ion-note  item-end fnt14>{{site_state}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Country
+    <ion-note  item-end fnt14>{{site_country}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Zip Code
+    <ion-note  item-end fnt14>{{site_zip}}</ion-note>
+  </ion-item>
+</ion-list>
+
+</ion-col>
+<ion-col col-12 col-md-6 col-lg-8>
+<div class="white-box"  margin0 centerbox>
+<h6 fnt-bold>Contract Status</h6>
+<p fnt-light><ion-badge color="blue" m-t-5 fnt-normal> {{status == '1' ? 'Active' : 'Canceled'}}</ion-badge></p>
+<h6 fnt-bold>Trade Task
+</h6>
+  <p fnt-light>{{trade_task}}</p>
+  <h6 fnt-bold>Job Description
+</h6>
+  <p fnt-light>{{job_description}}
+ </p>
+  </div>
+
+<ion-list br-lt-grey company-detail  m-t-10 m-b-0> 
+<ion-list-header margin0 no-border br-btm color="light">
+ Financials Quick
+  </ion-list-header>
+   <!-- <ion-item fnt14>  
+   Last Updated
+    <ion-note  item-end fnt14>{{last_updated}}</ion-note>
+  </ion-item> -->
+   <ion-item fnt14>
+ Total owned by owner
+    <ion-note  item-end fnt14>{{total_owned_by_owner}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Total GC owes Subs
+    <ion-note  item-end fnt14>{{total_gc_owes_subs}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Original Contract Amount
+    <ion-note  item-end fnt14>{{original_contract_amount}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Sub Contractor Cost
+    <ion-note  item-end fnt14>{{sub_contract_amount}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Net CO’s to date
+    <ion-note  item-end fnt14>{{net_co_to_date}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Subs change orders
+    <ion-note  item-end fnt14>{{subs_change_orders}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Updated contract amount
+    <ion-note  item-end fnt14>{{updated_contract_amount}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Total sub contractors
+    <ion-note  item-end fnt14>{{total_sub_contractors}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Retainage Due
+    <ion-note  item-end fnt14>{{retainage_due}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Sub Retainage Due
+    <ion-note  item-end fnt14>{{sub_retainage_due}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Total paid by Owner
+    <ion-note  item-end fnt14>{{total_paid_by_owner}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Total GC paid to subs
+    <ion-note  item-end fnt14>{{total_gc_paid_subs}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Retainage Contractor (Rate %)
+    <ion-note  item-end fnt14>{{retainage_contractor}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Retainage for Subs (Rate %)
+    <ion-note  item-end fnt14>{{retainage_for_subs}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Bonding due or withheld
+    <ion-note  item-end fnt14>{{bonding_due_or_withheld}}</ion-note>
+  </ion-item>
+</ion-list>
+</ion-col>
+</ion-row>
+</ion-col>
+<ion-col col-12  col-md-12 col-lg-4 col-xl-3>  
+<ion-row>
+<ion-col col-12 col-md-12 col-lg-12 right-dashboard>
+<ion-list br-lt-grey company-detail margin0> 
+<ion-list-header margin0 no-border br-btm color="light">
+Owner Details
+  </ion-list-header>
+   <ion-item fnt14>  
+   Name
+    <ion-note  item-end fnt14>{{owner_name}}</ion-note>
+  </ion-item>
+   <ion-item fnt14>
+  Address
+    <ion-note  item-end fnt14>{{owner_address}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ City
+    <ion-note  item-end fnt14>{{owner_city}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ State
+    <ion-note  item-end fnt14>{{owner_state}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Country
+    <ion-note  item-end fnt14>{{owner_country}}</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+ Zip Code
+    <ion-note  item-end fnt14>{{owner_zip}}</ion-note>
+  </ion-item>
+</ion-list>
+</ion-col>
+
+<ion-col col-12 col-md-4 col-lg-12 right-dashboard >
+	<ion-list br-lt-grey company-detail margin0> 
+	<ion-list-header margin0 no-border br-btm color="light">
+	Schedule
+	  </ion-list-header>
+	   <ion-item fnt14>  
+	   Project start date
+	    <ion-note  item-end fnt14>{{project_start_date}}</ion-note>
+	  </ion-item>
+	   <ion-item fnt14>
+	  Schedule (days)
+	    <ion-note  item-end fnt14>{{schedule_days}}</ion-note>
+	  </ion-item>
+	  <ion-item fnt14>
+	 Schedule Impact (days)
+	    <ion-note  item-end fnt14>{{schedule_impact_days}}</ion-note>
+	  </ion-item>
+	  <ion-item fnt14>
+	 Proposed finish date
+	    <ion-note  item-end fnt14>{{proposed_finish_date}}</ion-note>
+	  </ion-item>
+	  <ion-item fnt14>
+	 Bonding Required
+	    <ion-note  item-end fnt14>{{bonding_required == '1' ? 'Yes' : 'No'}}</ion-note>
+	  </ion-item>
+	  <ion-item fnt14>
+	 Bonding Amount
+	    <ion-note  item-end fnt14>{{bonding_input}}</ion-note>
+	  </ion-item>
+	  <ion-item fnt14>
+	 Profit & overhead (Rate %)
+	    <ion-note  item-end fnt14>{{profit_overhead}}</ion-note>
+	  </ion-item>
+	</ion-list>
+</ion-col>
+</ion-row>
+</ion-col>
+
+<ion-col col-12 >
+
+<button float-right  *ngIf="state != '1'" (click)="downloadPdf(job_number)" ion-button  fnt-regular m-b-15 color="blue" ><ion-icon name="download"></ion-icon>&nbsp;&nbsp; Download Contract</button>
+
+<button float-right  (click)="backPage()" ion-button  fnt-regular m-b-15 color="blue" ><ion-icon name="arrow-back"></ion-icon>&nbsp;&nbsp; Back</button>
+</ion-col>  
+
+</ion-row>
+</ion-grid>
+<div footer-height></div>
+</ion-content>

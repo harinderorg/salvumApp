@@ -1,0 +1,42 @@
+page-history
+{
+	
+[billing-history]
+{	
+[group-head]
+{ 
+h5
+{
+	&.main-head 
+	{
+	 font-size: $value15+3;
+    margin-bottom: $value5;
+    }
+}
+@include respond-to(handhelds2)
+{
+margin-bottom:$value10;
+}
+ion-item 
+{
+	h2 
+	{
+		font-size:-1+$value15;
+	}
+	ion-note
+	{
+		font-size:$value10+2;
+	}
+	ion-badge
+	{	font-size:$value10+2;
+	}
+	h5
+	{
+		color:#afafaf
+	}
+}
+
+}
+}
+
+}

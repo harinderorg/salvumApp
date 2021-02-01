@@ -1,0 +1,33 @@
+page-filemanagerfiles {
+[m-5-0]
+{
+    margin: $value5 $value0;
+   
+}
+.file-main
+{
+p
+	{font-size: 12px;
+	}
+.white-box
+{
+	text-align:center;
+	img
+	{
+	height:50px;  
+	object-fit:contain;
+	}
+	
+}
+}
+}
+.check-abs{
+	position: absolute;
+    top: $value20;
+    display: inline-block;
+    right: $value10;
+}
+.white-box
+{
+	cursor:pointer
+}

@@ -1,0 +1,100 @@
+<ion-content lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+   <ion-col>
+      <ol class="breadcrumb">
+         <li (click)="root()"><a>Home</a></li>
+         <li (click)="profile()"><a>Profile</a></li>
+         <li class="active">Edit Profile</li>
+      </ol>
+   </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+   <ion-grid edit-group main-profile>
+      <ion-row>
+         <ion-col col-12 col-xl-4 profile-left>
+            <ion-list  br-lt-grey group-head head-profile>
+               <ion-list-header text-center  margin0 no-border profile-image br-btm>
+                  <ion-item fnt14 no-border text-center>
+                     <div text-center profile-top>  
+                        <div>
+                           <img alt="image" class="rounded-circle preview_image" src="assets/img/user-dummy.png" style="border-radius: 50%; " *ngIf="!data.image">
+                           <img alt="image" class="rounded-circle preview_image" src="{{imageUrl + data.image}}" style="border-radius: 50%;   " *ngIf="data.image">
+                           <!-- <ion-icon name="create" (click) = "presentActionSheet()"></ion-icon> -->
+                        </div>
+                  
+                     <!--ion-buttons-->
+                        <button ion-button icon-left  color="white"  outline round small (click)="presentActionSheet()" *ngIf="isBrowser == 'false'">
+                        <ion-icon name="camera"></ion-icon>
+                        Select Image
+                        </button> 
+						<label *ngIf="isBrowser =='true'" for="uploadImage" uploadImage>  <ion-icon name="create"></ion-icon></label>
+                        <input style="display:none" (change)="uploadImg()" mx-w-190 m-t-10  id="uploadImage" name="uploadImage" type="file" ng2FileSelect [uploader]="uploader"  *ngIf="isBrowser =='true' " [(ngModel)]="image">
+
+                        <button ion-button color="white"  outline round  small  icon-left (click)="uploadImage()" *ngIf="correctImage != ''">
+                           <ion-icon name="camera"></ion-icon>Update Image
+                           </button>
+						      </div>
+                     <!--/ion-buttons-->
+                  </ion-item>
+                  <!-- <button ion-button outline round color="white" type="button" 
+                  (click)="uploader.queue[0].upload()" [disabled]="uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess" *ngIf="uploader.queue.length > 0">
+                 
+				           <ion-icon name="cloud-upload"></ion-icon>  Upload
+                  </button> -->
+               </ion-list-header>
+            </ion-list>
+            <ion-col   no-padding  col-12 *ngIf="filetype_error == '1'">
+              <p error-file>Only png,jpg,jpeg,gif files are allowed.<button small (click)="closeError()" ion-button><ion-icon name="close"></ion-icon></button></p>
+            </ion-col>
+            <ion-col  no-padding   col-12 *ngIf="filesize_error == '1'">
+              <p error-file>File size exceeded.please upload files upto 500 MB.<button small type="button" (click)="closeErrorS()" ion-button><ion-icon name="close"></ion-icon></button></p>
+            </ion-col>
+         </ion-col>
+         <ion-col col-xl-8 col-12 profile-right>
+            <ion-list  br-lt-grey group-head>
+               <ion-list-header color="lightgrey" margin0 br-btm>
+			   General Info 
+               </ion-list-header>
+               <ion-item-group>
+                  <ion-item >
+                     <ion-input type="text" placeholder="Name"  [(ngModel)]="data.name" fnt14></ion-input>
+                  </ion-item>
+                  <ion-input type="hidden" placeholder="Email" [(ngModel)]="data.email" fnt14></ion-input>
+                  <ion-item ><ion-input type="text" placeholder="Contact" 
+                     [(ngModel)]="data.phone" fnt14 maxlength="12" onkeydown="javascript: return ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8  || event.keyCode == 46 || event.keyCode == 9) ? true : false"></ion-input>
+                  </ion-item>
+                  <ion-item ><ion-input type="text" placeholder="Address" [(ngModel)]="data.address" fnt14></ion-input></ion-item>
+                  <ion-item ><ion-input type="text" [(ngModel)]="data.company" placeholder="Company" fnt14></ion-input></ion-item>
+                  <ion-item ><ion-input type="text" placeholder="Website"  [(ngModel)]="data.website" fnt14></ion-input></ion-item>
+                  <ion-item select-gender>
+                     <ion-label>Gender</ion-label>
+                     <ion-select [(ngModel)]="data.gender">
+                     <ion-option value="male">Male</ion-option>
+                     <ion-option value="female">Female</ion-option>
+                     </ion-select> 
+                  </ion-item>
+                  <ion-item select-gender>
+                     <ion-label>Language</ion-label>
+                     <ion-select [(ngModel)]="data.lang">
+                     <ion-option value="english">English</ion-option>
+                     </ion-select> 
+                  </ion-item>
+               </ion-item-group>
+            </ion-list>
+            <button ion-button float-right m-t-0 m-b-15 (click)="updateGernalInfo(data)">Save</button>
+            <ion-list  br-lt-grey group-head clearboth>
+               <ion-list-header color="lightgrey" margin0 br-btm>Social Info 
+               </ion-list-header>
+               <ion-item-group>
+                  <ion-item ><ion-input type="text" placeholder="www.facebook.com" fnt14  [(ngModel)]="data.facebook"></ion-input></ion-item>
+                  <ion-item ><ion-input type="text" placeholder="www.twitter.com" fnt14  [(ngModel)]="data.twitter"></ion-input></ion-item>
+                  <ion-item ><ion-input type="text" placeholder="www.googleplus.com" fnt14 [(ngModel)]="data.gplus"></ion-input></ion-item>
+                  <ion-item ><ion-input type="text" placeholder="www.linkedin.com" fnt14 [(ngModel)]="data.linkdin"></ion-input></ion-item>
+               </ion-item-group>
+            </ion-list>
+            <button ion-button m-t-0 float-right (click) ="updateUserSocialLink()">Save</button>
+         </ion-col>
+      </ion-row>
+   </ion-grid>
+<div footer-height></div>
+</ion-content>

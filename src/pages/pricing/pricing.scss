@@ -1,0 +1,165 @@
+page-pricing {
+[check-package]
+{
+  background:#2fa9f1;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  ion-checkbox
+  {
+  margin-right:-1+$value10!important;
+  }
+  .item-inner
+  {    max-width: 160px;
+  border:$none!important;
+  color:$fnt-white
+  }
+}
+}
+.pricing-box
+{
+ion-item
+{
+border:$none!important;
+}
+.pricing-head 
+{
+ion-icon
+{
+font-size:$value40;
+text-align:$center;
+width: 100%;
+color:$fnt-white;
+}
+ h4 
+ {color:$fnt-white;
+ font-size:$value20;text-align:$center;
+ }
+ h3
+ {color:$fnt-white;
+ font-size:$value40;text-align:$center;
+ }
+}
+ion-list
+{
+ion-item
+{
+.item-inner
+{
+border:$none!important;
+}
+padding-left:$value0;
+  background-color: #00a9f1;
+text-align:$center;
+color:$fnt-white;
+ion-item:hover
+{
+ background-color:$lightblue
+}
+}
+ion-item:nth-child(even)
+{
+    background: rgba(0, 0, 0, 0.05);
+}
+
+}
+padding-top:$value30;
+padding-bottom:$value30;
+text-align:$center;
+background-color: #00a9f1;
+height:100%;
+}
+.underline
+{
+    background-color: $fnt-white;
+    height: 1px;
+    display: inline-block;
+    vertical-align: top;
+    width: 9rem;
+    height: 1px;
+    text-align:$center;
+    line-height: $value0;
+    margin: 1rem $value0 $value0;
+}
+
+.underline:after {
+    content: ""; 
+    position: relative;
+    vertical-align: top;
+    width: 87%;
+    height: 1px;
+    margin-top: $value5;
+    display: inline-block;
+    background-color: inherit;
+}
+
+.cd-pricing-switcher
+{
+margin:$value0 auto;
+}
+
+.cd-pricing-switcher .fieldset {
+  display: flex;
+  position: relative;
+  padding: 2px;
+  border-radius: $value50em;
+  border: 1px solid $blue;
+  margin-bottom:$value5+3;
+}
+.cd-pricing-switcher input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+.cd-pricing-switcher label {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  float: left;
+  width: $value90;
+  text-align:$center;
+  @include lh30;
+  cursor: pointer;
+
+
+}
+.cd-pricing-switcher .cd-switch {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+@include h30-w90;
+  background-color: $blue;
+  border-radius: $value50em;
+ @include transition;
+
+}
+.cd-pricing-switcher input[type="radio"]:checked + label {  
+/*   position: absolute; */
+  top: $value0;
+  left: 1px;
+@include h30-w90;
+  background-color: $blue;
+  border-radius: $value50em;
+ @include transition; 
+ color:$fnt-white;
+ 
+
+
+}
+
+.cd-pricing-switcher
+{
+	label
+	{
+	 @include respond-to(handhelds2)
+ {
+    width: 74px!important;
+    font-size: $value10+2;
+ }
+ 
+	}
+}
+
+.cd-pricing-switcher input[type="radio"]:checked + label + .cd-switch {  
+@include transform90;
+}

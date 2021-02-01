@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "580988510078",
+    "firebase_url": "https://salvumapp.firebaseio.com",
+    "project_id": "salvumapp",
+    "storage_bucket": "salvumapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580988510078:android:1572fc2405603a72",
+        "android_client_info": {
+          "package_name": "com.salvum.a460849"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580988510078-b2lhoqpjasanhihuloakm42c8uguhn6v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHDVRC7moq16_h2qVl-30nhoGsMI_e_Mo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

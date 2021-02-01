@@ -1,0 +1,156 @@
+<div (click)="closeDropDown()" class="shadow" style="display: none;"></div>
+<ion-content padding lightgrey manage-job (window:resize)="caclHeight()" has-header>
+<div ion-fixed id="calc_height_ad{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb> 
+    <ion-col *ngIf="from_smail != '1'">
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="goToJobs()"><a>Jobs</a></li>
+        <li (click)="backToPage()"><a>{{active_job_breadcrumb}}</a></li> 
+        <li class="active">Adendums</li>
+      </ol>
+    </ion-col>
+    <ion-col *ngIf="from_smail == '1'">
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="backToSmail()"><a>Smail</a></li> 
+        <li class="active">Adendums</li>
+      </ol>
+    </ion-col>
+</ion-row>
+<!-- <trade-breadcrumbs (click) = "clickTrade()"></trade-breadcrumbs> -->
+<ion-row class="breadcrumbs-row" *ngIf="all_contacts != ''">
+  <ion-col pos-right col-12 col-md-3 col-sm-3>
+    <ng2-dropdown (onShow)="onDropdownShow()">
+      <ng2-dropdown-button [showCaret]="true" >
+          Filter <div class="filter_icons" (click)="$event.stopPropagation()">
+        <a [ngClass]="sort_icon == true ? 'active' : ''" (click)="sortTrades('a')">ABC</a><img *ngIf="sort_icon == true" width="12" height="12" src="assets/img/{{order_default_p == false ? 'down' : 'up'}}.png">&nbsp;&nbsp;&nbsp;
+        <a [ngClass]="sort_icon == false ? 'active' : ''" (click)="sortTrades('n')">123</a><img *ngIf="sort_icon == false" width="12" height="12" src="assets/img/{{order_advanced_p == false ? 'down' : 'up'}}.png">
+      </div>
+      </ng2-dropdown-button>
+      <ng2-dropdown-menu dropmenu>
+      
+      <div padding>
+        <ion-segment [(ngModel)]="nav_filter" class="filter_list">
+          <ion-segment-button value="default">
+            Default <ion-icon cls (click)="cancelAllFilters('d')" name="close"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="advanced">
+            Advanced <ion-icon cls (click)="cancelAllFilters('a')" name="close"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <div [ngSwitch]="nav_filter" class="filter_list">
+        <ion-list *ngSwitchCase="'default'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of tradeTypes | orderBy: order_default : order_default_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trade_names.indexOf(trade.trade_name) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>All {{trade.trade_name}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'advanced'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of trades | orderBy: order_advanced : order_advanced_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trades.indexOf(trade.tradeId) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>{{trade.trade_task?.length > 13 ? trade.trade_task.substr(0,13)+'...' : trade.trade_task}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+      </div>
+      </ng2-dropdown-menu>
+    </ng2-dropdown>
+    </ion-col>
+    <ion-col col-12 col-sm-9 col-md-9>
+    <div class="top-scorll-list">
+    <div class="self-control">
+      <ion-icon lefticon name="ios-arrow-dropleft-circle" (click)="scroll('left')"></ion-icon>
+      <ion-icon  righticon name="ios-arrow-dropright-circle" (click)="scroll('right')"></ion-icon>
+    </div>
+    <div class="drop-scroll">   
+        <button title="{{trade.trade_task}}" *ngFor="let trade of filter_list; let i = index" class="trade-btn">
+          <i class="{{trade.trade_icon}}"></i> {{trade.trade_task?.length > 25 ? trade.trade_task.substr(0,25)+'...' : trade.trade_task}}
+          <ion-icon (click)="cancelFilter(trade,i)" name="close"></ion-icon>
+        </button>    
+    </div>
+    </div>
+  </ion-col>
+</ion-row>
+<ion-col col-12 button-hide  p-lr-0>
+   <button (click) = "addAdendum()" ion-button color="blue" fnt-regular m-l-5 m-b-10 fnt-normal left>
+      <ion-icon name="add" m-r-5></ion-icon>
+      <span class="hidden-xs">Add</span>
+   </button>
+</ion-col>
+</div>
+<div clearfix id="fixed_height_ad{{timestamp}}"></div>
+   <ion-row  p-lr-0 > 
+      <ion-col col-xl-12 col-sm-12 col-12 paddingtop0 p-lr-0 clearboth right-adendum>
+         <ion-list  margin0>
+		    <ion-row  p-lr-0> 
+               <ion-col col-12 col-md-12 col-lg-6 col-xl-6 *ngFor="let adendum of sorted_adendums , let indx = index; " >
+                  <ion-item-sliding #item br-lt-grey list-hover>
+                     <ion-item  border-none  manage-job>
+                        <ion-avatar item-start icon-ionic title="{{adendum.trade_name}}">
+                        <span fnt20>{{adendum.order}}</span>
+                           <i class="{{adendum.trade_icon}}" text-center></i>
+                        </ion-avatar>
+                        <h2 fnt-bold fnt14>
+                           {{adendum.name}} 	
+                        </h2>
+                        <h3 fnt-regular m-t-5 float-left *ngIf="adendum?.files?.length > 0">
+                           <!--p *ngFor="let file of adendum.files">
+                           <ion-icon name="document"></ion-icon>
+                           {{ file.split('____').pop(-1)}}  ssaasd
+                           </p-->
+						   <span float-left>Attachment :</span>
+			
+						   	<ion-fab  float-left [style.z-index]="999-indx" style="">
+							<button ion-fab mini color="light"><ion-icon class="ion-md-arrow-dropdown"></ion-icon></button>
+							<ion-fab-list>
+						   <ion-item  *ngFor="let file of adendum.files">
+						      <ion-icon name="document"></ion-icon>
+                           {{ file.split('____').pop(-1)}} 
+						   </ion-item> 
+						   		</ion-fab-list>
+						  </ion-fab>
+                        </h3>
+						<p clearboth>
+                        <ion-note fnt-light m-t-5>{{adendum.date_created | date:'short'}}</ion-note>
+                        </p>
+                        <button *ngIf="isBrowser == 'true'" (click) = "editAdendum(adendum._id,adendum.name,adendum.tradeId)" ion-button clear item-end margin0 button-none >
+                           <ion-icon name="create" fnt20></ion-icon>
+                        </button>
+
+                        <button *ngIf="isBrowser == 'true'" (click) = "deleteAdendum(adendum._id)" ion-button clear item-end margin0 button-none>
+                           <ion-icon name="trash" fnt20></ion-icon>
+                        </button>
+
+                     </ion-item>
+                     <ion-item-options side="right" *ngIf="isBrowser == 'false'">
+
+                        <button (click) = "editAdendum(adendum._id,adendum.name,adendum.tradeId)" ion-button color="primary" >
+                           <ion-icon name="create"></ion-icon>
+                           Edit
+                        </button>
+
+                        <button (click) = "deleteAdendum(adendum._id)" ion-button color="danger">
+                           <ion-icon name="trash"></ion-icon>
+                           Delete
+                        </button>
+
+                     </ion-item-options>
+                  </ion-item-sliding>
+               </ion-col>
+               <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="sorted_adendums == ''"  p-lr-0>
+               		<ion-item border-none br-lt-grey>No Adendums Found.</ion-item>
+               </ion-col>
+			   </ion-row>
+         </ion-list>
+      </ion-col>
+   </ion-row>
+ <div footer-height></div>
+</ion-content>

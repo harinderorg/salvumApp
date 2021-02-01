@@ -1,0 +1,75 @@
+<ion-content padding lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed> 
+<ion-col>
+  <ol class="breadcrumb"> 
+    <li (click)="root()"><a>Home</a></li>
+    <li (click)="goToBids()"><a>Bidding</a></li>
+    <li (click)="goToBidDetails()"><a>{{bid_job_name}}</a></li>
+    <li (click)="backBtn()"><a>RFIs</a></li>
+    <li class="active">Submit RFI</li>
+  </ol>
+</ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-row>
+<ion-col col-xl-8 offset-xl-2>
+     
+
+<ion-list  br-lt-grey group-head head-profile>
+<ion-list-header margin0 color="light" no-border  br-btm >
+		Submit RFI
+		  </ion-list-header> 
+		  <div padding bg-white>
+	<ng-container *ngIf="userId == null">
+	<ion-item p-lr-0>
+		<ion-label floating>First Name</ion-label>
+		<ion-input type="text" [(ngModel)] = "first_name" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item p-lr-0>
+		<ion-label floating>Last Name</ion-label>
+		<ion-input type="text" [(ngModel)] = "last_name" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item p-lr-0>
+		<ion-label floating>Company Name</ion-label>
+		<ion-input type="text" [(ngModel)] = "company_name" fnt14></ion-input>
+	</ion-item>
+	</ng-container>
+
+	<ion-item p-lr-0>
+		<ion-label floating>Question</ion-label>
+		<ion-textarea type="text" [(ngModel)] = "question" ></ion-textarea>
+	</ion-item>
+
+  <ion-row>
+<ion-col col-12   col-sm-6 col-xl-6 padd-mob-lr0>
+ <ion-item filetype text-center  left (click) = "uploadFiles()">
+    <ion-icon name="cloud-upload" color="blue"></ion-icon>
+	  <h4 text-center>Drag & Drop Files To Upload From System</h4>
+	   </ion-item> 
+	   </ion-col>
+	   <ion-col col-12 col-sm-6 col-xl-6 *ngIf="userId != null"  padd-mob-lr0>
+	    <ion-item filetype text-center  left (click)="filemanagerFiles()">
+    <ion-icon name="cloud-upload" color="blue"></ion-icon>
+	  <h4>Add Files From Salvum</h4>
+	   </ion-item> 
+	   	   </ion-col>
+		    </ion-row>
+
+	<ion-row *ngIf="files !=''">
+		<ion-item p-lr-0 *ngFor="let file of files; let indx = index ">
+		{{file.file_name}}
+		<button (click) = "removeFile(indx)"><ion-icon name="close"></ion-icon></button>
+		</ion-item>
+	</ion-row>
+	   <button ion-button small fnt-regular float-right (click) = "submitRFI(question,first_name,last_name,company_name)">Submit</button>
+	   <button ion-button  small fnt-regular float-right (click) = "backBtn()">Back</button>
+	   <div clearboth></div>
+	   </div>
+	  	  </ion-list>
+
+	  </ion-col>
+	</ion-row>
+<div footer-height></div>
+</ion-content>

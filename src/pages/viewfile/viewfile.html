@@ -1,0 +1,45 @@
+<ion-header modal-white>
+
+  <ion-navbar>
+    <ion-title text-centers>View file {{fileSize}}</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button> 
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+<ion-row text-center>
+	<ng-container *ngIf="isImage == '1'" >
+		<img src="{{APIURL}}/salvum/{{file_path}}" height="400px" style="margin:0 auto"> 
+	</ng-container>
+	<ng-container *ngIf="isImage == '0'">
+		<ng-container *ngIf="doc_types.indexOf(file_path.split('.').pop(-1)) >= 0">
+			<!-- <object [data]="sanitizer.bypassSecurityTrustResourceUrl(file_path)" type="application/doc"></object> -->
+			No Preview Available.
+		</ng-container>
+		<ng-container *ngIf="doc_types.indexOf(file_path.split('.').pop(-1)) == -1">
+			<iframe [src]="sanitizer.bypassSecurityTrustResourceUrl(file_path)" height="700px" width="100%"></iframe>			
+		</ng-container>
+	</ng-container>
+	
+</ion-row>
+<ion-row>
+	<ng-container *ngIf="errors.indexOf(file_name) == -1">
+		<p>{{file_name.search('____') >=0 ? file_name.split('____').pop(-1) : file_name.split('_--_').pop(-1)}}
+		<br>
+		<span *ngIf="errors.indexOf(file_name) == -1">
+		<ion-icon name="navigate"></ion-icon> {{file_name.search('directory/jobs_data') >=0 ? 'Jobs' : (file_name.search('files/level') >=0 ? 'File Manager' : 'Local Device')}}<br>
+		</span>
+		<span *ngIf="errors.indexOf(file_created_at) == -1">
+		<ion-icon name="ios-calendar-outline"></ion-icon> {{file_created_at | date : 'M/d/y'}}<br>
+		</span>
+		<span *ngIf="errors.indexOf(file_by) == -1">
+		<ion-icon name="person"></ion-icon> {{file_by}}
+		</span>
+		</p>
+	</ng-container>
+</ion-row>
+</ion-content>

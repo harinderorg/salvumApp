@@ -1,0 +1,450 @@
+[mrg_b_0]{
+	margin-bottom : 0px !important; 
+}
+[mrgn_lft]{
+	margin-left : 8px !important; 
+}
+[trade_selt]{
+	padding: 12px 2px 11px 8px;
+	max-width: 100%;
+}
+.no_pad{
+	padding: 0px;
+}
+.progress {
+    margin-top: $value10;
+}
+[trade-dropdown]
+{
+       position: relative;
+       z-index: 1; 
+       box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 2px;
+	   padding:$value0!important;   
+	   max-height:200px;
+	   overflow-x:hidden;
+	   overflow-y:auto; 
+}
+[drop_icon_trade]{
+	position: absolute;
+    float: left;
+    left: 144px;
+    top: 43px;
+    font-size: 22px;
+}
+[disabled_fld]{
+    background: #ddd;
+}
+[list-invite]
+{
+
+ion-item
+	{
+		.item-inner
+		{
+			margin-left:$value5!important;
+		}
+
+@include respond-to(handhelds2)
+{
+.item-inner
+{
+ion-label
+{
+white-space:inherit;
+font-size:$value10+2!important;
+}
+margin-left:$value5!important;
+
+}
+.select-text
+{
+font-size:$value10+2!important;
+}
+}
+}
+}
+calendar 
+{
+	.table 
+	{
+		tr 
+		{
+			@include  respond-to(handhelds2)
+			{
+			th
+			{
+	font-size:$value10!important;
+  padding:$value5!important
+    }
+	 td
+{	
+	font-size:$value10!important;
+	padding:$value5!important
+}
+			}
+	
+		}
+	}
+}
+
+[file-manager]
+{
+	input[type="file"]
+	{
+   @include respond-to(handhelds2)
+	 {
+		 
+	  font-size: 1rem;
+	 
+	}
+	}
+}
+	.my-drop-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	margin-bottom:$value10;
+	
+
+}
+[table-responsive]
+{
+	overflow-x:auto;
+	
+table
+ {	
+ &.table-queue
+ {
+	td
+	{
+    padding: $value10;
+    text-align: left;
+    border-top: 1px solid $br-lt-grey;
+	font-weight:400;
+	}
+	th
+	{
+    padding: $value10;
+    text-align: left;
+    border-top: 1px solid  $br-lt-grey; 
+		font-weight:400;
+	}
+	thead
+{
+	tr {
+    border-bottom: 1px solid  $br-lt-grey;
+}
+}
+margin-bottom:$value10;
+   }
+
+ }
+
+}
+ion-toolbar[add-trade]
+{    
+    border-top: 1px solid #e3e3e3;
+    padding: 0;
+    min-height: 50px;
+ion-segment
+{
+ion-segment-button
+{
+background:$fnt-white!important;
+
+&.segment-activated
+{
+background:$darkblue2!important;
+color:$fnt-white!important
+}
+}
+}
+min-height:auto;
+padding-bottom:$value0
+}
+ion-content
+{
+	.progress-outer
+	{
+    margin-left: $value0;   
+    }
+
+[white-bg]
+{
+background:$fnt-white;
+    display: inline-block;
+    width: 100%;
+}
+[delete-button]
+{
+    position: absolute;
+    right: $value5;
+    top: $value5;
+}
+
+}
+[br-dashed-grey] {
+    border: 2px dashed $br-lt-grey
+}
+[drag-files] 
+{
+[browse-file]
+{
+[drag-text]
+{
+      height: 3.6rem
+ 
+ }
+ align-items: $center;
+    height: 100%;
+	width:100%;  
+}
+[drag-text]
+{
+    position: absolute;
+    align-items: $center;
+    height: 100%;
+}
+input[type="file"]
+ {
+display: block !important;
+width: 100% !important;
+height: 100% !important;
+opacity:0 !important;
+overflow: hidden !important;
+z-index: 100 !important;
+margin-top: -$value20;
+padding-top: -$value20;
+top: -$value20;
+}
+}
+[m-t-20]
+{
+    margin-top: 20px;
+}
+[m-t-0]
+{
+    margin-top: 0px!important;
+}
+[clear-both]
+{
+    clear: both;
+}
+[hidden-xs]
+{
+@include respond-to(handhelds2)
+{
+display:none
+}
+}
+ion-icon[item-end]
+{
+@include respond-to(handhelds2)
+{
+margin-right:$value0!important
+}
+}
+
+.my-drop-zone { border: dotted 3px lightgray; }
+.nv-file-over { border: dotted 3px red; } 
+.another-file-over-class { border: dotted 3px green; }
+
+calendar
+{
+	table  
+	{
+		border-color:$br-lt-grey!important;
+		
+	th
+	{
+		@extend  table;
+	}
+	td
+	{
+				@extend  table;
+	}
+	}
+
+}
+page-addtrade {
+.toolbar-background{
+	background: #fff !important;
+}
+@include respond-to(handhelds2)
+{
+	 [white-bg]
+		{
+			background:$whitecolor!important;
+		
+		}	
+	  [tradelist]
+		{
+	    ion-item
+		{
+		 padding-right:$value15+1!important;
+		  .item-inner
+		 {
+			 padding-right:$value0!important;
+			 button
+			 {
+			    margin-right:$value0;
+			 }
+		 }
+		 &:last-child
+		 {
+		 border:none!important;
+		 padding-bottom:$value15;
+		 .item-inner
+		 {
+		  border-bottom:1px solid #dedede!important;
+		 }
+		 }
+		}
+		}[padd-mob-lr10]
+	{
+	 padding-left:$value10;
+	 padding-right:$value10;
+	}fieldset
+	{ 
+	  border:none;
+	  padding:$value0;
+	  margin:$value0;
+	  legend
+	   {
+	     text-transform:capitalize
+	   }
+	}
+	[visible-xs]
+	{
+	 display:block!important;
+	}
+	[fileschoose] + input[type="file"]
+	{
+	  display:none;
+	}
+	ion-label
+	{
+		&[mrgn_lft]
+		{
+		   margin-left:$value0!important;
+		}
+	}.trade_sel_mrgn 
+	{
+		.select-text {
+		   margin-left: $value25;
+		 }
+    }
+	.flat_icon_i
+	{
+	  left:$value5;
+	  &:before
+	  {
+	   font-size:$value25; 
+	  }
+	}	
+	[headtrade]
+	{
+	 font-size:-1+$value15;
+	 font-weight:600;
+	 text-transform:capitalize;
+	}	
+	[calendar-detail] 
+	{
+		&[tradelist]
+		{
+		  ion-item
+		  {
+			&[year-div]
+			{
+			  padding:$value0!important;
+			  .item-inner
+			  {border:$none!important;
+				ion-label
+				{
+				 text-align:right;
+				}
+			  }
+			}
+		  }
+		}
+	}
+	 [list-invite]
+	 {
+		[mb-invites-15]
+		{    margin:$value0;
+		     padding:$value0 $value10;
+			  ion-item
+			  { 
+			   .item-inner
+			   {padding-right:$value0;
+			    margin:$value0!important;
+				ion-select
+				{
+				 min-width:100%;
+				}
+				button
+				{
+				  &[ion-button]
+				  {
+				    ion-icon
+					{
+					  font-size:$value15;
+					}
+				  }
+				}
+			   }
+			  }
+		}
+	}
+}
+.select-text{
+	cursor: pointer;
+}
+[select-pos]
+{
+.select-text {
+    position: relative;
+    z-index: 9;
+}
+}
+
+	.error-text-danger {
+    padding-left: $value15!important;
+}
+[upload-main ]
+{
+	   padding:$value0 $value10;
+	  [upload-th]
+	  {    font-weight: 600;
+		  font-size:$value13;
+	  }
+	   [upload-td]
+	  {
+		    font-size:$value13;
+	  }
+}
+.no-events-label{
+	display : none;
+}
+.event-detail-container.list
+{
+	display: none;
+}
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before, [class^="flaticon-"]:after, [class*=" flaticon-"]:after{
+  font-size: 30px;
+}
+[flat_icon] i{
+	margin-top: 20px;
+}
+.flat_icon_i {
+    position: absolute;
+    top: 40px;
+    left: 12px;
+}
+[flat_icon_row] {
+    position: relative;
+}
+.trade_sel_mrgn .select-text{
+	margin-left: 32px;
+} 

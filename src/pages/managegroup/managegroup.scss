@@ -1,0 +1,61 @@
+page-managegroup {
+ ion-content
+{ 
+	
+	    margin-top: $value10;
+	     @include respond-to(handhelds2)
+    {
+      margin-top: $value0;
+    }
+}
+[fixed-top-div]
+{
+    width: 100%;
+    background: #e6e6e6;
+    /*padding: $value0 $value0 $value0  12px;*/
+   
+    @include respond-to(handhelds2)
+    {
+      padding: $value0;
+      ion-list
+      {
+      margin: $value0;
+      }
+    }
+}
+[btn-hide]
+{  
+   [btn-text]
+	{
+	@include respond-to(handhelds2)
+	{
+		display:$none;
+	}
+	}
+	  ion-icon
+	{
+	@include respond-to(handhelds)
+	{
+		display:$none;
+	}
+	}
+}
+
+[top-group] {
+    margin-top: $value10+3;
+	
+	.check
+	{
+	margin-left:$value10;
+	
+	ion-checkbox
+	{
+	    margin-right: 3px;
+	}
+	}
+}
+[m-l-5]
+{
+margin-left:$value5!important
+}
+}

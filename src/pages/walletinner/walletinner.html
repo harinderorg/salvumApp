@@ -1,0 +1,77 @@
+<ion-content padding lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="wallet()"><a>Wallet</a></li>
+      <li class="active">Wallets</li>
+    </ol>
+  </ion-col>
+</ion-row> 
+<div breadcrumb-height></div>
+  <ion-list margin0>
+    <ion-row class="row ">
+  <ion-col col-12 col-md-6 col-lg-4  *ngFor="let item of items; let i = index ">
+
+     <ion-item-sliding br-lt-grey list-hover>
+      <ion-item   wallet-main >
+       <ion-thumbnail item-start icon-ionic >
+        <ion-icon name="card-outline" text-center></ion-icon>
+        </ion-thumbnail>
+
+        <!-- <h2 fnt-bold>{{item.cardName}} </h2>   -->
+    	 <ion-badge fnt-light>{{item.cardType}}</ion-badge>
+        <h3 fnt-regular>{{item.cardHolderName}}</h3>
+        <p fnt-light>Hidden</p>
+        <p fnt-light>Hidden</p>
+      	<ion-note my-date item-end fnt12 fnt-light margin0>{{item.expiryDate}}</ion-note>
+      	  <button btn-hides ion-button clear item-end margin0 (click)="openWalletdetailPage(item)" *ngIf="isBrowser == 'true'"><ion-icon name="eye" fnt20></ion-icon></button>
+      	    <button btn-hides ion-button clear item-end margin0 (click)="showConfirm(item ,i)" *ngIf="isBrowser == 'true'"><ion-icon name="trash" fnt20></ion-icon></button>
+        </ion-item>
+      
+
+      <ion-item-options side="right" *ngIf="isBrowser != 'true'">
+        <button ion-button color="danger" (click)="showConfirm(item ,i)"><ion-icon name="trash"></ion-icon> Delete</button>
+        <button ion-button color="secondary" (click)="openWalletdetailPage(item)"><ion-icon name="eye"></ion-icon> View</button>
+      </ion-item-options>
+
+  </ion-item-sliding>
+ </ion-col>
+   <div *ngIf="items == ''" w-100>
+    <div class="white-box" padding>
+   No Data Found
+     </div> 
+   </div>
+   <!-- <ion-col col-12 col-md-6 col-lg-4 >
+ <ion-item-sliding #item>
+ <ion-item box-shadow  wallet-main>
+ <ion-thumbnail item-start icon-ionic >
+    <ion-icon name="card-outline" text-center></ion-icon>
+    </ion-thumbnail>
+  
+    <h2 fnt-bold>Yes Bank</h2>    
+    <ion-badge fnt-light>Discover</ion-badge>	
+    <h3 fnt-regular>Robert Lane</h3>
+     <p fnt-light>xxxx xxxx xxxx 6789</p>
+	  <p fnt-light>1234</p>
+	 	 <ion-note fnt-light margin0>4 Sept</ion-note>
+		  <button ion-button clear item-end margin0 (click)="openWalletdetailPage()"><ion-icon name="eye" fnt20></ion-icon></button>
+	    <button ion-button clear item-end margin0 (click)="showConfirm()"><ion-icon name="trash" fnt20></ion-icon></button>
+  </ion-item>
+
+    <ion-item-options side="right">
+      <button ion-button color="danger" (click)="showConfirm()"><ion-icon name="trash"></ion-icon> Delete</button>
+      <button ion-button color="secondary" (click)="openWalletdetailPage()"><ion-icon name="eye"></ion-icon> View</button>
+    </ion-item-options>
+
+  </ion-item-sliding>
+ </ion-col> -->
+	  </ion-row>
+
+</ion-list>
+
+ <ion-fab right top>
+    <button ion-fab (click)="presentModal($event)"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+<div footer-height></div> 
+</ion-content>

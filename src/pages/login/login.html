@@ -1,0 +1,64 @@
+
+
+<ion-content padding darkgrey >
+<form (ngSubmit)="login()">
+<div class="logo logo-mobile" text-center style="display:none">
+  <a href="/salvum"><img width="150px" src="assets/img/logo.png"/></a>
+</div>
+<ion-list margin0 p-24-16>
+<div whitecolor  box-shadow class="login-main" >
+<ion-row>
+<ion-col col-4 darkblue2 p-24-16 disp-none>
+<div class="logo">
+  <a href="/"><img width="150px" src="assets/img/logo.png"/></a>
+</div>
+<p  fnt-regular fnt-white >Nihil dignissimos modi dolor possimus dicta voluptates ratione.</p>
+
+<p  fnt-regular fnt-white >Natus possimus facere dolorum dolorem quam autem et deleniti at..</p>
+
+<p  fnt-regular fnt-white >Fuga nihil voluptatibus in temporibus repudiandae laudantium optio.</p>
+</ion-col>
+<ion-col col-8 padding-40 full-width>
+<h3  p-tb-0 heading3 fnt-bold>
+LOGIN
+</h3>
+<p  fnt-regular margin0 fnt-mobile>PLEASE ENTER YOUR EMAIL AND PASSWORD TO LOGIN.</p>
+  <ion-item p-lr-0>
+
+    <ion-label floating fnt-regular>Email</ion-label>
+    <ion-input type="text" name="su"  [(ngModel)]="email" ></ion-input>
+  </ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label floating fnt-light fnt-regular>Password</ion-label>
+    <ion-input type="password" name="sp" clearOnEdit="false" [(ngModel)]="password"></ion-input>
+  </ion-item>
+  <ion-item border-none br-btm-grey p-lr-0>
+  <ion-label color="grey" fnt-light fnt-regular>Remember Me</ion-label>
+  <ion-checkbox color="darkblue" name="test" [(ngModel)]="remember" ></ion-checkbox>
+</ion-item>
+ <div padding p-b-0 p-lr-0>
+    <button ion-button color="darkblue" block  fnt-regular type="submit">Sign In</button>
+  </div>
+
+  <p margin-bottom0 *ngIf="isBrowser == 'true'">   
+  <a href="/#/reset-password" fnt-regular>Forgot Password ?</a>
+  </p>
+  <p margin-bottom0 *ngIf="isBrowser == 'true'">
+  Don't have an account ? <a href="/#/signup" fnt-regular>Sign up</a>
+   
+  </p>
+
+  <p margin-bottom0 *ngIf="isBrowser == 'false'" (click)="openAppBrowser('/#/reset-password')">   
+  <a  fnt-regular>Forgot Password ?</a>
+  </p>
+  <p margin-bottom0 *ngIf="isBrowser == 'false'" (click)="openAppBrowser('/#/signup')">
+  Don't have an account ? <a fnt-regular>Sign up</a>
+
+  </p>
+ </ion-col>
+  </ion-row>
+  </div>
+</ion-list>
+</form>
+</ion-content>

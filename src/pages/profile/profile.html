@@ -1,0 +1,267 @@
+<ion-content lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+   <ion-col>
+      <ol class="breadcrumb">
+         <li (click)="root()"><a>Home</a></li>
+         <li class="active">Profile</li>
+      </ol>
+   </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+   <ion-grid edit-group main-profile>
+      <ion-row>
+         <ion-col col-12 col-xl-4 profile-left>
+            <ion-list  br-lt-grey group-head head-profile>
+               <ion-list-header margin0 no-border profile-image br-btm>
+                  <ion-item fnt14 no-border text-center>
+                     <div text-center profile-top  profile-div float-left>
+                        <ion-avatar>
+                           <img alt="image" class="rounded-circle" src="assets/img/user-dummy.png" *ngIf="!data?.image">
+                           <img alt="image" class="rounded-circle" src="{{API_ENDPOINT_URL}}images/{{data?.image}}"  *ngIf="data?.image">
+                           <ion-icon name="create" (click)="openEditprofilePage(data)"></ion-icon>
+                        </ion-avatar>
+                        <h2  fnt-bold fnt-white>{{data?.name}}</h2>
+                     </div>
+                  </ion-item>
+               </ion-list-header>
+               <ion-item-group *ngIf="isBrowser == 'true'">
+                  <ion-item>
+                     <ion-icon name="logo-facebook" item-start left></ion-icon>
+                     <p *ngIf="data?.facebook == '' || data?.facebook == undefined">Link facebook account</p>
+                     <a *ngIf="data?.facebook != '' && data?.facebook != undefined" [href]="data?.facebook.search('http') >= 0 ? data?.facebook : 'http://'+data?.facebook" target="_blank">{{data?.facebook.search('http') >= 0 ? data?.facebook : 'http://'+data?.facebook}}</a>
+                  </ion-item>
+                  <ion-item>
+                     <ion-icon name="logo-twitter" item-start left></ion-icon>
+                     <p *ngIf="data?.twitter == '' || data?.twitter == undefined">Link twitter account</p>
+                     <a *ngIf="data?.twitter != '' && data?.twitter != undefined" [href]="data?.twitter.search('http') >= 0 ? data?.twitter : 'http://'+data?.twitter" target="_blank">{{data?.twitter.search('http') >= 0 ? data?.twitter : 'http://'+data?.twitter}}</a>
+                  </ion-item>
+                  <ion-item>
+                     <ion-icon name="logo-googleplus" item-start left></ion-icon>
+                     <p *ngIf="data?.gplus == '' || data?.gplus == undefined">Link googleplus account</p>
+                     <a *ngIf="data?.gplus != '' && data?.gplus != undefined" [href]="data?.gplus.search('http') >= 0 ? data?.gplus : 'http://'+data?.gplus" target="_blank">{{data?.gplus.search('http') >= 0 ? data?.gplus : 'http://'+data?.gplus}}</a>
+                  </ion-item>
+                  <ion-item>
+                     <ion-icon name="logo-linkedin" item-start left></ion-icon>
+                     <p *ngIf="data?.linkdin == '' || data?.linkdin == undefined">Link linkedin account</p>
+                     <a *ngIf="data?.linkdin != '' && data?.linkdin != undefined" [href]="data?.linkdin.search('http') >= 0 ? data?.linkdin : 'http://'+data?.linkdin" target="_blank">{{data?.linkdin.search('http') >= 0 ? data?.linkdin : 'http://'+data?.linkdin}}</a>
+                  </ion-item>
+               </ion-item-group>
+               <!-- if app screen -->
+               <ion-item-group *ngIf="isBrowser == 'false'">
+                  <ion-item>
+                     <ion-icon name="logo-facebook" item-start left></ion-icon>
+                     <p *ngIf="data?.facebook == '' || data?.facebook == undefined">Link facebook account</p>
+                     <a *ngIf="data?.facebook != '' && data?.facebook != undefined" (click)="openAppBrowser(data?.facebook)" >{{data?.facebook}}</a>
+                  </ion-item>
+                  <ion-item>
+                     <ion-icon name="logo-twitter" item-start left></ion-icon>
+                     <p *ngIf="data?.twitter == '' || data?.twitter == undefined">Link twitter account</p>
+                     <a *ngIf="data?.twitter != '' && data?.twitter != undefined" (click)="openAppBrowser(data?.twitter)">{{data?.twitter}}</a>
+                  </ion-item>
+                  <ion-item>
+                     <ion-icon name="logo-googleplus" item-start left></ion-icon>
+                     <p *ngIf="data?.gplus == '' || data?.gplus == undefined">Link googleplus account</p>
+                     <a *ngIf="data?.gplus != '' && data?.gplus != undefined" (click)="openAppBrowser(data?.gplus)">{{data?.gplus}}</a>
+                  </ion-item>
+                  <ion-item>
+                     <ion-icon name="logo-linkedin" item-start left></ion-icon>
+                     <p *ngIf="data?.linkdin == '' || data?.linkdin == undefined">Link linkedin account</p>
+                     <a *ngIf="data?.linkdin != '' && data?.linkdin != undefined" (click)="openAppBrowser(data?.linkdin)">{{data?.linkdin}}</a>
+                  </ion-item>
+               </ion-item-group>
+            </ion-list>
+         </ion-col>
+         <ion-col col-xl-8 col-12 profile-right>
+
+            <ion-list br-lt-grey group-head>
+               <ion-card *ngIf="showHelpText == true">
+                 <ion-card-content>
+                   Please click the "Companies" button for the email on which you want to get job alerts and select your email preferences.You need to verify the email to get notifications.You can also add the emails by clicking "+ Add" button. 
+                 </ion-card-content>
+               </ion-card>
+               <div clearfix></div>
+               <ion-list-header color="lightgrey" margin0 br-btm >
+                  Emails
+                  <button (click)="addEmails()"  ion-button item-end color="blue" edit-hover><ion-icon name="add"></ion-icon>Add</button>
+                  
+               </ion-list-header>
+
+               <ion-item-group>
+                  <ion-item>
+                     <ion-icon name="mail" item-start left></ion-icon>
+                     {{current_email}} (Primary) <ion-icon class="success_mark" name="checkmark-circle" title="Verified"></ion-icon>
+                  </ion-item>
+                  <ion-item *ngFor="let email of secondary_emails; let indx = index ">
+                     <ion-icon name="mail-outline" item-start left></ion-icon>
+                        {{email.email}}
+                     <ion-icon *ngIf="email.isVerified == '0'" class="error_mark" name="alert" title="Not verified"></ion-icon>
+                     <ion-icon *ngIf="email.isVerified == '1'" class="success_mark" name="checkmark-circle" title="Verified"></ion-icon>
+                     <!-- <span *ngIf="email.isVerified == '1'" class="form-custom-check one" item-end checkbox-responsive>
+                      <input [checked]="email.isNotify == '1' ? true : false" (change)="updateJobNotisEmail(email._id,email.isNotify)" type="checkbox" id="checkbox11{{indx}}" name="checkbox11{{indx}}" class="form-check-input">
+                        <label class="form-check-label"  for="checkbox11{{indx}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Job Alerts</label>
+                     </span> -->
+                     <button (click)="assignCompany(email._id,email.alertIds,email.companyIds)" *ngIf="email.isVerified == '1'" ion-button item-end color="blue" edit-hover>Companies</button>
+                     <button (click)="verifyEmail(email._id,email.email)" *ngIf="email.isVerified == '0'" ion-button item-end color="blue" edit-hover>Verify</button>
+                     <button (click)="makePrimary(email._id,email.email)" *ngIf="email.isVerified == '1'" ion-button item-end color="blue" edit-hover>Make Primary</button>
+                     <ion-icon (click)="deleteEmails(email._id,email.isVerified)" name="close" item-end color="blue" edit-hover></ion-icon>
+                  </ion-item>
+               </ion-item-group>
+            </ion-list>
+
+            <ion-list  br-lt-grey group-head>
+               <ion-list-header color="lightgrey" margin0 br-btm>
+                  General Info 
+                  <ion-icon (click)="openEditprofilePage(data)" name="create" item-end color="blue" edit-hover></ion-icon>
+               </ion-list-header>
+               <!-- if web view -->
+               <ion-item-group *ngIf="isBrowser == 'true'">
+                  <ion-item *ngIf="data?.name != '' ">
+                     <ion-icon name="ios-person-outline" item-start left></ion-icon>
+                     {{data?.name}}
+                  </ion-item>
+                  <ion-item *ngIf="data?.name == '' "  placeholder-text>
+                     <ion-icon name="ios-person-outline" item-start left></ion-icon>
+                     Name
+                  </ion-item>
+                  <ion-item  *ngIf="data?.phone != '' && data?.phone !=  undefined && data?.phone !=  null" >
+                     <ion-icon name="call" item-start left></ion-icon>
+                     {{data?.phone}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.phone ==  '' || data?.phone ==  undefined || data?.phone ==  null"  placeholder-text>
+                     <ion-icon name="call" item-start left></ion-icon>
+                     Enter Phone
+                  </ion-item>
+                  <ion-item  *ngIf="data?.address != '' && data?.address != undefined ">
+                     <ion-icon name="locate" item-start left></ion-icon>
+                     {{data?.address}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.address == '' || data?.address == undefined " placeholder-text>
+                     <ion-icon name="locate" item-start left></ion-icon>
+                     Enter Address
+                  </ion-item>
+                  <ion-item  *ngIf="data?.company != ''" >
+                  <ion-icon name="home" item-start left></ion-icon>
+                     {{data?.company}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.company == '' " placeholder-text>
+                     <ion-icon name="home" item-start left></ion-icon>
+                     Enter Company Name
+                  </ion-item>
+                  <ion-item  *ngIf="data?.website != '' ">
+                     <ion-icon name="link" item-start left></ion-icon>
+                     <a href="{{data?.website}}" target="_blank">{{data?.website}}</a>
+                  </ion-item>
+                  <ion-item  *ngIf="data?.website == '' " placeholder-text>
+                     <ion-icon name="link" item-start left></ion-icon> Enter Website
+                  </ion-item>
+                  <ion-item  *ngIf="data?.gender != '' " text-capitalize>
+                     <ion-icon name="person" item-start left></ion-icon>
+                     {{data?.gender}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.gender == '' " placeholder-text>
+                     <ion-icon name="person" item-start left></ion-icon>
+                     Enter Gender
+                  </ion-item>
+                  <ion-item  *ngIf="data?.lang != '' && data?.lang != undefined  ">
+                     <ion-icon name="globe" item-start left></ion-icon>
+                     {{data?.lang}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.lang == '' || data?.lang == undefined " placeholder-text>
+                     <ion-icon name="globe" item-start left></ion-icon>
+                     Enter Language
+                  </ion-item>
+               </ion-item-group>
+
+               <!-- if app view -->
+               <ion-item-group *ngIf="isBrowser == 'false'">
+                  <ion-item *ngIf="data?.name != '' ">
+                     <ion-icon name="ios-person-outline" item-start left></ion-icon>
+                     {{data?.name}}
+                  </ion-item>
+                  <ion-item *ngIf="data?.name == '' "  placeholder-text>
+                     <ion-icon name="ios-person-outline" item-start left></ion-icon>
+                     Name
+                  </ion-item>
+                  <ion-item  *ngIf="data?.phone != '' && data?.phone !=  undefined && data?.phone !=  null" >
+                     <ion-icon name="call" item-start left></ion-icon>
+                     {{data?.phone}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.phone ==  '' || data?.phone ==  undefined || data?.phone ==  null"  placeholder-text>
+                     <ion-icon name="call" item-start left></ion-icon>
+                     Enter Phone
+                  </ion-item>
+                  <ion-item  *ngIf="data?.address != '' && data?.address != undefined">
+                     <ion-icon name="locate" item-start left></ion-icon>
+                     {{data?.address}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.address == '' || data?.address == undefined" placeholder-text>
+                     <ion-icon name="locate" item-start left></ion-icon>
+                     Enter Address
+                  </ion-item>
+                  <ion-item  *ngIf="data?.company != '' && data?.company != undefined ">
+                     <ion-icon name="home" item-start left></ion-icon>
+                     {{data?.company}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.company == '' || data?.company == undefined " placeholder-text>
+                     <ion-icon name="home" item-start left></ion-icon>
+                     Enter Company Name
+                  </ion-item>
+                  <ion-item  *ngIf="data?.website != '' && data?.website != undefined ">
+                     <ion-icon name="link" item-start left></ion-icon>
+                     <a (click)="openAppBrowser(data?.website)">{{data?.website}}</a>
+                  </ion-item>
+                  <ion-item  *ngIf="data?.website == '' || data?.website == undefined " placeholder-text>
+                     <ion-icon name="link" item-start left></ion-icon> Enter Website
+                  </ion-item>
+                  <ion-item  *ngIf="data?.gender != '' && data?.gender != undefined " text-capitalize>
+                     <ion-icon name="person" item-start left></ion-icon>
+                     {{data?.gender}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.gender == '' || data?.gender == undefined" placeholder-text>
+                     <ion-icon name="person" item-start left></ion-icon>
+                     Enter Gender
+                  </ion-item>
+                  <ion-item  *ngIf="data?.lang != '' && data?.lang != undefined ">
+                     <ion-icon name="globe" item-start left></ion-icon>
+                     {{data?.lang}}
+                  </ion-item>
+                  <ion-item  *ngIf="data?.lang == '' || data?.lang == undefined " placeholder-text>
+                     <ion-icon name="globe" item-start left></ion-icon>
+                     Enter Language
+                  </ion-item>
+               </ion-item-group>
+
+            </ion-list>
+            <ion-list  br-lt-grey group-head>
+               <ion-list-header color="lightgrey" margin0 br-btm *ngIf="level1 == 'false' && level2 != 'false'">
+                  Password
+                  <ion-icon name="create" item-end color="blue" (click)="openChangepasswordPage()" edit-hover></ion-icon>
+               </ion-list-header>
+               <ion-list-header color="lightgrey" margin0 br-btm *ngIf="level1 == 'false' && level2 == 'false'">
+                  Passwords
+                  <ion-icon name="create" item-end color="blue" (click)="openChangepasswordPage()" edit-hover></ion-icon>
+               </ion-list-header>
+               <ion-item-group>
+                  <ion-item *ngIf="level1 == 'false' ">
+                     <ion-icon name="key" item-start left></ion-icon>
+                     Level 1 
+                  </ion-item>
+                  <ion-item *ngIf="level2 == 'false' ">
+                     <ion-icon name="key" item-start left></ion-icon>
+                     Level 2 
+                  </ion-item>
+                  <ion-item *ngIf="level3 == 'false' ">
+                     <ion-icon name="key" item-start left></ion-icon>
+                     Level 3 
+                  </ion-item>
+                  <ion-item *ngIf="level4 == 'false' ">
+                     <ion-icon name="key" item-start left></ion-icon>
+                     Level 4 
+                  </ion-item>
+               </ion-item-group>
+            </ion-list>
+         </ion-col>
+      </ion-row>
+   </ion-grid>
+<div footer-height></div>
+</ion-content>

@@ -1,0 +1,469 @@
+// http://ionicframework.com/docs/theming/
+ 
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+[close-icon]
+{
+	float: right;
+    font-size: $value20+2;
+    color:$fnt-white;
+    padding-right: $value15;
+	cursor:pointer;
+}
+ion-menu
+{
+button{	
+	&.activated
+	{
+	/*	color:#000!important */ 
+	background:transparent!important
+	}
+}
+}
+[scroll-css]
+{
+	.scroll-content
+	{
+		overflow-y:auto!important;
+	}
+}
+button.bar-buttons.bar-buttons-md.bar-button.bar-button-md.bar-button-default.bar-button-default-md.bar-button-menutoggle.bar-button-menutoggle-md > span
+{
+    display: none !important;
+}
+/*.back-button.show-back-button {
+    display: none !important;
+}*/
+
+a:hover, img:hover, button:hover{
+    cursor: pointer;
+}
+.right-side
+{
+img
+{   border-radius: 50%;
+    width: $width70;
+    height: $height70;
+    position: absolute;
+    z-index: 999;
+    bottom: -32px;
+    @include pos-lr;  
+    margin: auto;
+    border: 1px solid $darkblue2;
+  
+}
+
+.toolbar-background
+{
+background:$darkblue2!important;
+}
+ overflow: visible;
+    contain: none;
+}
+
+[border-color]
+{
+.item-inner
+{
+border-color:$border-color!important;
+margin-left:$value10!important;
+}
+&:hover
+{
+background:#444e5a;
+
+}
+}
+[border-color].item-block:first-child
+{
+
+border:none!important;
+}
+
+[border-color]
+{
+border-color:$border-color!important;
+}
+[border-color].item-block
+{
+.item-icon
+{
+font-size:$fnt18;
+margin-bottom:$value0;
+margin-right:$value0;
+}
+}
+.right-top
+{
+h5
+{
+margin-top:$value40;
+margin-bottom:$value0
+}
+}
+.right-top::after
+{
+background:none;
+}
+.show-back-button
+{
+color:$fnt-white;
+}
+[padding-top0]
+{
+
+padding-top:$value0;
+}
+[fnt20]
+{
+
+font-size:$fnt20
+}
+[width-invite]
+{
+img
+{
+@include wh80;
+margin:auto;
+}
+h1
+{
+color:$fnt-white;
+font-size:$fnts24!important;
+}
+padding:$value0;
+margin:$value0;
+width:100%;
+}
+[invite-list]
+{
+ion-icon{
+color:$darkblue2;
+}
+h1
+{
+
+font-size:$fnts24!important;
+}
+padding:$value0;
+margin:$value0;
+width:100%;
+}
+
+[fnt-white]
+{
+color:$fnt-white!important;
+}
+[no-shadow]
+{
+box-shadow:$none;
+}
+[divider-fnt20] 
+{
+ion-label
+{
+font-size:$fnts24!important;
+font-family:$font-bold;
+}
+
+}
+[fntblue]
+{
+color:$darkblue2;
+}
+[fnt31]
+{
+font-size:$fnt31!important;
+}
+[no-border]
+{
+border:none;
+}
+[invite-form]
+
+{
+ion-label.label
+{
+font-size:$fnts24!important;
+font-family:$font-light;
+}
+}
+[invite-list]
+{
+background:$fnt-white;
+padding:$padding30-20;
+margin-bottom:$value20;
+@include respond-to(handhelds2)
+{
+padding:$value0;
+}
+}
+[import-list]
+{
+padding:$padding30-20;
+@include respond-to(handhelds2)
+{
+padding:$value0;
+}
+}
+[icon-ionic]
+{
+ion-icon{
+@include wh80;
+  
+    background: $darkblue2;
+    line-height: 80px;   
+    font-size: $fnt25;
+    border-top-left-radius:$br-ra50;
+    border-bottom-left-radius:$br-ra50;
+    border-bottom-right-radius: $br-ra50;
+    color: $fnt-white;
+}
+}
+ion-modal
+{.modal-wrapper
+{
+box-shadow: none !important;
+}
+
+}
+
+
+[modal-white]
+{
+ion-navbar
+{
+.toolbar-background
+{
+background:$fnt-white
+}
+}
+}
+[modal-white]
+{
+.toolbar-title
+{
+color:$darkblack;
+}
+}
+ion-modal
+{
+.modal-wrapper
+{
+.scroll-content
+{
+overflow:auto
+}
+}
+}
+[clearboth]
+{
+clear:both;
+}
+.datetime-md
+{
+padding-bottom:$value5;
+}
+[user-pic]
+{
+width:$value40;
+height:$value40;  
+      object-fit: cover;
+border-radius:$br-ra50;
+margin-top:$value4;
+
+}
+
+ion-header ion-navbar [hide-icon]{
+    display: block !important;
+}
+.error-text-danger{
+    color:#f00;
+}
+[has-header]{
+    margin-top: 60px;
+}
+[w-100]
+{
+width:100%;
+}
+[main-breadcrumb] .breadcrumb li {
+    max-width: 150px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+[dropmenu]
+{
+	
+	.ng2-dropdown-menu
+	{
+    top: 118px !important;
+    left:0px!important;
+    background: #f3f0f2!important;
+	@include respond-to(handhelds2)
+	{  top: 89px  !important;
+	}
+    @include respond-to(handheldsxl)
+    {
+        top: 128px !important;
+    } 
+	} 
+	ion-segment-button
+	{
+   font-family:$font-bold;    font-size: 14px!important;
+    &.segment-button {
+    color: #7f7d7e!important;
+   }
+   &.segment-activated
+   {
+	     color: #488aff!important;
+   }
+  }
+}
+.ng2-dropdown-button{
+    max-width: 100% !important;
+    float: left;
+}
+.filter_opacity{
+    opacity: 0.5;
+}
+.filter_icons a.active{
+    color: green;
+}
+.breadcrumbs-row
+{
+ button.trade-btn 
+ {
+	 float: left;
+	 margin-left: 15px; 
+	 border-radius: 5px;
+	 margin-right: 0; 
+	 padding: 0px 2px 0 10px;
+	 height: 30px;    
+	 display: flex; 
+	 vertical-align: middle;
+	 align-items: center;
+ i 
+{
+	margin-right: 12px; 
+	font-size: 18px;
+    color: #1975d2;
+}
+.icon 
+{
+   color:#1975d2;background: #b6b6b6; padding: 0 6px;margin-left: 10px;border-radius: 5px;
+}
+ }.filter_icons 
+{ 
+   float: right; 
+}
+}
+
+.filter_list 
+{
+i {
+	&:before
+	{
+	    font-size: 18px;
+    margin-top: 7px;
+    display: block;	
+    line-height: normal;
+	}
+    background: #b6b6b6;
+    float: left;
+    padding: 0px 9px;
+    border-radius: 5px;
+    width: 42px;
+    height: 32px;
+    text-align: center;
+    color: #1975d2;
+	
+}
+[cls]{
+    float: right;
+    font-size: 19px !important;
+}
+[trade-inner]
+{
+	align-items:center;
+[title-trade]
+{      word-break: break-all;
+    font-size: 14px;
+    white-space: normal;
+    line-height: normal; 
+	
+}
+[icon-trade]
+{    text-align: right;
+    font-size: 16px;
+}
+}
+.ng2-dropdown-menu
+{
+    background: #f3f0f2!important;
+}
+.ng2-menu-item {
+    height: auto!important;
+	background: #f3f0f2!important;
+	line-height: 36px!important;
+}
+}
+
+.ng2-dropdown-backdrop{
+    top: 118px !important;
+
+}
+
+.shadow{
+    height: 88px;
+    position: absolute;
+    width: 100%;
+    z-index: 1090;
+}  
+ .drop-scroll {
+    width: calc(98% - 40px);
+    float: left;
+    display: flex;
+    overflow-x: auto;scrollbar-width: none;
+     position:relative;;
+     margin-left: 25px;
+   
+     
+}
+.drop-scroll::-webkit-scrollbar{
+  width: 0 !important;  height: 0 !important;
+}
+
+.scroll_surronding{
+
+}
+.top-scorll-list{
+    float: left;
+    position: relative;
+    width: 100%;
+}
+.self-control [lefticon] {
+    position: absolute;
+    left: 0;z-index: 222;
+    cursor:pointer;
+}
+.self-control [righticon] {
+    position: absolute;
+    right: 0;
+    cursor:pointer;
+}
+  

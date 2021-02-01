@@ -1,0 +1,51 @@
+
+<ion-item >
+    <div ion-item detail-none no-lines  
+            [ngClass]="{active: isSelected('inbox')}" icon-left  id="000">
+            
+      <ion-grid tree-view>
+        <ion-row  (click)="clickNode('inbox')">
+          
+          <ion-col col-4>
+              <ion-icon name="folder" color="dark"></ion-icon>              
+          </ion-col>
+          <ion-col col-8 >
+              Inbox
+          </ion-col>
+
+
+        </ion-row>
+
+
+      </ion-grid>
+         
+                      
+    </div>
+   
+  
+    </ion-item>  
+
+<ion-item class="divitem">
+    <div ion-item detail-none no-lines  
+            [ngClass]="{active: isSelected('sent')}" icon-left  id="111">
+            
+             
+      <ion-grid tree-view>
+        <ion-row  (click)="clickNode('sent')">
+          
+          <ion-col col-4>
+              <ion-icon name="folder" color="dark"></ion-icon>              
+          </ion-col>
+          <ion-col col-8 >
+              Sent
+          </ion-col>
+
+
+        </ion-row>
+
+
+      </ion-grid>                      
+    </div>
+   
+  
+    </ion-item>  

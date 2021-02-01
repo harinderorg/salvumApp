@@ -1,0 +1,96 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>{{modal_title}}</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+<ion-grid no-padding> 
+<ion-row no-padding>
+<ion-col col-12>  
+<ion-list margin0>
+<a (click)="rootFolders()">Home {{breadcrumbs != '' ? ' -> ' : ''}} </a>
+<ng-container *ngFor="let bread of breadcrumbs; let last = last ">
+<a (click)="breadClicked(bread)">{{bread.split('_--_').pop(-1)}}</a>
+{{last == false ? ' -> ' : ''}}
+ </ng-container>
+  <ion-item p-lr-0 *ngIf="filterTradeId == '0' && transmittal_file != '1' && reply_rfi != '1'">
+   <ion-label stacked fnt-light fnt-regular>Select Trade*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "tradeId">
+      <ion-option *ngFor="let trade of alltrades" value="{{trade._id}}">
+      {{trade.trade_name}} ({{trade.trade_task}})</ion-option>   
+    </ion-select>
+  </ion-item>
+
+  <ion-item p-lr-0 *ngIf="isShared == '1' && file_path == 'nopath'">
+   <ion-label floating fnt-light fnt-regular>Select level*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "onLevel">
+      <ion-option *ngFor="let level of opened_levels" value="{{level}}">
+      Level {{level}}</ion-option>    
+    </ion-select>
+  </ion-item>
+
+  <ion-item p-lr-0 *ngIf="show_file_code == '1'" style="display: none;">
+   <ion-label floating fnt-light fnt-regular>Select File Type*</ion-label>
+    <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)] = "file_code">
+      <ion-option value="C">Contract</ion-option>    
+      <ion-option value="S">Specification</ion-option>    
+      <ion-option value="D">Drawing</ion-option>    
+      <ion-option value="O">Other</ion-option>    
+    </ion-select>
+  </ion-item>
+
+  <ng-container *ngIf="rootDir == '1'">
+  <ion-row no-padding>
+    <ion-col class="file-main" col-4 col-sm-3 *ngFor="let page of pages">
+      <div class="white-box " m-t-10 m-b-0  (click)="fetchDirectory(page.path,page.type)"> 
+        <div text-center>
+          <img text-center src="assets/img/folder.png"/>
+        </div>
+      </div>
+      <p fnt-regular m-5-0 text-center>{{page.name.split('_--_').pop(-1)}} </p>
+    </ion-col>
+  </ion-row>
+  </ng-container>
+
+  <ng-container *ngIf="rootDir == '0'">
+  <ion-row no-padding>
+    <ion-col class="file-main" col-sm-3  col-4 *ngFor="let file of smail_files">
+      <div class="white-box "  m-t-10 m-b-0    (click)="fetchDirectory(file.path,file.type)"> 
+        <div>
+
+        <ng-container *ngIf="file.type == 'file' && has_thumbs.indexOf(file.name.split('.').pop().toLowerCase()) >= 0">
+        <img *ngIf="is_video.indexOf(file.name.split('.').pop().toLowerCase()) >= 0" text-center src="{{APIURL}}/salvum/directory/thumbnails/{{file.name.substr(0, file.name.lastIndexOf('.'))}}-thumbnail-320x240-0001.png"/>
+        <img *ngIf="is_video.indexOf(file.name.split('.').pop().toLowerCase()) == -1" text-center src="{{APIURL}}/salvum/{{file.path}}"/>
+        </ng-container> 
+
+        <img *ngIf="file.type == 'file' && has_thumbs.indexOf(file.name.split('.').pop().toLowerCase()) == -1" text-center src="assets/img/{{this.file_types.indexOf(file.name.split('.').pop().toLowerCase()) >= 0 ? file.name.split('.').pop().toLowerCase() : 'txt'}}.png"/> 
+
+        <img *ngIf="file.type == 'directory'" text-center src="assets/img/folder.png"/>
+
+        </div>
+      </div>
+      <ion-checkbox class="check-abs"  (ionChange)="insertFilesToArray($event,file)" ></ion-checkbox> <!-- *ngIf="file.type != 'directory'" -->
+      <p fnt-regular m-5-0 text-center>{{file.name.search('_--_') >= 0 ? file.name.split('_--_').pop(-1) : file.name.split('____').pop(-1)}} </p>
+    </ion-col>
+    <ion-col col-12 *ngIf="smail_files == ''">
+      <ion-item p-lr-0>No Files Found In This Folder</ion-item>
+    </ion-col>
+  </ion-row>
+  </ng-container>
+
+</ion-list>
+</ion-col>
+
+<ion-col col-4>
+<div padding p-b-0 p-lr-0 ><!-- *ngIf="transmittal_file != '1'" -->
+	<button *ngIf="selected_files != ''" ion-button color="darkblue" block  fnt-regular type="button" (click) = "addFiles(tradeId)">Submit</button>
+</div>
+</ion-col>
+</ion-row>
+</ion-grid>
+</ion-content>

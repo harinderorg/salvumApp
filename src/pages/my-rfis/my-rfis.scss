@@ -1,0 +1,185 @@
+page-my-rfis {
+[clear-both]
+{
+
+clear:both;
+}
+
+ [right-adendum]  ion-item-sliding , [right-adendum] ion-item ,  [right-adendum] ion-list , [right-adendum]  ion-label ,  [right-adendum].item-md , [right-adendum] .item-block , [right-adendum] .item , [right-adendum] .item-inner , [right-adendum] .input-wrapper , [right-adendum] .rel-container , [right-adendum] .button-effect
+{
+  overflow: visible!important;	
+}	
+[white-normal]
+{
+    white-space: normal ;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+ion-segment
+{  
+    &.segment
+	{
+			@include respond-to(handhelds2)
+			   {
+			  /* padding:5px 7px 0px	!important*/
+			   }
+	}
+}
+[m-r-10]
+{
+	margin-right:10px;
+}
+[question-flex]
+{
+display:flex;
+
+span
+{
+	margin-right:$value20;
+}
+}
+[button-hide]
+{
+	.btn-text
+	{
+		@include respond-to(handhelds2)
+		{
+			display:$none;
+		}
+	}
+}
+[p-tb-0 ]
+{
+	padding-top:$value0;
+	
+	padding-bottom:$value0;
+}
+
+[right-adendum]
+{
+ .item 
+ {
+ 	   contain:none!important;
+	   @include respond-to(handhelds2)
+	   {
+	   border:none;
+	   }
+
+ }
+ ion-fab
+ {
+ position: relative;
+ z-index: 9999;
+ top:$value0;
+	button
+	{
+	&.fab
+	{
+    width: $value20;
+    height:  $value20;
+    line-height:  $value20;
+	    border-radius: 0;
+    margin-top: $value0;
+	ion-icon
+	{
+	 font-size:$value14;  
+	 line-height:  $value20!important;	
+	}
+	}	
+		
+	}	
+	ion-fab-list
+	{
+		margin-top:$value20+5;
+	    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2);
+		background:$fnt-white;
+		   width: $value100*2;
+		   min-height:auto;
+	}	
+	.item
+	{
+			       border-bottom: 1px solid #ddd;
+				a[download]
+				{
+	margin-top:$value0;
+	
+	margin-bottom:$value0;
+				}				
+				   ion-label
+				   {
+				margin-top:$value0;
+				white-space: normal;
+                word-break: break-all;
+              display: flex;
+	         margin-bottom:$value0;
+				   }
+	}
+	&[not-answered]
+	{
+			ion-fab-list
+			{
+	          @include respond-to(handhelds2)
+			  {			  
+				right:$value0
+			  }
+     
+	 }
+	}
+ }
+}
+ion-label{
+	white-space: inherit;
+}
+[m-t-2]
+{
+margin-top:2px!important;
+}
+@include respond-to(handhelds2)
+{
+  [padd-mob-16]
+  { 
+  padding:$value0 $value15+1; 
+  }
+  [padd-mob-16]
+  {
+  padding-left:$value10;
+  padding-right:$value10;
+  [bidjobs]
+  {
+    background: transparent;
+    border: none;
+    padding: $value0;
+    box-shadow: none;
+  }
+  }
+  [circle-pic]
+  {
+    &[w-h-img]
+	{
+	  width: $value50!important;
+      height: $value50!important;
+	}
+  }
+  [right-adendum]
+  {
+    ion-item-sliding
+	{
+	  ion-item
+	  { 
+	    ion-note
+		{
+		      font-size: $value12!important;
+		}
+	  }
+	}    
+  }
+}
+}
+[bidjobs]
+{
+.button-ios
+{
+height:$value30;
+margin-top:-3+$value10;
+}
+}

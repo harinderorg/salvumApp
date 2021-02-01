@@ -1,0 +1,56 @@
+page-contactslist
+{   
+
+ [br-b-btm]
+ {
+	 border-bottom:1px solid $br-lt-grey;
+ }
+	[select-contact]
+	{
+		ion-item
+		{
+			ion-checkbox
+			{
+
+                 margin-right:-1+$value10!important;
+ 
+			}
+		}
+	}
+	ion-item
+	{  border:none;
+		.item-inner
+		{
+	  border:none!important;
+	ion-label
+	{
+		
+		@include respond-to(handhelds2)
+		{
+			font-size:$value10+2!important
+		}
+	}
+		}
+		ion-radio
+		{
+			margin-right:$value10!important;
+		}
+	}
+}
+
+.error-text-danger 
+{
+border:none!important;
+padding:$value5 $value0 $value0!important;
+min-height:auto!important;
+.item-inner
+{
+padding: $value0!important;
+border:none!important;
+min-height:auto!important;
+ion-label
+{
+margin:$value0!important;
+}
+}
+}

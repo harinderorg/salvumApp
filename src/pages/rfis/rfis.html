@@ -1,0 +1,397 @@
+<div (click)="closeDropDown()" class="shadow" style="display: none;"></div>
+<ion-content padding lightgrey manage-job (window:resize)="caclHeight()" has-header>
+<div ion-fixed id="calc_height_rfi{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb> 
+  <ion-col *ngIf="from_smail != '1'">
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="goToJobs()"><a>Jobs</a></li>
+      <li (click)="backToPage()"><a>{{active_job_breadcrumb}}</a></li> 
+      <li class="active">RFIs</li>
+    </ol>
+  </ion-col>
+  <ion-col *ngIf="from_smail == '1'">
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="backToSmail()"><a>Smail</a></li> 
+      <li class="active">RFIs</li>
+    </ol>
+  </ion-col>
+ </ion-row>
+<!-- <trade-breadcrumbs (click) = "clickTrade()"></trade-breadcrumbs> -->
+<ion-row class="breadcrumbs-row" *ngIf="all_contacts != ''">
+  <ion-col pos-right col-12 col-md-3 col-sm-3>
+    <ng2-dropdown (onShow)="onDropdownShow()">
+      <ng2-dropdown-button [showCaret]="true">
+          Filter <div class="filter_icons" (click)="$event.stopPropagation()">
+        <a [ngClass]="sort_icon == true ? 'active' : ''" (click)="sortTrades('a')">ABC</a><img *ngIf="sort_icon == true" width="12" height="12" src="assets/img/{{order_default_p == false ? 'down' : 'up'}}.png">&nbsp;&nbsp;&nbsp;
+        <a [ngClass]="sort_icon == false ? 'active' : ''" (click)="sortTrades('n')">123</a><img *ngIf="sort_icon == false" width="12" height="12" src="assets/img/{{order_advanced_p == false ? 'down' : 'up'}}.png">
+      </div>
+      </ng2-dropdown-button>
+      <ng2-dropdown-menu dropmenu>
+      
+      <div padding>
+        <ion-segment [(ngModel)]="nav_filter" class="filter_list">
+          <ion-segment-button value="default">
+            Default <ion-icon cls (click)="cancelAllFilters('d')" name="close"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="advanced">
+            Advanced <ion-icon cls (click)="cancelAllFilters('a')" name="close"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <div [ngSwitch]="nav_filter" class="filter_list">
+        <ion-list *ngSwitchCase="'default'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of tradeTypes | orderBy: order_default : order_default_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trade_names.indexOf(trade.trade_name) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>All {{trade.trade_name}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'advanced'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of trades | orderBy: order_advanced : order_advanced_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trades.indexOf(trade.tradeId) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>{{trade.trade_task?.length > 13 ? trade.trade_task.substr(0,13)+'...' : trade.trade_task}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+      </div>
+      </ng2-dropdown-menu>
+    </ng2-dropdown> 
+  </ion-col>
+  <ion-col col-12 col-sm-9 col-md-9>
+  <div class="top-scorll-list">
+  <div class="self-control">
+    <ion-icon lefticon name="ios-arrow-dropleft-circle" (click)="scroll('left')"></ion-icon>
+    <ion-icon  righticon name="ios-arrow-dropright-circle" (click)="scroll('right')"></ion-icon>
+  </div>
+  <div class="drop-scroll">   
+      <button title="{{trade.trade_task}}" *ngFor="let trade of filter_list; let i = index" class="trade-btn">
+        <i class="{{trade.trade_icon}}"></i> {{trade.trade_task?.length > 25 ? trade.trade_task.substr(0,25)+'...' : trade.trade_task}}
+        <ion-icon (click)="cancelFilter(trade,i)" name="close"></ion-icon>
+      </button>    
+  </div>
+  </div>
+  </ion-col>
+</ion-row>
+<ion-toolbar no-border-top add-trade>
+   <ion-segment [(ngModel)]="my_tab">
+     <ion-segment-button value="pre_awarded" (click)="tabChanged()">
+     <ion-icon class="ion-ios-ribbon-outline" fnt14 m-r-5 visible-xs></ion-icon> 
+       <span hidden-xs>Pre Awarded</span> 
+     </ion-segment-button>
+    
+     <ion-segment-button value="awarded" (click)="tabChanged()">
+       <ion-icon class="ion-ios-trophy-outline" fnt14 m-r-5 visible-xs></ion-icon>
+       <span hidden-xs>Awarded</span>
+     </ion-segment-button>
+   </ion-segment>
+</ion-toolbar>
+
+<ion-row *ngIf="my_tab == 'pre_awarded'">
+<ion-col col-xl-4 col-md-4 col-12   *ngIf="all_pre_sorted_rfis != ''">  
+ <ion-searchbar searchmob [(ngModel)]="searchTerm_pre"  placeholder="Search by Sub Contractor Name,Company..." paddingtop0 search-bar (ionInput)="getItems(searchTerm_pre,'0')" p-lr-0></ion-searchbar>
+</ion-col>
+
+<!-- <ion-col  col-xl-3 col-md-3 col-12   *ngIf="all_pre_sorted_rfis != ''">  
+ <ion-item min-h-42 border-none br-lt-grey>
+    <ion-label  fnt-light fnt-regular>Filter By Submission Date</ion-label>
+     <ion-select (ionChange)="preDateFilter(filter_by_date)"  cancelText="Cancel" okText="Okay!" [(ngModel)] = "filter_by_date">
+       <ion-option value="0">No Filter</ion-option>   
+       <ion-option value="asc">Ascending</ion-option>   
+       <ion-option value="desc">Decending</ion-option>   
+    </ion-select>
+ </ion-item>
+</ion-col> -->
+
+<ion-col col-xl-8 col-md-8 col-12>
+<div button-hide>
+<button (click)="askEngg()" ion-button color="blue" fnt-regular m-b-10 fnt-normal>
+	 <ion-icon name="people" mar-mob-0 m-r-5></ion-icon>
+     <span class="hidden-xs"> Ask Engg. </span>
+</button>
+
+<button (click)="downloadRFIs()" ion-button color="blue" fnt-regular m-b-10 fnt-normal>
+    <ion-icon name="cloud-download" mar-mob-0 m-r-5></ion-icon>
+     <span class="hidden-xs"> Download </span>
+</button>
+
+<button (click)="printRFIs()" ion-button color="blue" fnt-regular m-b-10 fnt-normal>
+    <ion-icon name="print" mar-mob-0 m-r-5></ion-icon>
+     <span class="hidden-xs"> Print </span>
+</button>
+
+<button (click)="addManualRFIs()" ion-button color="blue" fnt-regular m-b-10 fnt-normal>
+      <ion-icon name="add" mar-mob-0 m-r-5></ion-icon>
+     <span class="hidden-xs"> Add </span>
+</button>
+</div>
+</ion-col>
+</ion-row>
+
+<ion-row *ngIf="my_tab == 'awarded'">
+  <ion-col  col-xl-4 col-md-4 col-12 *ngIf="all_post_sorted_rfis != ''"> 
+   <ion-searchbar  searchmob  [(ngModel)]="searchTerm_post" placeholder="Search by Sub Contractor Name,Company..." paddingtop0 search-bar (ionInput)="getItems(searchTerm_post,'1')" p-lr-0></ion-searchbar>
+</ion-col>
+
+<!-- <ion-col  col-xl-3 col-md-3 col-12  *ngIf="all_post_sorted_rfis != ''">  
+     <ion-item  min-h-42 border-none br-lt-grey>
+      <ion-label  fnt-light fnt-regular>Filter By Submission Date</ion-label>
+       <ion-select (ionChange)="postDateFilter(filter_by_date_post)"  cancelText="Cancel" okText="Okay!" [(ngModel)] = "filter_by_date_post">
+         <ion-option value="0">No Filter</ion-option>   
+         <ion-option value="asc">Ascending</ion-option>   
+         <ion-option value="desc">Decending</ion-option>   
+      </ion-select>
+   </ion-item>
+ </ion-col> -->
+
+ <ion-col col-xl-8 col-md-8 col-12>
+	  <div button-hide>
+		  <button (click)="askEngg()" ion-button color="blue" fnt-regular m-b-10 fnt-normal>
+		  <ion-icon name="people" mar-mob-0 m-r-5></ion-icon>
+			   <span class="hidden-xs"> Ask Engg.</span>
+		  </button>
+
+		  <button (click)="downloadRFIs()" ion-button color="blue" fnt-regular m-b-10 fnt-normal>
+			<ion-icon name="cloud-download" mar-mob-0 m-r-5></ion-icon>
+			  <span class="hidden-xs">  Download</span>
+		  </button>
+
+		  <button (click)="printRFIs()" ion-button color="blue" fnt-regular m-b-10 fnt-normal>
+			<ion-icon name="print" mar-mob-0 m-r-5></ion-icon>
+			 <span class="hidden-xs"> Print</span>
+		  </button>
+
+		  <button (click)="addManualRFIs()" ion-button color="blue" fnt-regular m-b-10 fnt-normal>
+		   <ion-icon name="add" mar-mob-0 m-r-5></ion-icon>
+			   <span class="hidden-xs"> Add</span>
+		  </button>
+		</div>  
+ </ion-col>
+</ion-row>
+</div>
+<div fixheightmob clearfix id="fixed_height_rfi{{timestamp}}"></div>
+<div [ngSwitch]="my_tab">
+   <ion-list *ngSwitchCase="'pre_awarded'">
+      <ion-row p-lr-0> 
+      <ion-col col-xl-12 col-sm-12 col-12 paddingtop0 p-lr-0 clearboth right-adendum>
+         <ion-list  margin0>
+          <ion-row  p-lr-0 > 
+             <ion-item-group  w-100 reorder="true" (ionItemReorder)="reorderItems($event,'0')">
+             
+
+                     <ion-item-sliding #item br-lt-grey col-12 col-md-12 col-lg-12 col-xl-12 *ngFor="let rfi of pre_sorted_rfis ; let indx = index  "  p-lr-0 list-hover>
+                     <!-- let rfi of pre_sorted_rfis | orderBy: order : reverse , let indx = index   -->
+                        <ion-item border-none  manage-job>
+                        <ion-icon (click)="viewAns(rfi)" title="Answered by Engg." item-end  checkbox-responsive color="blue" *ngIf="rfi.isAnswered == '1' && rfi.answer == ''" name="checkmark-circle"></ion-icon>
+                          <span *ngIf="rfi.answer == '' && rfi.isAsked != '1'" class="form-custom-check one"   item-end  checkbox-responsive>
+                            <input [ngModel]="" (change)="insertToArray($event,rfi._id,rfi)" type="checkbox"  id="checkbox11{{indx}}{{timestamp}}"  name="checkbox11{{indx}}" class="form-check-input">
+                                   <label class="form-check-label"  for="checkbox11{{indx}}{{timestamp}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ask Engg</label>
+                           </span>
+                           <span class="form-custom-check" item-end  checkbox-responsive>
+                            <input [ngModel]="" (change)="insertToArray_download($event,rfi._id,rfi)" type="checkbox"  id="checkbox12{{indx}}{{timestamp}}"  name="checkbox12{{indx}}" class="form-check-input">
+                                   <label class="form-check-label"  for="checkbox12{{indx}}{{timestamp}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select</label>
+                           </span>
+
+                           <ion-avatar item-start icon-ionic title="{{rfi.trade_name}}">
+                           <span fnt20>{{rfi.orders}}</span>
+                              <i class="{{rfi.trade_icon}}" text-center></i>
+                           </ion-avatar>
+                           <h2 fnt-bold fnt14>
+                              
+                              {{rfi.question != rfi.question_engg ? rfi.question_engg : rfi.question}} 
+                              <span *ngIf="rfi.question != rfi.question_engg"><a *ngIf="rfi.show_modified_ques != true" (click)="showOriginalQues(indx,'pre')">Show original</a></span> 
+                              <ion-badge color="{{rfi.answer == '' ? 'danger' : 'blue'}}" m-t-5 fnt-normal> {{rfi.answer == '' ? 'Pending' : 'Answered'}}</ion-badge>
+                           </h2>
+                           
+
+                          <h2 *ngIf="rfi.show_modified_ques == true" fnt-bold fnt14>{{rfi.question}} <a *ngIf="rfi.show_modified_ques == true" (click)="hideOriginalQues(indx,'pre')">Hide</a></h2>
+
+                           <p>{{rfi.name}}<{{rfi.email}}></p>
+
+                           <ion-note fnt-light m-t-5 fnt12>{{rfi.question_date | date:'short'}}</ion-note>
+
+                           <p>{{rfi.company}}</p>
+
+                           <h3 fnt-regular m-t-5 *ngIf="rfi.question_files != '' && rfi.question_files != undefined">
+						   
+                       <ion-fab  float-left  [style.z-index]="999-indx" >
+                        <button ion-fab  mini color="light"><ion-icon class="ion-md-arrow-dropdown"></ion-icon></button>
+                        <ion-fab-list>
+                     <div question *ngFor="let file of rfi.question_files; let f_ind = index ">
+					               <span float-left>
+                           <ion-icon name="document"></ion-icon>
+                              {{file.indexOf('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}}
+							           </span>
+
+                              <a (click)="downloadFiles('directory/bids_data/'+file,rfi.tradeId,file,indx,f_ind,0,baseUrl+'/download?file='+APIURL+'/salvum/directory/bids_data/'+file+'&ext='+file.split('.').pop().toLowerCase())">
+                                <ion-icon name="download" item-end ></ion-icon>
+                              </a>
+
+                              <!-- <a id="down_rfi_{{indx}}{{f_ind}}0" float-right href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}" ></a> -->
+                        </div>
+                        <p  *ngIf="rfi.question_files == '' || rfi.question_files == undefined">
+                        No Attachments Found.
+                        </p>
+                        </ion-fab-list>
+                       </ion-fab>
+                           </h3>
+                           
+                           <button *ngIf="isBrowser == 'true'" (click)="viewRFI(rfi)" ion-button clear item-end margin0 button-none title="View">
+                              <ion-icon name="eye" fnt20></ion-icon>
+                           </button>
+
+                           <button *ngIf="isBrowser == 'true' && rfi.answer == ''" (click)="sendRFI(rfi.question,rfi._id,rfi.userId,rfi.jobId,rfi.tradeId,rfi.inviteId)" ion-button clear item-end margin0 button-none title="Reply">
+                              <ion-icon name="send" fnt20></ion-icon>
+                           </button>
+
+                           <button *ngIf="isBrowser == 'true'" (click)="deleteRFI(rfi._id)" ion-button clear item-end margin0 button-none title="Delete">
+                              <ion-icon name="trash" fnt20></ion-icon>
+                           </button>
+                        </ion-item>
+                        <ion-item-options side="right" *ngIf="isBrowser == 'false'">
+                           <button (click)="viewRFI(rfi)" ion-button color="secondary" >
+                              <ion-icon name="eye"></ion-icon>
+                              View
+                           </button>
+
+                           <button *ngIf="rfi.answer == ''" (click)="sendRFI(rfi.question,rfi._id,rfi.userId,rfi.jobId,rfi.tradeId,rfi.inviteId)" ion-button color="secondary" >
+                              <ion-icon name="send"></ion-icon>
+                              Reply
+                           </button>
+
+                           <button (click)="deleteRFI(rfi._id)" ion-button color="primary" >
+                              <ion-icon name="trash"></ion-icon>
+                              Delete
+                           </button>
+
+                        </ion-item-options>
+                     </ion-item-sliding>
+               
+               </ion-item-group>
+               <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="pre_sorted_rfis == '' || pre_sorted_rfis == undefined" p-lr-0>
+                     <ion-item br-lt-grey border-none>No Pre-awarded RFIs Found.</ion-item>
+               </ion-col>
+            </ion-row>
+         </ion-list>
+      </ion-col>
+   </ion-row>
+
+   </ion-list>
+
+
+   <ion-list *ngSwitchCase="'awarded'">
+  
+      <ion-row  p-lr-0> 
+
+      
+
+      <ion-col col-xl-12 col-sm-12 col-12 paddingtop0 p-lr-0 clearboth right-adendum>
+         <ion-list  margin0>
+          <ion-row  p-lr-0 >
+             <ion-item-group w-100  reorder="true" (ionItemReorder)="reorderItems($event,'1')">
+             
+                     <ion-item-sliding #item br-lt-grey col-12 col-md-12 col-lg-12 col-xl-12 *ngFor="let rfi of post_sorted_rfis ; let indx = index  "  p-lr-0>
+                     <!-- let rfi of post_sorted_rfis | orderBy: order_post : reverse_post  , let indx = index  -->
+                        <ion-item  border-none manage-job>
+                        <ion-icon (click)="viewAns(rfi)" title="Answered by Engg." item-end  checkbox-responsive color="blue" *ngIf="rfi.isAnswered == '1' && rfi.answer == ''" name="checkmark-circle"></ion-icon>
+                        <span *ngIf="rfi.answer == '' && rfi.isAsked != '1'" class="form-custom-check one"   item-end  checkbox-responsive>
+                            <input [ngModel]="" (change)="insertToArray($event,rfi._id,rfi)" type="checkbox"  id="checkbox21{{indx}}{{timestamp}}"  name="checkbox21{{indx}}" class="form-check-input">
+                                   <label class="form-check-label"  for="checkbox21{{indx}}{{timestamp}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ask Engg</label>
+                           </span>
+
+                           <span class="form-custom-check" item-end  checkbox-responsive>
+                            <input [ngModel]="" (change)="insertToArray_download($event,rfi._id,rfi)" type="checkbox"  id="checkbox22{{indx}}{{timestamp}}"  name="checkbox22{{indx}}" class="form-check-input">
+                                   <label class="form-check-label"  for="checkbox22{{indx}}{{timestamp}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select</label>
+                           </span>
+                           <ion-avatar item-start icon-ionic title="{{rfi.trade_name}}">
+                           <span fnt20>{{rfi.orders}}</span>
+                              <i class="{{rfi.trade_icon}}" text-center></i>
+                           </ion-avatar>
+                           <h2 fnt-bold fnt14>
+                           
+                              {{rfi.question != rfi.question_engg ? rfi.question_engg : rfi.question}} 
+                              <span *ngIf="rfi.question != rfi.question_engg"><a *ngIf="rfi.show_modified_ques != true" (click)="showOriginalQues(indx,'post')">Show original</a></span>  
+                              <ion-badge color="{{rfi.answer == '' ? 'danger' : 'blue'}}" m-t-5 fnt-normal> {{rfi.answer == '' ? 'Pending' : 'Answered'}}</ion-badge>
+                           </h2>
+
+                           <h2 *ngIf="rfi.show_modified_ques == true" fnt-bold fnt14>{{rfi.question}} <a *ngIf="rfi.show_modified_ques == true" (click)="hideOriginalQues(indx,'post')">Hide</a></h2>
+
+                           <p>{{rfi.name}}<{{rfi.email}}></p>
+
+                           <ion-note fnt-light m-t-5 fnt12>{{rfi.question_date | date:'short'}}</ion-note>
+
+                           <p>{{rfi.company}}</p>
+                           <h3 fnt-regular m-t-5 *ngIf="rfi.question_files != '' && rfi.question_files != undefined">
+                       <ion-fab  float-left  [style.z-index]="999-indx">
+                        <button ion-fab mini color="light"><ion-icon class="ion-md-arrow-dropdown"></ion-icon></button>
+                        <ion-fab-list>
+                        <div question  *ngFor="let file of rfi.question_files; let f_ind = index ">
+						              <span float-left>
+                           <ion-icon name="document"></ion-icon>
+                              {{file.indexOf('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}}
+							            </span>
+
+                              <a (click)="downloadFiles('directory/bids_data/'+file,rfi.tradeId,file,indx,f_ind,1,baseUrl+'/download?file='+APIURL+'/salvum/directory/bids_data/'+file+'&ext='+file.split('.').pop().toLowerCase())">
+                                <ion-icon name="download" item-end ></ion-icon>
+                              </a>
+
+                             <!--  <a id="down_rfi_{{indx}}{{f_ind}}1" float-right href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}" ></a> -->
+
+                        </div>
+                        <p  *ngIf="rfi.question_files == '' || rfi.question_files == undefined">
+                        No attachments found.
+                        </p>
+                        </ion-fab-list>
+                       </ion-fab>
+                           </h3>
+                           
+                           <button *ngIf="isBrowser == 'true'" (click)="viewRFI(rfi)" ion-button clear item-end margin0 button-none >
+                              <ion-icon name="eye" fnt20></ion-icon>
+                           </button>
+
+                           <button *ngIf="rfi.answer == '' && isBrowser == 'true'" (click)="sendRFI(rfi.question,rfi._id,rfi.userId,rfi.jobId,rfi.tradeId,rfi.inviteId)" ion-button clear item-end margin0 button-none >
+                              <ion-icon name="send" fnt20></ion-icon>
+                           </button>
+
+                           <button *ngIf="isBrowser == 'true'" (click)="deleteRFI(rfi._id)" ion-button clear item-end margin0 button-none >
+                              <ion-icon name="trash" fnt20></ion-icon>
+                           </button>
+
+                        </ion-item>
+                        <ion-item-options side="right" *ngIf="isBrowser == 'false'">
+                           <button (click)="viewRFI(rfi)" ion-button color="secondary" >
+                              <ion-icon name="eye"></ion-icon>
+                              View
+                           </button>
+
+                           <button *ngIf="rfi.answer == ''" (click)="sendRFI(rfi.question,rfi._id,rfi.userId,rfi.jobId,rfi.tradeId,rfi.inviteId)" ion-button color="secondary" >
+                              <ion-icon name="send"></ion-icon>
+                              Reply
+                           </button>
+
+                           <button (click)="deleteRFI(rfi._id)" ion-button color="primary" >
+                              <ion-icon name="trash"></ion-icon>
+                              Delete
+                           </button>
+                        </ion-item-options>
+                     </ion-item-sliding>
+               
+               </ion-item-group>
+               <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="post_sorted_rfis == '' || post_sorted_rfis == undefined" p-lr-0>
+                     <ion-item br-lt-grey border-none>No Post-awarded RFIs Found.</ion-item>
+               </ion-col>
+            </ion-row>
+         </ion-list>
+      </ion-col>
+   </ion-row>
+
+   </ion-list>
+</div>
+<div footer-height></div>
+</ion-content>

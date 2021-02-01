@@ -1,0 +1,107 @@
+page-uploadfile
+{
+	@include respond-to(handhelds2)
+	{
+	.linesnone
+	{
+	  .item-inner
+	  {
+	    border:none;
+		padding-right:$value0!important;
+		ion-label
+		{
+		  margin-left:$value0;
+		  margin-right:$value0;
+		}
+	  }
+	}
+	    [visible-xs]
+		{
+		 display:block!important;
+		}
+		[fileschoose] + input[type="file"]
+		{
+		  display:none;
+		}
+	}
+}
+.linesnone
+{
+.item-inner
+{
+    border: none!important;
+	input
+	{
+	
+	    border: solid 1px #d0d7e2;
+    padding: 5px 10px;
+    width: 100%;
+    border-radius: 4px;
+	}
+}
+}
+.upload-queue {
+    border: 1px solid #d0d7e2;
+   margin-bottom: 15px;
+    border-radius: 4px;
+	[icon-upload] {
+    width: 50px;    margin: 5px 0px!important;
+    height: 50px;
+    background: $darkblue2;
+    line-height: 50px!important;
+    color:$whitecolor;
+    border-radius: 50%;
+}
+h2
+{
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: capitalize;
+    margin: 0px!important;
+}
+	.item-inner
+{
+    border: none!important;
+	}
+}
+.table-queue-width
+{
+width:100%;
+}
+.heading-upload {
+    margin-top: 0px;    margin-bottom: 15px;
+    text-transform: capitalize;
+	position:relative;
+	&:after
+	{
+	    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    background: $darkblue2;
+    width: 45px;
+    height: 2px;
+	}
+}
+.my-drop-zone {
+ border: dashed 2px #d0d7e2;
+    border-radius: 4px;
+    flex-wrap: wrap;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+	h2
+	{
+	color: #bcc4d2;
+    text-transform: capitalize;
+	}
+	ion-icon
+	{
+	    font-size: 50px;
+    display: block;
+    color: #d0d7e2;
+	}
+}
+.nv-file-over { border: dotted 2px red; } 
+.another-file-over-class { border: dotted 2px green; }
+.well{min-height : 140px !important;color : #000;}

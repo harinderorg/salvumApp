@@ -1,0 +1,492 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/theming/
+
+// Font path is used to include ionicons,
+// roboto, and noto sans fonts
+$font-path: "../assets/fonts";
+
+
+// The app direction is used to include
+// rtl styles in your app. For more info, please see:
+// http://ionicframework.com/docs/theming/rtl-support/
+$app-direction: ltr;
+
+
+@import "ionic.globals";
+
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/theming/overriding-ionic-variables/
+
+
+.ion-md-pricetag-outline:before {
+  content: "\f48c";
+}.ion-md-clock-outline:before {
+  content: "\f402";
+}
+.ion-md-grid-outline:before {
+  content: "\f18b";
+}
+.ion-md-document-outline:before {
+  content: "\f16f";
+}
+.ion-md-mail-open-outline:before {
+  content: "\f1b5";
+}
+
+.ion-md-settings-outline:before {
+  content: "\f20d";
+}
+.ion-md-mail-outline:before {
+  content: "\f1b7";
+}
+.ion-md-paper-plane-outline:before {
+  content: "\f1dc";
+}
+.ion-md-card-outline:before {
+  content: "\f141";
+}
+.ion-md-briefcase-outline:before {
+    content: "\f3ed";
+}
+.ion-md-disc-outline:before {
+    content: "\f16d";
+}
+.ion-md-cart-outline:before {
+    content: "\f3f7";
+}
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+$darkblack:#424242;
+$header-color:#8f98a0;
+$ddblue: #0b3378;
+$lblue : #c5ddf0;
+$darkblue2: #1976d2;
+$lightblue: #26dad2;
+$darkgrey: #525e6c;
+$orange:#ff7d19;
+$yellow:#f8b84e;
+$br-lt-grey:#e5ebec;
+$fnt-white:#fafafa;
+$mediumblue:#65a1dc;
+$lightblue:#97c0e8;
+$none:none;
+$whitecolor:#fff;
+$level0-color:#ebebeb;
+$level1-color:#74B8F5;
+$level2-color:#419CEB;
+$level3-color:#1186EF;
+$level4-color:#036ECC;
+$value0:0px;
+$value1:1px;
+$value2:2px;
+$value4:4px;
+$value5:5px;
+$value6:6px;
+$value8:8px;
+$value10: 10px;
+$value12: 12px;
+$value13: 13px;
+$value14: 14px;
+$value15: 15px;
+$value17: 17px;
+$value18: 18px;
+$value20:20px;
+$value22: 22px;
+$value25: 25px;
+$value30: 30px;
+$value40: 40px;
+$value45: 45px;
+$value50: 50px;
+$value55: 55px;
+$value60:60px;
+$value70: 70px;
+$value80: 80px;
+$value90:90px;
+$value50em:50em;
+$value32:32px;
+$width700:700px;
+$value50:50px;
+$value100:100px;
+$width600:600px;
+$fnt25:2.5em;
+$fnt31:3.1em;
+$fnt24:2.4rem;
+$fnts24:24px;
+$value12:12px;
+$value-5:5;
+$padding24-16:24px 16px;
+$padding13-16:13px 16px;
+$padding30-20:   30px 20px;
+$radius12:12px;
+$font-family-base: "Open Sans", sans-serif !default;
+$font-bold:'OpenSans-Bold';
+$font-light:'OpenSans-Light';
+$font-regular:'OpenSans';
+$font-semibold: 'OpenSans-Semibold';
+$blue:#00a9f1;
+$fnt-normal:normal;
+@mixin  lh30
+{
+  height: $value30;
+  line-height:$value30;
+}
+@mixin h30-w90
+{
+  height: $value30;
+  width: $value90;
+}
+@mixin breadcrumbafter
+{content: " ";
+   border-left: $value10 solid $lightgrey;
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 13px solid transparent;
+  border-bottom: 14px solid transparent;
+
+  position: absolute;
+  top: 50%;
+  margin-top: -14px;
+  margin-left: 0px;
+  left: 100%;
+    z-index: 3;
+}
+@mixin breadcrumbbefore
+{content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 13px solid transparent;
+  border-bottom: 14px solid transparent;
+  border-left: 10px solid rgb(173, 173, 173);
+  position: absolute;
+  top: 50%;
+  margin-top: -14px;
+  margin-left: 1px;
+  left: 100%;
+  z-index: 3;
+}
+@mixin gradient-bg
+{
+
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0d2863+0,084cab+52,1076d1+100,1179d3+100 */
+background: #0d2863; /* Old browsers */
+background: -moz-linear-gradient(top, #0d2863 0%, #084cab 52%, #1076d1 100%, #1179d3 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #0d2863 0%,#084cab 52%,#1076d1 100%,#1179d3 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #0d2863 0%,#084cab 52%,#1076d1 100%,#1179d3 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0d2863', endColorstr='#1179d3',GradientType=0 ); /* IE6-9 */
+}
+@mixin p-tb0-lr10
+{
+ padding-top:$value0;
+padding-bottom:$value0;
+padding-left:$value10;
+padding-right:$value10;
+}
+@mixin transition
+{
+  -webkit-transition: -webkit-transform 0.5s;
+  -moz-transition: -moz-transform 0.5s;
+  transition: transform 0.5s;
+}
+@mixin  transform90
+{
+  -webkit-transform: translateX(90px);
+  -moz-transform: translateX(90px);
+  -ms-transform: translateX(90px);
+  -o-transform: translateX(90px);
+  transform: translateX(90px);
+}
+@mixin p-tb0-lr15
+{
+ padding-top:$value0;
+padding-bottom:$value0;
+padding-left:$value15;
+padding-right:$value15;
+}
+@mixin fnt14 {
+font-size:14px!important;
+}
+@mixin w65-h48
+{
+   width: 65px;
+	/* height: 48px;*/
+}
+@mixin flex
+{	   
+         display: flex;
+		   justify-content: center;
+}
+
+@mixin br-tb-llr
+{
+        border-top-left-radius: $br-ra50;
+        border-bottom-left-radius: $br-ra50;
+        border-bottom-right-radius: $br-ra50;
+}
+@mixin sl-left
+{
+
+ float: left;
+    margin-left: -23px;
+    z-index: 1;
+    margin-top: -2px;
+}
+$br-ra50:50%;
+@mixin wh80 {
+width:$value80;
+height:$value80;
+}
+@mixin wh70 {
+width:$value60+$value10;
+height:$value60+$value10;
+}
+$center:center;
+@mixin wh30 {
+  width: $value30;  
+  height: $value30;
+		}
+
+@mixin wh50 {
+  width: $value50;  
+  height: $value50;
+		}
+$fnt20:20px;
+$fnt14rem:14px;
+$fnt18:18px;
+$width100:100%;
+$value17:17px;
+@mixin  wh130
+{
+   width: 130px;
+    height: 220px;
+}
+@mixin shadow-white
+{
+ border:2px solid $fnt-white;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+@mixin pos-lr
+{
+  left: 0;
+    right: 0;
+}
+$white-opacity:rgba(255,255,255,.7);
+$border-color:rgba(255,255,255,0.05);
+$width70:70px;
+$height70:70px;
+$break-small:768px;
+$break-small2:575px;
+$break-sm:992px;
+$break-medium:1150px;
+$break-large:1024px;
+$break-xlarge:1200px;
+$large-screen:1400px;
+
+@mixin respond-to($media) {
+  @if $media == handhelds {
+    @media only screen and (min-width: $break-small) { @content; }
+	
+  }
+   @if $media == handhelds1 {
+    @media only screen and (max-width: $break-small2) { @content; } 
+  }
+ @if $media == handhelds2 {
+    @media only screen and (max-width: $break-small) { @content; }
+	
+  }
+   @if $media == handhelds3 {
+    @media only screen and (min-width: $break-small)   and (max-width: $break-large){ @content; }
+	
+  }
+     @if $media == handhelds4 {
+    @media only screen and (min-width: $break-large){ @content; }
+	
+  }
+     @if $media == handhelds5{
+    @media only screen and (min-width: $break-large)   and (max-width: $break-xlarge){ @content; }
+	
+  }
+    @if $media == handhelds6{
+    @media only screen and (min-width: $break-xlarge) { @content; }
+	
+  }
+    @if $media == handhelds7{
+    @media only screen and (max-width: $break-medium)   and (min-width: $break-large){ @content; }
+	
+  }
+   @if $media == handheldsxl {
+    @media only screen and (min-width: $large-screen) { @content; }
+  
+  }
+
+    @if $media == handheldssm{
+    @media only screen and (min-width:$break-small) and (max-width: $break-xlarge) { @content; }
+  
+  }
+
+ @if $media == handheldssm1 {
+    @media only screen and (min-width: $break-small)   and (max-width: $break-sm){ @content; }
+  
+  }
+
+}
+@mixin br-rb-grey
+{
+    border-right: 1px solid #e5ebec;
+    border-bottom: 1px solid #e5ebec!important;
+}
+$lightgrey:rgb(230 , 230 , 230 );
+
+@mixin  heading3
+{   
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+@mixin pos-abs-all0
+{
+top: $value0;
+    left:$value0;
+    right: $value0;
+    bottom:$value0;
+}
+$colors: (
+  primary:    #488aff,
+  secondary:  #32db64,
+  green:     #38a001,
+  danger:     #f53d3d,
+  white:#fff,
+  grey: #9a9a9a,
+  darkblue: #1976d2,
+  light:      #f4f4f4,
+  blue:#1976d2,
+  lightblue: #26dad2,  
+  lightgrey: #f4f8f9,
+  dark:       #222
+);
+
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+
+
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+
+
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+
+
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/ionicons/
+
+@import "ionic.ionicons";
+
+
+// Fonts
+// --------------------------------------------------
+
+@import "roboto";
+@import "noto-sans";
+
+
+@font-face {
+  font-family: 'OpenSans-Semibold';
+  src: url('../assets/fonts/OpenSans-Semibold.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans-Semibold';
+  src:  url('../assets/fonts/OpenSans-Semibold.woff') format('woff'), url('../assets/fonts/OpenSans-Semibold.ttf')  format('truetype'), url('../assets/fonts/OpenSans-Semibold.svg#OpenSans-Semibold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+
+@font-face {
+  font-family: 'OpenSans-Light';
+  src: url('OpenSans-Light.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans-Light';
+  src:  url('../assets/fonts/OpenSans-Light.woff') format('woff'), url('../assets/fonts/OpenSans-Light.ttf')  format('truetype'), url('../assets/fonts/OpenSans-Light.svg#OpenSans-Light') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans-Bold';
+  src: url('../assets/fonts/OpenSans-Bold.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans-Bold';
+  src:  url('../assets/fonts/OpenSans.woff') format('woff'), url('../assets/fonts/OpenSans-Bold.ttf')  format('truetype'), url('../assets/fonts/OpenSans-Bold.svg#OpenSans-Bold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('../assets/fonts/OpenSans.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src:  url('../assets/fonts/OpenSans.woff') format('woff'), url('OpenSans.ttf')  format('truetype'), url('OpenSans.svg#OpenSans') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import "../assets/fonts/flaticons/flaticon.css";
+@import "../assets/jsgantt.css";
+
+
+
+
+
+

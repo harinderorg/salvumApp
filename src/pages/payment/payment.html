@@ -1,0 +1,86 @@
+<ion-content padding lightgrey has-header>
+   <ion-row main-breadcrumb ion-fixed>
+      <ion-col>
+         <ol class="breadcrumb" *ngIf="prePage == 'license'">
+            <li (click)="root()"><a>Home</a></li>
+            <li (click)="licenseTo()"><a>License</a></li>
+            <li (click)="addlicense()"><a>Add License</a></li>
+            <li class="active">Payment</li>
+         </ol>
+         <ol class="breadcrumb" *ngIf="prePage == 'extra'">
+            <li (click)="root()"><a>Home</a></li>
+            <li (click)="upgradePayment()"><a>Upgrade Payment</a></li>
+            <li (click)="extraSpace()"><a>Buy Extra Space</a></li>
+            <li class="active">Payment</li>
+         </ol>
+         <ol class="breadcrumb" *ngIf="prePage == 'pricing'">
+            <li (click)="root()"><a>Home</a></li>
+            <li (click)="upgradePayment()"><a>Upgrade Payment</a></li>
+            <li class="active">Payment</li>
+         </ol>
+         <ol class="breadcrumb" *ngIf="prePage == 'extra_space'">
+            <li (click)="root()"><a>Home</a></li>
+            <li (click)="extraSpace()"><a>Buy Extra Space</a></li>
+            <li class="active">Payment</li>
+         </ol>
+      </ion-col>
+   </ion-row>
+<div breadcrumb-height></div>
+<ion-row class="row ">
+	<ion-col col-12 col-md-6 col-lg-4  offset-lg-4>
+ 
+<ion-list br-lt-grey padding white-bg margin0>
+ 
+<ng-container *ngIf="isBrowser == 'true'">  
+<ion-item p-lr-0>
+<ion-label floating fnt-light fnt-regular>Card Number</ion-label>
+    <ion-input type="text" maxlength="16" [(ngModel)]="cardNumber" onkeydown="javascript: return ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8  || event.keyCode == 46 || event.keyCode == 9) ? true : false"></ion-input>
+</ion-item>
+ 
+<ion-item p-lr-0>
+    <ion-label floating fnt-light fnt-regular>CVV</ion-label>
+    <ion-input type="text" maxlength="4" [(ngModel)]="cvv" onkeydown="javascript: return ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8  || event.keyCode == 46 || event.keyCode == 9) ? true : false"></ion-input>
+  </ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label floating fnt-light fnt-regular>Zip</ion-label>
+    <ion-input type="text" maxlength="6" [(ngModel)]="zip" onkeydown="javascript: return ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8  || event.keyCode == 46 || event.keyCode == 9) ? true : false"></ion-input>
+  </ion-item>
+</ng-container>
+
+<ng-container *ngIf="isBrowser == 'false'">
+<ion-item p-lr-0>
+<ion-label floating fnt-light fnt-regular>Card Number</ion-label>
+    <ion-input type="number" maxlength="16" [(ngModel)]="cardNumber"></ion-input>
+</ion-item>
+ 
+<ion-item p-lr-0>
+  <ion-label floating fnt-light fnt-regular>CVV</ion-label>
+  <ion-input type="number" maxlength="4" [(ngModel)]="cvv"></ion-input>
+</ion-item>
+
+<ion-item p-lr-0>
+  <ion-label floating fnt-light fnt-regular>Zip</ion-label>
+  <ion-input type="number" maxlength="6" [(ngModel)]="zip"></ion-input>
+</ion-item>
+</ng-container>
+
+<ion-item p-lr-0>
+  <ion-label floating fnt-light fnt-regular>Expiry Date</ion-label>
+  <ion-datetime min="{{curr_year}}" max ="{{future_year}}"  displayFormat="YYYY MM" [(ngModel)]="expiryDate"></ion-datetime>
+</ion-item>
+
+    <!-- <ion-item p-lr-0>
+      <ion-label floating fnt-light fnt-regular>Expiry Year</ion-label>
+      <ion-datetime displayFormat="YYYY" min="2017" max ="2037" [(ngModel)]="expiryYear"></ion-datetime>
+    </ion-item> -->
+	
+<div padding p-b-0 p-lr-0>
+  <button ion-button color="darkblue"   fnt-regular (click)="payment()" pull-right>Submit</button>
+</div>
+
+</ion-list>
+ </ion-col>
+  </ion-row>
+<div footer-height></div>
+</ion-content>

@@ -1,0 +1,36 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Invite mail users</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding >
+<ion-list margin0>
+
+<ng-container *ngIf="is_yes == '1'">
+<div m-t-10 float-left >
+    <input class="my_checkbox"   type="checkbox" (click)="selectAll(checkAll, data)" [(ngModel)]="checkAll" value="1" />    Select All 
+</div>
+<button small ion-button float-right (click) = "saveExternal()">Save External</button>
+<button small ion-button float-right  (click) = "Import()">Invite</button>
+</ng-container>
+
+    <ion-item  *ngFor="let item of data" p-lr-0>
+      <td>
+        {{item}}
+     <input float-left class="my_checkbox" type="checkbox"  (change)="sendmail(item)" />
+     </td>
+  </ion-item>
+
+  <ng-container *ngIf="data.length == 0">
+  <ion-item  p-lr-0>
+      No contacts found.
+  </ion-item>
+  </ng-container>
+
+</ion-list>
+</ion-content>

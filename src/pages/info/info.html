@@ -1,0 +1,27 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>View Answer</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+<ion-row>
+	<ion-col>
+	<span [innerHTML]="rfi?.engg_answer[0]"></span>
+	<button ion-button color="light" mini title="Copy Answer" (click)="copyAnswer(rfi?.engg_answer[0])"><ion-icon name="copy"></ion-icon></button>
+	</ion-col>
+	<ion-col col-12>
+		<ion-item  *ngFor="let file of rfi?.engg_answer_files[0]" p-lr-0>
+		  <span float-left> 
+		   <ion-icon name="document"></ion-icon>
+		   {{file.split('____').pop(-1)}}
+		  </span>	   
+		   <a *ngIf="isBrowser ==  'true'" float-right href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}" ><ion-icon margin0 name="download" item-end ></ion-icon></a>
+		   <a  float-right *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file,file)" href="javascript:void(0)" ><ion-icon margin0 name="download" item-end ></ion-icon></a>
+		</ion-item>
+	</ion-col>
+</ion-row>
+</ion-content>

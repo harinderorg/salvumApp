@@ -1,0 +1,88 @@
+<ion-content padding padd-mob-all-5 lightgrey manage-job tradingmob (window:resize)="caclHeight()" has-header>
+<div ion-fixed id="calc_height_trades{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb> 
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="goToJobs()"><a>Jobs</a></li>
+      <li *ngIf="only_view != '1'" (click)="backToPage()"><a>{{active_job_breadcrumb}}</a></li> 
+      <li class="active">Trades</li>
+    </ol>
+  </ion-col>
+ </ion-row>
+ <ion-searchbar padd-mob-lr-10 (ionInput)="getItems($event)"  p-5></ion-searchbar>
+      <div button-hide p-0-3 padd-mob-lr-10 w-100> 
+        <button *ngIf="only_view != '1'" ion-button (click) = "addTradePage(job_id)" color="blue" fnt-regular m-b-10 fnt-normal left >
+            <ion-icon name="add" m-r-5></ion-icon>
+            <span class="hidden-xs">Add Trade </span>
+         </button>     
+         <button *ngIf="only_view != '1'" ion-button (click)="deleteMultipleTrades()" color="blue" fnt-regular m-b-10 fnt-normal left>
+            <ion-icon name="trash" m-r-5></ion-icon>
+            <span class="hidden-xs">Delete</span>
+         </button>
+         <button *ngIf="only_view != '1'" ion-button (click) = "jobCalendar(job_id)" color="blue" fnt-regular m-b-10 fnt-normal left>
+            <ion-icon name="eye" m-r-5></ion-icon>
+            <span class="hidden-xs">View Events</span>
+         </button>
+      </div>
+</div> 
+<div clearfix id="fixed_height_trades{{timestamp}}"></div>
+  <ion-list   margin0 clearboth>
+		 <ion-row>
+               <ion-col col-xl-4 col-md-6 col-12 *ngFor="let trade of alltrades; let indx = index ">
+                  <ion-item-sliding #item br-lt-grey list-hover>
+                     <ion-item  border-none  manage-job>
+                        <ion-avatar item-start icon-ionic >
+                           <i class="{{trade.trade_icon}}" text-center></i>
+                        </ion-avatar>
+                        <h2 fnt-bold fnt14>
+                           {{trade.trade_name}}	
+                           <ion-badge color="blue" m-t-5 fnt-normal>{{trade.status == '0' ? 'Pending' : (trade.status == '1' ? 'Open' : 'Closed')}}</ion-badge>
+                        </h2>
+                        <h3 fnt-regular m-t-5>
+                          {{trade.trade_task}}  
+                        </h3>
+                        <p *ngIf="trade.status != '2'">{{trade.isPosted == '1' ? 'Posted' : 'Not posted yet.'}}</p>
+                  
+                        <button *ngIf="isBrowser == 'true'" ion-button clear item-end margin0 button-none (click) = "EditTrade(trade._id)">
+                           <ion-icon name="create" fnt20></ion-icon>
+                        </button>
+                      
+                        <button *ngIf="isBrowser == 'true'" (click) = "tradeCalendar(trade._id)" ion-button clear item-end margin0 button-none>
+                           <ion-icon name="calendar" fnt20></ion-icon>
+                        </button>
+                        <button *ngIf="isBrowser == 'true'" ion-button clear item-end margin0 button-none (click)="deleteTrade(trade._id)">
+                           <ion-icon name="trash" fnt20></ion-icon>
+                        </button>
+                        <span class="form-custom-check" item-end checkbox-responsive>
+                          <input (change)="insertToArray($event,trade._id)" type="checkbox" id="checkbox{{indx}}{{timestamp}}" name="checkbox{{indx}}" class="form-check-input">
+                           <label class="form-check-label" for="checkbox{{indx}}{{timestamp}}"></label>
+                        </span>
+                     </ion-item>
+                     <ion-item-options side="left" *ngIf="isBrowser == 'false'">
+                       
+                        <button (click) = "tradeCalendar(trade._id)" ion-button color="info">
+                           <ion-icon name="calendar"></ion-icon>
+                           Calendar
+                        </button>
+                     </ion-item-options>
+                     <ion-item-options side="right" *ngIf="isBrowser == 'false'">
+                        <button ion-button color="primary" (click) = "EditTrade(trade._id)">
+                           <ion-icon name="create"></ion-icon>
+                           Edit
+                        </button>
+                        <button ion-button color="danger" (click)="deleteTrade(trade._id)">
+                           <ion-icon name="trash"></ion-icon>
+                           Delete
+                        </button>
+                     </ion-item-options>
+                  </ion-item-sliding>
+               </ion-col>
+               <ion-col *ngIf="alltrades == ''">
+                  <ion-item border-none br-lt-grey>No Trades Found.</ion-item>
+               </ion-col>
+			   </ion-row>
+         </ion-list>
+      
+<div footer-height></div> 
+</ion-content>

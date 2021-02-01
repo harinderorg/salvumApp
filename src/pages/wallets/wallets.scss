@@ -1,0 +1,85 @@
+page-wallets {
+ion-content 
+{
+@include respond-to(handhelds2)
+{
+	*
+	{
+	padding:$value0!important;
+
+	}
+}
+}
+[wallet-div]
+{
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.07);
+	padding-top: $value30!important;
+    padding-bottom: $value30!important;
+	cursor:pointer;
+
+	@include respond-to(handhelds2)
+	{
+	width:100%!important;
+	margin:$value0!important;
+	    border-right: 1px solid $br-lt-grey;
+    border-left: $none;
+        padding-top: $value15!important;
+    padding-bottom: $value15!important;
+    ion-icon
+   {
+    width: $value50;
+    height:  $value50;
+        color: $ddblue!important;
+    border-radius: 50%;
+    background:$lblue;
+    line-height:  $value50;
+    font-size:  $value20+4;
+    }  
+    h1
+    {
+    font-size:  $value15+1!important;
+    }  
+	}
+	&:hover
+	{
+		    box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.07);
+	}
+}
+}
+ion-header
+{
+ion-navbar
+{
+.toolbar-background
+{
+background:$header-color;
+
+}
+}
+}
+ion-title
+{
+.toolbar-title
+{
+color:$fnt-white;
+font-family:$font-regular;
+}
+}
+[lightgrey]
+{
+background:$lightgrey
+}
+.card.card-md
+{
+h1
+
+{
+    font-size: 2rem;
+    margin-top: $value10;
+}
+ion-icon{
+  
+
+  color: #1976d2;
+}
+}

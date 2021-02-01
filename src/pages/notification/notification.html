@@ -1,0 +1,600 @@
+<ion-content lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li class="active">Notification</li>
+      </ol>
+    </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-grid>
+  <ion-row>
+    <ion-col col-12 col-sm-12  col-md-12 col-xl-12>
+	
+	<div class="white-box activity-widget" all-notification>
+        <h4 *ngIf="notifications != ''" class="box-title">All Notifications <button  btn-remove ion-button color="blue" (click)="removeAll()">Remove All</button></h4>
+        <div class="steamline" *ngIf="notifications != ''">
+        <ng-container *ngFor="let notification of notifications; let index = index ">
+            <ion-row col-12>
+                <ion-col col-10>
+                <div class="sl-item" *ngIf="notification.type == '1'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <ion-avatar item-start>
+                                <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                                <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                            </ion-avatar>
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a class="text-link font-semibold">
+                        </a>{{notification.senderName}} sent you friend request.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '2'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <ion-avatar item-start>
+                                <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                                <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                            </ion-avatar>
+                                   
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a class="text-link font-semibold">
+                        </a> {{notification.senderName}} send you a smail.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '5'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <ion-avatar item-start>
+                                <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                                <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                            </ion-avatar>
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a class="text-link font-semibold">
+                        </a> You get smail reply from {{notification.senderName}} </div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+
+
+    			<div class="sl-item" *ngIf="notification.type == '4'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openBidPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> invited you to bid on job {{notification.others}}.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '200'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openBidPage('1')" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has been awarded you a job {{notification.others}}.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '3'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openFilesPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> shared a file with you</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '6'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openFilesPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has rejected a share file request of you</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '19'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openFilesPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has accepted a share file request of you</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '20'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openFilesPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has added new folder in shared files.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '21'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openFilesPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has added new file in shared files.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '22'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openFilesPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has deleted a folder from shared files.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '23'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openFilesPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has deleted a file from shared files.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '24'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openFilesPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has renamed a folder in shared files.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '25'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openFilesPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> is no longer participating on the file share for shared folder {{notification.others}}.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '7'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openRFIPage(notification.others,notification.info)" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has requested RFI on your trade {{notification.info?.trade_name}} of job {{notification.others}}.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '8'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openRfiPage(notification.info)" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has replied on your RFI for trade {{notification.info?.trade_name}} of job {{notification.others}}.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '26'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a (click)="openJobPage()" class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has just bid on your job {{notification.others}}.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '9'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has been rejected your friend request</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '37'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has been removed you as friend</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '38'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right">
+                        <div><a class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has shared a job {{notification.info?.job_name}}({{notification.info?.job_number}}) under company {{notification.info?.company_name}}</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '15'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div *ngIf="notification.isAdmin == '1'">
+                            <img src="assets/img/logo-icon.png">
+                        </div>
+                        <div *ngIf="notification.isAdmin != '1'">
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openLicensePage(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            {{notification.isAdmin == '1' ? 'Admin' : notification.senderName}}
+                        </a> {{notification.isAdmin == '1' ? 'has assigned your license to '+notification.others+' users' : ' has assigned a new licenses to you.'}}</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '16'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openLicensePage(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a> Your license has been used by <a class="text-link font-semibold">{{notification.senderName}}.</a></div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '27'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openLicensePage(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a> Your license key {{notification.others}} has been expired.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '31'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openLicensePage(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a> Your license key {{notification.others}} has been renewed.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '32'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="goToSmail(notification._id,notification.others)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a>{{notification.senderName}} has sent you an invitation to share a job.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '33'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="goToDash(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a>{{notification.senderName}} has been accepted your inviation to share a job.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '34'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="goToDash(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a>{{notification.senderName}} has been rejected your inviation to share a job.</div>
+                        <p>{{notification.created_on | timeAgo }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '35'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openSmail(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a>{{notification.senderName}} has requested RFI for job {{notification.others}}.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '36'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div *ngIf="notification.senderId != notification.receiverId">
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                        <div *ngIf="notification.senderId == notification.receiverId">
+                            <img src="assets/img/m7.png">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openJobPage(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a>{{notification.senderId == notification.receiverId ? 'Engineer' : notification.senderName}} has replied on your requested RFI for job {{notification.others}}.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '28'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/logo-icon.png">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openLicensePage(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a>Admin has extended your license ({{notification.others}}) expiry.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '29'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openLicensePage(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            
+                        </a> Your license has been activated.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '17'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div *ngIf="notification.isAdmin == '1'">
+                            <img src="assets/img/logo-icon.png">
+                        </div>
+                        <div *ngIf="notification.isAdmin != '1'">
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openLicensePage(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            {{notification.isAdmin == '1' ? 'Admin' : notification.senderName}}
+                        </a> has removed {{notification.isAdmin == '1' ? notification.senderName+' used license key assigned by you.' : 'your license key.'}}</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '30'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div *ngIf="notification.isAdmin == '1'">
+                            <img src="assets/img/logo-icon.png">
+                        </div>
+                        <div *ngIf="notification.isAdmin != '1'">
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openTransmittalPage(notification.info)">
+                        <div><a class="text-link font-semibold">
+                            {{notification.isAdmin == '1' ? 'Admin' : notification.senderName}}
+                        </a> has sent transmittal on job {{notification.info?.job_title}}.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '18'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div *ngIf="notification.isAdmin == '1'">
+                            <img src="assets/img/logo-icon.png">
+                        </div>
+                        <div *ngIf="notification.isAdmin != '1'">
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="openLicensePage(notification._id)">
+                        <div><a class="text-link font-semibold">
+                            {{notification.isAdmin == '1' ? 'Admin' : notification.senderName}}
+                        </a> {{notification.isAdmin == '1' ? 'Assigned license key to '+notification.senderName+' has been removed.' : 'Assigned license key has been removed.'}}</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+
+                <div class="sl-item" *ngIf="notification.type == '0'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="goToContacts()">
+                        <div><a class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has been accepted your friend request.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>  
+
+                <div class="sl-item" *ngIf="notification.type == '101'" (click)="readNotification(notification)" [ngClass]="(notification.read == 0) ? 'read-msg': ''">
+                    <div class="sl-left">
+                        <div>
+                            <img src="assets/img/m7.png" *ngIf="notification.image == ''">
+                            <img src="{{imageUrl + notification.image}}" *ngIf="notification.image != ''">
+                        </div>
+                    </div>
+                    <div class="sl-right" (click)="goToContacts()">
+                        <div><a class="text-link font-semibold">
+                            {{notification.senderName}}
+                        </a> has been accepted your friend requset.</div>
+                        <p>{{notification.created_on | timeAgo  }}</p>
+                    </div>
+                </div>
+                </ion-col>
+                <ion-col col-2>
+    			<button (click)="delete(notification._id,index)" btn-close ion-button color="blue"><ion-icon name="close"></ion-icon></button>  
+                </ion-col>
+            </ion-row>
+        </ng-container>        
+        </div>
+
+        <div class="no_notis" *ngIf="notifications == ''">
+        <ion-icon name="notifications-off"></ion-icon>
+            No Notifications Yet!
+        </div>
+    </div>
+	
+
+	
+	</ion-col>
+  </ion-row>
+</ion-grid>
+<div footer-height></div>
+</ion-content>

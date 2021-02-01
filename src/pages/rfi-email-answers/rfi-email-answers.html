@@ -1,0 +1,131 @@
+<ion-content padding lightgrey manage-job right-adendum has-header>
+<ion-row main-breadcrumb ion-fixed> 
+	<ion-col>
+		  <ol class="breadcrumb">
+	        <li (click)="root()"><a>Home</a></li>
+	        <li (click)="goToJobs()"><a>Jobs</a></li>
+	        <li (click)="backToTradeDash()"><a>{{active_job_breadcrumb}}</a></li> 
+	        <li (click)="backPage()"><a>{{page_type == '1' ? 'Email' : 'Smail'}}</a></li>
+	        <li class="active">View RFI Reply</li>
+	      </ol>
+	</ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-row>
+		  <ion-col col-12 col-lg-6 col-md-8 offset-lg-3 offset-md-2>
+				<ion-card>
+
+				  <ion-item>				  
+				    <h2>Ques:-<a href="{{APIURL}}/salvum/directory/pdfs/{{rfi?.pdf_link}}" target="_blank">see pdf</a></h2>
+				    <p>{{rfi?.ask_date | date:'medium'}}</p>
+				  </ion-item>
+
+				
+
+				  <ion-card-content>
+				      <p *ngIf="rfi?.description != undefined && rfi?.description != ''"><b>Description</b><br> {{rfi?.description}}</p>
+
+				      <p><b>Answers</b></p>
+                      <ng-container *ngFor="let ans of rfi?.reply ; let ind = index ">
+	
+		<p>
+			<span [innerHTML]="ans"></span>
+		</p>
+	
+		<p *ngIf = "rfi?.reply_files[ind] != '' && rfi?.reply_files[ind] != null">
+			<ion-fab right top float-left [style.z-index]="999-ind" not-answered>
+			    <button ion-fab color="light" mini title="Attachments"><ion-icon name="attach"></ion-icon></button>
+			    <ion-fab-list side="bottom">
+			      <ion-item p-tb-0  fnt14 *ngFor = "let afile of rfi?.reply_files[ind]">
+					 <span float-left>  {{afile.indexOf('_--_') >= 0 ? afile.split('_--_').pop(-1) : afile.split('____').pop(-1)}}</span>
+					  <a *ngIf="isBrowser ==  'true'" float-right item-end  (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{afile}}&ext={{afile.split('.').pop().toLowerCase()}}"  ><ion-icon name="download" item-end ></ion-icon></a>
+					  <a float-right item-end  *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+afile,afile)" href="javascript:void(0)"  ><ion-icon name="download" item-end ></ion-icon></a>
+			  	  </ion-item>
+			  	  <ion-item p-tb-0   fnt14 *ngIf = "rfi?.reply_files[ind] == '' || rfi?.reply_files[ind] == null">
+			  	  No Attachments Found.
+			  	  </ion-item> 
+			    </ion-fab-list>  
+			</ion-fab>
+		</p>
+		
+		
+		<ion-grid no-padding>
+	  <ion-row>
+				    <ion-col>
+				      <button no-padding ion-button icon-start clear small  mini title="Copy Answer" (click)="copyAnswer(ans)">
+				        <ion-icon name="copy"></ion-icon>
+				        <div>Copy</div>
+				      </button>
+				    </ion-col>
+				   
+				    <ion-col text-right m-t-10>
+				      <ion-note item-end>
+				       {{rfi?.reply_date[ind] | date:'medium'}}	
+				      </ion-note>
+				    </ion-col>
+				  </ion-row>
+</ion-grid>
+</ng-container>
+
+				  </ion-card-content>
+
+				
+
+				</ion-card>
+		</ion-col>
+</ion-row>
+
+
+<!-- <p>Ques:- <a href="{{APIURL}}/salvum/directory/pdfs/{{rfi?.pdf_link}}" target="_blank">see pdf</a></p>
+<p *ngIf="rfi?.description != undefined && rfi?.description != ''">Description :- {{rfi?.description}}</p>
+<p>{{rfi?.ask_date | date:'medium'}}</p>
+	<ion-row> -->
+		<!-- <ion-col>
+			<p>
+				<ion-fab right top float-left [style.z-index]="999-(-1)" not-answered>
+				    <button ion-fab color="light" mini><ion-icon name="attach"></ion-icon></button>
+				    <ion-fab-list side="bottom">
+				      <ion-item p-tb-0  fnt14 *ngFor = "let file of rfi?.question_files">
+						 <span float-left>  {{file.split('____').pop(-1)}}</span>
+						  <a  float-right item-end  (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}"  ><ion-icon name="download" item-end ></ion-icon></a>
+				  	  </ion-item>
+				  	  <ion-item p-tb-0   fnt14 *ngIf = "rfi?.question_files == '' || rfi?.question_files == null">
+				  	  No Attachments Found.
+				  	  </ion-item> 
+				    </ion-fab-list>  
+				</ion-fab>
+			</p>
+		</ion-col> -->
+	<!-- </ion-row>
+
+<p>Answers:-</p>
+<ng-container *ngFor="let ans of rfi?.reply ; let ind = index ">
+	<ion-col col-12>
+		<p>
+			<span [innerHTML]="ans"></span>
+		</p>
+	</ion-col>
+	<ion-col col-12>
+		<p *ngIf = "rfi?.reply_files[ind] != '' && rfi?.reply_files[ind] != null">
+			<ion-fab right top float-left [style.z-index]="999-ind" not-answered>
+			    <button ion-fab color="light" mini title="Attachments"><ion-icon name="attach"></ion-icon></button>
+			    <ion-fab-list side="bottom">
+			      <ion-item p-tb-0  fnt14 *ngFor = "let afile of rfi?.reply_files[ind]">
+					 <span float-left>  {{afile.split('____').pop(-1)}}</span>
+					  <a *ngIf="isBrowser ==  'true'" float-right item-end  (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{afile}}&ext={{afile.split('.').pop().toLowerCase()}}"  ><ion-icon name="download" item-end ></ion-icon></a>
+					  <a float-right item-end  *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+afile,afile)" href="javascript:void(0)"  ><ion-icon name="download" item-end ></ion-icon></a>
+			  	  </ion-item>
+			  	  <ion-item p-tb-0   fnt14 *ngIf = "rfi?.reply_files[ind] == '' || rfi?.reply_files[ind] == null">
+			  	  No Attachments Found.
+			  	  </ion-item> 
+			    </ion-fab-list>  
+			</ion-fab>
+		</p>
+		
+		<button ion-button color="light" mini title="Copy Answer" (click)="copyAnswer(ans)"><ion-icon name="copy"></ion-icon></button>
+		{{rfi?.reply_date[ind] | date:'medium'}}	
+	</ion-col>	
+<hr> 
+</ng-container> -->
+<div footer-height></div>
+</ion-content>

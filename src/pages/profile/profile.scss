@@ -1,0 +1,283 @@
+page-profile {
+	.success_mark{
+ 		font-size: 23px !important;
+ 		color: green !important;
+ 	}
+ 	.error_mark{
+ 		font-size: 23px !important; 
+ 		color: red !important;
+ 	}
+ 	.add_mark{
+ 		font-size: 28px !important; 
+ 	}	
+	[edit-group]
+	{
+			ion-list
+			{
+			 @include respond-to(handhelds2)
+			 {
+				margin-top:$value10!important;
+
+			 }
+			}	
+	}
+	[edit-hover]
+	{
+		&:hover{
+			opacity:0.7
+		}
+		cursor:pointer;
+	}
+[placeholder-text]
+{
+color:#999;
+
+}
+[profile-top] ion-icon{
+	top: 39px;
+}
+.form-custom-check
+{
+	&[checkbox-responsive]
+	{
+			 margin-top: -6px;
+			 margin-right: $value25;
+		        float: left;
+	
+		@include respond-to(handhelds2)
+		{
+				position: absolute;
+				right: $value15;
+				top: $value5;			display: inline-block;
+                margin-top: $value0;
+			margin-right: $value5;
+		}
+		
+label
+ {
+	 &.form-check-label
+	 {
+		 		position:relative;
+				cursor:pointer; 
+				float: left;
+			    font-size: $value10+2;
+				&::before
+				{
+						content: '';
+						border-radius: 2px;
+						position: absolute;
+						width: $value10;
+						height: $value10;
+						border-width: 2px;
+						border-style: solid;
+						border-color: #787878;
+						background-color: $fnt-white;
+                            margin-left: -2px;
+				}
+
+  }
+}
+
+
+
+.form-check-input
+{  
+
+
+
+	&:checked + .form-check-label
+	{ 
+	
+			&:after 
+			{		    margin-left: -2px;	
+				position: absolute;
+				background: #1f75d2;
+				width: -1+$value15;
+				height: -1+$value15;
+				content: "\f3ff";
+				left:0;
+				font-family: "Ionicons";
+				text-align: $center;
+				font-size: $value20;
+				line-height: $value15+2;
+				border-radius: 3px;
+				font-weight: 700;
+				color:$fnt-white;
+	   }
+	}
+}
+
+		input[type="checkbox"]
+		{
+		&.form-check-input
+		{
+			position: absolute;
+			opacity: 0;
+			z-index: -1;
+					}
+				}
+	}
+}
+}
+[group-head]
+{
+ion-list-header
+{
+.item-inner
+{
+font-weight:500
+}
+}
+ion-item-group
+{
+ion-icon
+{
+    font-size: $value20;
+	color:$darkblue2;
+    line-height: 28px;
+    margin-right: $value0!important;
+}
+}
+}
+[profile-image]
+{
+img.rounded-circle {
+  @include wh70;
+      object-fit: cover;
+  @include shadow-white;
+  border-radius:$br-ra50
+}
+ion-label
+{
+	margin-top:$value5+2 ;
+	margin-bottom:$value5;
+}
+background:$darkblue2
+}
+[profile-div]
+{
+/*display:flex;
+align-items:flex-end;*/
+display:inline-block;
+width:100%;
+ion-avatar
+{
+	 img
+	 {
+		 margin:auto;
+	 }
+}
+}
+[profile-top] 
+{
+margin-right:$value10;
+
+	ion-avatar
+	{
+		    display: inline-block;
+           position: relative;
+	}
+
+ion-icon
+ {
+    position: absolute;
+    top: $value0;
+    right: -$value4;
+  	@include wh30;
+    border-radius:  $br-ra50;
+    background: $darkblue2;
+    border: 2px solid $fnt-white;
+    color: $fnt-white;    
+    line-height: 26px;
+	cursor:pointer;
+	&:hover
+	{
+		/*opacity:0.7;*/
+		    background: #086dd2;
+	}
+}
+div
+{
+position:relative;
+    display: inline-flex;
+}
+}
+[main-profile]
+{
+
+[head-profile]
+{
+	ion-label
+	{
+		a
+		{
+			text-decoration:$none;
+			
+		}
+		
+	}
+@include respond-to(handhelds2)
+{
+margin-top:$value0!important;
+}
+}
+
+
+}
+ion-header
+{
+ion-navbar
+{
+ion-title
+{
+.toolbar-title
+{
+    font-weight: 500;
+	}
+	}
+	}
+}
+
+[main-profile]
+{
+[group-head]
+{
+ion-list-header
+{
+/*padding-left:$value8;*/
+@include respond-to(handhelds2)
+{
+ion-icon
+{    font-size: $value15+3;
+margin-right:$value10!important;
+}
+}
+}
+}
+}
+
+[bg-white]
+{
+background:$fnt-white;
+}
+[tabs]
+{
+ion-segment
+{
+ion-segment-button
+{
+
+ion-icon
+{
+display:block;
+font-size:$value20!important;
+line-height:normal!important;
+}line-height:normal!important;
+}
+
+}
+}
+[m-b-15]
+{
+margin-bottom:15px;
+}

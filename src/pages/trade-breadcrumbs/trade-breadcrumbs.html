@@ -1,0 +1,12 @@
+<ion-row class = "breadcrumbs-row">
+	<ion-col pos-right>
+		<button (click) = "clickedTrade('0')" class="trade-btn bg-active all-lft" id="btn0{{timestamp}}">
+			<ion-icon name="done-all"></ion-icon>
+			<span class="hideall" id="show0{{timestamp}}">All</span>
+		</button>
+		<button title="{{trade.trade_task}}" *ngFor="let trade of alltrades" (click) = "clickedTrade(trade._id)" class="trade-btn" id="btn{{trade._id}}{{timestamp}}">
+			<i class="{{trade.trade_icon}}"></i>
+			<span style="display: none;" class="hideall" id="show{{trade._id}}{{timestamp}}">{{trade.trade_name}}</span>
+		</button>	
+	</ion-col>
+</ion-row>   

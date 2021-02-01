@@ -1,0 +1,31 @@
+page-addcontract 
+{
+[fnt-gray]
+{
+    color: #999;
+}
+[border-none] {
+    border: none!important;
+}
+ion-item
+{
+&:last-child
+{
+border:$none!important;
+}
+}
+ion-item
+{
+ion-datetime
+{
+	padding-bottom:2px!important
+}
+ion-input
+{
+	&[p-t-11]
+	{
+	    padding-top: $value10+1;
+}
+}
+}
+}

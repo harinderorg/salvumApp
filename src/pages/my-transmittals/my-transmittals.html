@@ -1,0 +1,97 @@
+<ion-content padding lightgrey manage-job has-header *ngIf="isVisible == '1'" >
+<ion-row main-breadcrumb ion-fixed> 
+<ion-col>
+  <ol class="breadcrumb"> 
+	<li (click)="root()"><a>Home</a></li>
+	<li (click)="goToBids()"><a>Bidding</a></li>
+	<li (click)="backPage()"><a>{{bid_job_name}}</a></li>
+	<li class="active">Transmittals</li> 
+  </ol>
+</ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+   <ion-row > 
+      <ion-col col-xl-12 col-sm-12 col-12 paddingtop0 p-lr-0 clearboth>
+         <ion-list margin0 scroll-mobile>
+         	<ion-row *ngIf="my_transmittals != ''" hide-head-mobile>
+				<ion-col col-1 disp-flex></ion-col>
+				<ion-col col-3 disp-flex>Transmittal #</ion-col>
+				<ion-col col-2 disp-flex>Date Sent</ion-col>
+				<ion-col col-2 disp-flex>Sent By</ion-col>
+				<ion-col col-3 disp-flex>Comment</ion-col>
+				<ion-col col-1 disp-flex></ion-col>
+			</ion-row>
+			<expandable-list *ngFor="let transmittal of my_transmittals">
+
+				<expandable-list-item disabled = "false">
+					<span title>
+					<ion-row>
+						<ion-col col-1 disp-flex><i class="{{transmittal.trade_icon}}"></i></ion-col>
+						<ion-col col-3 disp-flex>
+						<span head style="display:none">Transmittal #</span><span paragraph>{{transmittal.subject}}(#{{transmittal.transmittal_number}})</span></ion-col>
+						<ion-col col-2 disp-flex>
+                        <span head style="display:none">Date Sent</span>
+						<span paragraph>{{transmittal.date_sent == null ? 'N/A' : transmittal.date_sent | date : 'MM/dd/y'}}</span></ion-col>
+						<ion-col col-2 disp-flex><span head style="display:none">Sent By </span><span paragraph> {{transmittal.user_name}}</span></ion-col>
+						<ion-col col-3 disp-flex  comment-para><span head style="display:none">Comments</span><span paragraph> {{transmittal.comments}}</span></ion-col>
+						<ion-col col-1 disp-flex icons-transmittal icons-my-transmittal>
+							<button (click)="downloadTransmittal(transmittal._id)" small ion-button clear item-end margin0 button-none pdg0 title="Download"><ion-icon name="download" fnt20></ion-icon></button>
+						</ion-col> 
+					</ion-row>
+					</span>
+					<span item *ngIf="transmittal.submittals != ''">
+             <div class="table-responsive">
+					<table class="table">
+					   <tr *ngFor="let submittal of transmittal.submittals">
+		            	  <td>
+						{{submittal.type}}
+						  </td>
+						  <td>
+						{{submittal.type == 'files' ? (submittal.item.search('____') >= 0 ? submittal.item.split('____').pop(-1) : submittal.item.split('_--_').pop(-1)): submittal.item}}
+						  </td>
+						  <td>
+						 {{submittal.code}}
+						  </td>
+						  <td>
+						 {{transmittal.trade_name}}
+						  </td>
+						  <td>{{transmittal.trade_task}}</td>
+						  <td>
+						  Approval
+						  </td>
+							<td  crsr-pntr (click)="submittalClicked(submittal.type,transmittal.tradeId,submittal.item)">As Requested &nbsp;&nbsp;<ion-icon name="arrow-round-forward"></ion-icon>
+						  </td>
+					   </tr>					
+					</table>
+					</div>
+
+
+
+
+
+
+					<!--ion-row *ngFor="let submittal of transmittal.submittals">
+						<ion-col col-1 fnt14 >{{submittal.type}}</ion-col>
+						<ion-col col-2 fnt14>{{submittal.type == 'files' ? (submittal.item.search('____') >= 0 ? submittal.item.split('____').pop(-1) : submittal.item.split('_--_').pop(-1)): submittal.item}}</ion-col>
+						<ion-col col-2 fnt14>{{submittal.code}}</ion-col>
+						<ion-col col-2 fnt14>{{transmittal.trade_name}}</ion-col>
+						<ion-col col-2 fnt14>{{transmittal.trade_task}}</ion-col>
+						<ion-col col-1 fnt14>Approval</ion-col>
+						<ion-col  crsr-pntr (click)="submittalClicked(submittal.type,transmittal.tradeId,submittal.item)" col-2 fnt14>As Requested &nbsp;&nbsp;<ion-icon name="arrow-round-forward"></ion-icon></ion-col>
+					</ion-row-->
+					</span>
+					<span item *ngIf="transmittal.submittals == ''">
+						<ion-row><ion-col fnt14>No Submittals Added.</ion-col></ion-row>
+					</span>
+				</expandable-list-item>
+			</expandable-list>
+       <ion-row>
+           <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="my_transmittals == ''">
+           	<ion-item border-none br-lt-grey>No Transmittals Found.</ion-item>
+           </ion-col>
+		      </ion-row>
+         </ion-list>
+      </ion-col>
+   </ion-row>
+<div footer-height></div>
+</ion-content>

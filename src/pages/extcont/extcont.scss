@@ -1,0 +1,39 @@
+page-extcont {
+	[p-b-10]
+	{
+		padding-bottom:$value10;
+		
+	}
+[box-shdw] {
+    -webkit-box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.05)
+}
+[list-external]
+{
+input[type="checkbox"]
+{
+    margin-top:-2+$value5;
+    margin-right:  -1+$value5;
+	
+}
+
+    background: $fnt-white;
+    margin-top: $value5;
+	
+		[external-contact]
+	{
+		.item-inner
+		{
+
+			button
+			{
+				&.item-button
+				{
+				height:2.1rem!important;
+				}
+			}
+		}
+	}
+
+}
+}

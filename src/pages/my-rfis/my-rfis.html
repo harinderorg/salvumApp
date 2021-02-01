@@ -1,0 +1,181 @@
+<ion-content padding lightgrey manage-job has-header>
+<ion-row main-breadcrumb ion-fixed> 
+	<ion-col>
+		  <ol class="breadcrumb"> 
+			<li (click)="root()"><a>Home</a></li>
+			<li (click)="goToBids()"><a>Bidding</a></li>
+			<li (click)="backPage()"><a>{{job_name}}</a></li>
+			<li class="active">RFIs</li> 
+		  </ol>
+	</ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-toolbar no-border-top add-trade no-padding>
+	<ion-segment [(ngModel)]="my_tab">
+	  <ion-segment-button value="pre_awarded">
+	  <ion-icon class="ion-ios-ribbon-outline" fnt14 m-r-5 visible-xs></ion-icon>
+	    <span hidden-xs>Pre Awarded</span>
+	  </ion-segment-button>
+	 
+	  <ion-segment-button value="awarded">
+	    <ion-icon class="ion-ios-trophy-outline" fnt14 m-r-5 visible-xs></ion-icon>
+	    <span hidden-xs>Awarded</span>
+	  </ion-segment-button>
+	</ion-segment>
+</ion-toolbar>
+<div padd-mob-16 [ngSwitch]="my_tab">
+	<ion-list  m-t-10 *ngSwitchCase="'pre_awarded'" bidjobs br-lt-grey>
+
+		<ion-row no-padding>
+    	<ion-col col-md-8 col-xl-9  col-9  *ngIf="all_pre_RFIs != ''"> 
+      	<ion-searchbar searchmob  paddingtop0 search-bar (ionInput)="getItems_pre($event)" p-lr-0></ion-searchbar>
+	    </ion-col>
+	    <ion-col col-md-4 col-xl-3  col-3    button-hide>
+	      <button (click) = "addRFIs()" ion-button color="blue" fnt-regular m-b-10 fnt-normal left><ion-icon name="add"></ion-icon> 
+		  <span class="btn-text"> Create New RFI</span>
+		  </button>
+	    </ion-col>
+	  	</ion-row>
+	   	<ion-row > 
+			<ion-col col-xl-12 col-sm-12 col-12 paddingtop0  clearboth right-adendum  *ngFor="let rfi of pre_RFIs , let indx = index ">
+			<ion-item-sliding #item br-lt-grey  list-hover>
+				<ion-item>
+					<ion-avatar item-start>
+					    <ion-icon *ngIf="rfi.image == '' || rfi.image == null || rfi.image == undefined"  circle-pic name="person" text-center></ion-icon>
+					    <img w-h-img circle-pic *ngIf="rfi.image != '' && rfi.image != null && rfi.image != undefined" src="{{APIURL}}/images/{{rfi.image}}">
+				    </ion-avatar>
+
+					<h2 fnt-bold float-left  m-r-10 m-t-2 white-normal>{{rfi.question}} <!-- <span *ngIf="rfi.question != rfi.question_reply"><br><a *ngIf="rfi.show_modified_ques != true" (click)="showModifiedQues(indx,'pre')">Show modified question</a><a *ngIf="rfi.show_modified_ques == true" (click)="hideModifiedQues(indx,'pre')">Hide</a></span> --></h2>
+
+					<!-- <h2 *ngIf="rfi.show_modified_ques == true" fnt-bold float-left  m-r-10 m-t-2 white-normal><br>{{rfi.question_reply}} </h2> -->
+					<ion-fab *ngIf = "rfi.question_files != '' && rfi.question_files != undefined" right top float-left [style.z-index]="9999-indx">
+					    <button ion-fab color="light" mini><ion-icon name="attach"></ion-icon></button>
+					    <ion-fab-list side="bottom">
+					      <ion-item  p-tb-0   fnt14 *ngFor = "let file of rfi.question_files">
+							<span float-left>   
+							{{file.indexOf('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}} </span>
+							  <a *ngIf="isBrowser ==  'true'" float-right item-end (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}" ><ion-icon name="download" item-end ></ion-icon></a>
+							  <a *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file,file)" href="javascript:void(0)" float-right item-end ><ion-icon name="download" item-end ></ion-icon></a>
+					  	  </ion-item>
+					  	  <ion-item p-tb-0   fnt14 *ngIf = "rfi.question_files == '' || rfi.question_files == undefined">
+					  	  No Attachments Found.
+					  	  </ion-item>  
+					    </ion-fab-list>  
+					</ion-fab>
+					<ion-note fnt14 item-end margin0 class="note note-md">{{rfi.question_date | date:'mediumDate'}}</ion-note>
+<!-- <div m-t-10  float-left w-100></div> -->
+				
+					<h3 clear-both fnt-regular float-left  m-r-10 *ngIf="rfi.answer == ''">not answered yet.</h3>
+					<h3 clear-both *ngIf="rfi.answer != ''" fnt-regular m-t-10>answered 
+					{{ rfi.answer_date[rfi.answer_date.length - 1] | timeAgo}}
+					</h3>
+
+					<button *ngIf="isBrowser == 'true'" (click)="rfiAnswers(rfi._id)" ion-button clear item-end margin0 button-none >
+                      <ion-icon name="eye" fnt20></ion-icon>
+                   	</button>
+
+					<!-- <ion-fab right top float-left [style.z-index]="999-indx" not-answered>
+					    <button ion-fab color="light" mini><ion-icon name="attach"></ion-icon></button>
+					    <ion-fab-list side="bottom">
+					      <ion-item p-tb-0  fnt14 *ngFor = "let afile of rfi.answer_files">
+							 <span float-left>  {{afile.split('____').pop(-1)}}</span>
+							  <a  float-right item-end  (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{afile}}&ext={{afile.split('.').pop().toLowerCase()}}"  ><ion-icon name="download" item-end ></ion-icon></a>
+					  	  </ion-item>
+					  	  <ion-item p-tb-0   fnt14 *ngIf = "rfi.answer_files == ''">
+					  	  No Attachments Found.
+					  	  </ion-item> 
+					    </ion-fab-list>  
+					</ion-fab> -->
+				</ion-item>
+				<ion-item-options side="right" *ngIf="isBrowser == 'false'">
+                   <button (click)="rfiAnswers(rfi._id)" ion-button color="secondary" >
+                      <ion-icon name="eye"></ion-icon>
+                      View
+                   </button>
+                </ion-item-options>
+				</ion-item-sliding>
+			</ion-col>
+		    <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="pre_RFIs == ''">
+		   			<ion-item  no-padding>No RFI Found.</ion-item>
+		    </ion-col>
+	   </ion-row>
+	
+	</ion-list>
+
+	<ion-list  m-t-10 *ngSwitchCase="'awarded'" bidjobs br-lt-grey>
+	
+		<ion-row no-padding>
+	    <ion-col  col-md-8 col-xl-9  col-9   *ngIf="all_post_RFIs != ''"> 
+	      <ion-searchbar paddingtop0 search-bar (ionInput)="getItems_post($event)" p-lr-0></ion-searchbar>
+	    </ion-col>
+	    <ion-col  col-md-4 col-xl-3  col-3  button-hide>
+	      <button (click) = "addRFIs()" ion-button color="blue" fnt-regular m-b-10 fnt-normal left><ion-icon name="add"></ion-icon> <span class="btn-text"> Create New RFI</span></button>
+	    </ion-col>
+	  	</ion-row>
+	   	<ion-row > 
+			<ion-col col-12 clearboth *ngFor="let rfi of post_RFIs , let indx = index " right-adendum >
+			<ion-item-sliding #item br-lt-grey  list-hover>
+				<ion-item  >
+					<ion-avatar item-start>
+					    <ion-icon *ngIf="rfi.image == '' || rfi.image == null || rfi.image == undefined"  circle-pic name="person" text-center></ion-icon>
+					    <img w-h-img circle-pic *ngIf="rfi.image != '' && rfi.image != null && rfi.image != undefined" src="{{APIURL}}/images/{{rfi.image}}">
+				    </ion-avatar>
+
+					<h2 fnt-bold float-left  m-r-10 m-t-2 white-normal>{{rfi.question}}<!-- <span *ngIf="rfi.question != rfi.question_reply"><br><a *ngIf="rfi.show_modified_ques != true" (click)="showModifiedQues(indx,'post')">Show modified question</a><a *ngIf="rfi.show_modified_ques == true" (click)="hideModifiedQues(indx,'post')">Hide</a></span> --></h2>
+					<!-- <h2 *ngIf="rfi.show_modified_ques == true" fnt-bold float-left  m-r-10 m-t-2 white-normal>{{rfi.question_reply}} </h2> -->
+					<ion-fab *ngIf = "rfi.question_files != '' && rfi.question_files != undefined" right top float-left >
+					    <button ion-fab color="light" mini><ion-icon name="attach"></ion-icon></button>
+					    <ion-fab-list side="bottom">
+					      <ion-item p-tb-0   fnt14 *ngFor = "let file of rfi.question_files">
+							<span float-left>  
+							{{file.indexOf('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}} </span> 
+							  <a *ngIf="isBrowser ==  'true'" float-right  item-end  (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}" ><ion-icon name="download" item-end ></ion-icon></a>
+							  <a float-right  item-end  *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file,file)" href="javascript:void(0)" ><ion-icon name="download" item-end ></ion-icon></a>
+					  	  </ion-item>
+					  	  <ion-item p-tb-0 fnt14 *ngIf = "rfi.question_files == '' || rfi.question_files == undefined">
+					  	  No Attachments Found.
+					  	  </ion-item> 
+					    </ion-fab-list>  
+					</ion-fab>	
+					 <ion-note fnt14 item-end margin0 class="note note-md">{{rfi.question_date | date:'mediumDate'}}</ion-note>
+                        <div m-t-10  float-left w-100></div>
+	
+					<h3 clear-both fnt-regular float-left m-r-10 *ngIf="rfi.answer == ''">not answered yet.</h3>
+					<h3 clear-both *ngIf="rfi.answer != ''" fnt-regular m-t-10>answered 
+					{{ rfi.answer_date[rfi.answer_date.length - 1] | timeAgo}}
+					</h3>
+ 
+					<button *ngIf="isBrowser == 'true'" (click)="rfiAnswers(rfi._id)" ion-button clear item-end margin0 button-none >
+                      <ion-icon name="eye" fnt20></ion-icon>
+                   	</button>
+
+					<!-- <ion-fab right top not-answered   float-left style="z-index: 999;">
+					    <button ion-fab color="light" mini><ion-icon name="attach"></ion-icon></button>
+					    <ion-fab-list side="bottom">
+					      <ion-item  p-tb-0 fnt14 *ngFor = "let afile of rfi.answer_files">
+							 <span float-left> {{afile.split('____').pop(-1)}}</span>
+							  <a  float-right item-end  (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{afile}}&ext={{afile.split('.').pop().toLowerCase()}}" ><ion-icon name="download" item-end ></ion-icon></a>
+					  	  </ion-item>
+					  	  <ion-item p-tb-0  fnt14 *ngIf = "rfi.answer_files == ''">
+					  	  No Attachments Found.
+					  	  </ion-item> 
+					    </ion-fab-list>  
+					</ion-fab> -->
+				</ion-item>
+				<ion-item-options side="right" *ngIf="isBrowser == 'false'">
+                   <button (click)="rfiAnswers(rfi._id)" ion-button color="secondary" >
+                      <ion-icon name="eye"></ion-icon>
+                      View
+                   </button>
+                </ion-item-options>
+				</ion-item-sliding>
+			</ion-col>
+		    <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="post_RFIs == ''">
+		   		<ion-item>No RFI Found.</ion-item>
+		    </ion-col>
+	   </ion-row>
+
+	</ion-list>
+</div>
+<div footer-height></div> 
+</ion-content>

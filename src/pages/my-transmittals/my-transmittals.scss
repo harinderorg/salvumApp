@@ -1,0 +1,12 @@
+page-my-transmittals {
+@include respond-to(handhelds2)
+{
+	[icons-my-transmittal]
+	{
+	&[icons-transmittal]
+	{
+	max-width:50px!important
+	}
+	}
+}
+}

@@ -1,0 +1,14 @@
+page-submitrfi {
+  @include respond-to(handhelds2)
+  {
+    [bg-white]
+	{
+	  background:$whitecolor;
+	}
+	[padd-mob-lr0]
+	{
+	  padding-left:$value0;
+	  padding-right:$value0;
+	}
+  }
+}

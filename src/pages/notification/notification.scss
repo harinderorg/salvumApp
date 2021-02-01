@@ -1,0 +1,105 @@
+page-notification {
+
+}
+.no_notis{
+  text-align : center;
+  ion-icon{
+    font-size: 200px; 
+    display: block;
+    color: #8f98a0;
+  }
+}
+[all-notification]
+{ .read-msg {
+    background: #cce2ea!important;
+    padding: $value10+2 $value0;
+       @include respond-to(handhelds2)
+{    padding: $value5 $value0;
+}
+}
+[btn-close]
+{
+
+    float: right;
+    padding: $value5 $value10;
+    height: auto;
+    @include respond-to(handhelds2)
+{
+      padding: 3px 6px;
+    height: auto;
+    float: right;
+
+  }
+}
+[btn-remove]
+{
+	float: right;
+     padding: $value5 $value10;
+    font-size: -1+$value15;
+    height: auto;
+    @include respond-to(handhelds2)
+    {
+	    padding: 3px $value5;
+	    height: auto;
+	    font-size:$value10+2;
+	    float: right;
+	    margin: $value0 $value10 $value0 $value0;
+    }
+}
+@include respond-to(handhelds2)
+{
+    padding:  $value15 -2+$value5 $value15 $value15;
+  .box-title
+  {
+  font-size:-1+$value15;
+  }
+ .sl-item {
+    margin-top: $value5;
+    margin-bottom: $value5;
+}
+  .sl-right {
+    padding-left: $value25;
+}
+  .sl-left {
+    margin-left: -$value30;
+    }
+ .steamline {
+    margin-left: $value20;
+    margin-top: $value10;
+}
+}
+
+.sl-item
+{
+.sl-left
+{
+img
+{
+@include shadow-white;
+}
+}
+.sl-right
+{
+div
+{
+font-size:$value17;
+@include respond-to(handhelds2)
+{
+font-size:$value10+2;
+}
+}
+p
+{
+font-size:-1+$value15; margin: $value0;
+@include respond-to(handhelds2)
+{
+font-size:$value10+2;    margin: $value0;
+}
+}
+}
+&.read-msg
+{
+	background:#f2f7f9;
+}
+}
+}

@@ -1,0 +1,64 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Edit Job</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+<ion-row>
+<ion-col col-12>
+<form [formGroup]="form" (ngSubmit)="editJob()">
+  <ion-item p-lr-0>
+    <ion-label floating fnt-regular>Job/PO No*</ion-label>
+    <ion-input type="text" [(ngModel)] = "job_number" name="job_number" formControlName="job_number"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="form.get('job_number').touched && form.get('job_number').errors && form.get('job_number').hasError('required')" class="error-text-danger">Please enter a valid Job/PO number</ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label floating fnt-light fnt-regular>Job Name</ion-label>
+    <ion-input type="text" [(ngModel)] = "job_title" name="job_title" formControlName="job_title"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="form.get('job_title').touched && form.get('job_title').errors && form.get('job_title').hasError('required')" class="error-text-danger">Please enter a valid job title</ion-item>
+
+	<ion-item p-lr-0>
+   <ion-label floating fnt-light fnt-regular>Job Status</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "status" name="status" formControlName="status">
+      <ion-option [disabled]="true" value="0">Pending </ion-option> 
+      <ion-option value="1">Open </ion-option>         
+      <ion-option value="2">Closed </ion-option>        
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="form.get('status').touched && form.get('status').errors && form.get('status').hasError('required')" class="error-text-danger">Please enter a valid job status</ion-item>
+
+  <ion-item p-lr-0>
+   <ion-label floating fnt-light fnt-regular>Company Name*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "companyId" name="companyId" formControlName="companyId">
+      <ion-option *ngFor="let company of companies" value="{{company._id}}">{{company.company_name}}</ion-option>   
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="form.get('companyId').touched && form.get('companyId').errors && form.get('companyId').hasError('required')" class="error-text-danger">Please select a valid company</ion-item>
+
+  <div padding p-b-0 p-lr-0>
+    <button ion-button color="darkblue" block  fnt-regular type="submit">Save</button>
+  </div>
+</form>
+ </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col col-12 *ngFor="let sharedUser of sharedUsers">
+    <ion-item p-lr-0>
+    <ion-label>{{sharedUser.name}}</ion-label>
+      <!--ion-label fnt-light fnt-regular>Privilege</ion-label-->
+      <ion-select (ionChange)="changeSharedPrivileges(sharedUser.userId,sharedUser.priv)" cancelText="Cancel" okText="Okay" [(ngModel)] = "sharedUser.priv">
+        <ion-option value="0">View</ion-option>         
+        <ion-option value="1">Edit</ion-option>        
+      </ion-select>
+    </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-content>

@@ -1,0 +1,98 @@
+<div (click)="closeDropDown()" class="shadow" style="display: none;"></div>
+<ion-content padding lightgrey manage-job (window:resize)="caclHeight()" has-header>
+<div ion-fixed id="calc_height_down{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb> 
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="goToJobs()"><a>Jobs</a></li>
+        <li (click)="backToPage()"><a>{{active_job_breadcrumb}}</a></li> 
+        <li class="active">Downloads</li>
+      </ol>
+    </ion-col>
+</ion-row>
+<!-- <trade-breadcrumbs (click) = "clickTrade()"></trade-breadcrumbs> -->
+<ion-row class="breadcrumbs-row" *ngIf="all_contacts != ''">
+  <ion-col pos-right col-12 col-md-3 col-sm-3>
+    <ng2-dropdown (onShow)="onDropdownShow()">
+      <ng2-dropdown-button [showCaret]="true">
+          Filter <div class="filter_icons" (click)="$event.stopPropagation()">
+        <a [ngClass]="sort_icon == true ? 'active' : ''" (click)="sortTrades('a')">ABC</a><img *ngIf="sort_icon == true" width="12" height="12" src="assets/img/{{order_default_p == false ? 'down' : 'up'}}.png">&nbsp;&nbsp;&nbsp;
+        <a [ngClass]="sort_icon == false ? 'active' : ''" (click)="sortTrades('n')">123</a><img *ngIf="sort_icon == false" width="12" height="12" src="assets/img/{{order_advanced_p == false ? 'down' : 'up'}}.png">
+      </div>
+      </ng2-dropdown-button>
+      <ng2-dropdown-menu dropmenu>
+      
+      <div padding>
+        <ion-segment [(ngModel)]="nav_filter" class="filter_list">
+          <ion-segment-button value="default">
+            Default <ion-icon cls (click)="cancelAllFilters('d')" name="close"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="advanced">
+            Advanced <ion-icon cls (click)="cancelAllFilters('a')" name="close"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <div [ngSwitch]="nav_filter" class="filter_list">
+        <ion-list *ngSwitchCase="'default'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of tradeTypes | orderBy: order_default : order_default_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trade_names.indexOf(trade.trade_name) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>All {{trade.trade_name}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'advanced'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of trades | orderBy: order_advanced : order_advanced_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trades.indexOf(trade.tradeId) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>{{trade.trade_task?.length > 13 ? trade.trade_task.substr(0,13)+'...' : trade.trade_task}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+      </div>
+      </ng2-dropdown-menu>
+    </ng2-dropdown> 
+  </ion-col>
+  <ion-col col-12 col-sm-9 col-md-9>
+  <div class="top-scorll-list">
+  <div class="self-control">
+    <ion-icon lefticon name="ios-arrow-dropleft-circle" (click)="scroll('left')"></ion-icon>
+    <ion-icon  righticon name="ios-arrow-dropright-circle" (click)="scroll('right')"></ion-icon>
+  </div>
+  <div class="drop-scroll">   
+      <button title="{{trade.trade_task}}" *ngFor="let trade of filter_list; let i = index" class="trade-btn">
+        <i class="{{trade.trade_icon}}"></i> {{trade.trade_task?.length > 25 ? trade.trade_task.substr(0,25)+'...' : trade.trade_task}}
+        <ion-icon (click)="cancelFilter(trade,i)" name="close"></ion-icon>
+      </button>    
+  </div>
+  </div>
+  </ion-col>
+</ion-row>
+</div>
+<div fixed_height clearfix id="fixed_height_down{{timestamp}}"></div>
+   <ion-row margin-top-30> 
+    <ion-col col-6 col-md-3 col-lg-3 col-xl-2 text-center file-manager *ngFor="let download of sorted_downloads">
+      <div class="white-box" margin0> 
+        <div>
+        <ng-container *ngIf="has_thumbs.indexOf(download.name.split('.').pop().toLowerCase()) >= 0">
+        <img *ngIf="is_video.indexOf(download.name.split('.').pop().toLowerCase()) >= 0" text-center src="{{APIURL}}/salvum/directory/thumbnails/{{download.name.substr(0, download.name.lastIndexOf('.'))}}-thumbnail-320x240-0001.png"/>
+        <img *ngIf="is_video.indexOf(download.name.split('.').pop().toLowerCase()) == -1" text-center src="{{APIURL}}/salvum/directory/bids_data/{{download.name}}"/>
+        </ng-container> 
+
+        <img *ngIf="has_thumbs.indexOf(download.name.split('.').pop().toLowerCase()) == -1" text-center src="assets/img/{{this.file_types.indexOf(download.name.split('.').pop().toLowerCase()) >= 0 ? download.name.split('.').pop().toLowerCase() : 'txt'}}.png"/> 
+
+        </div>
+      </div>
+      <h6 fnt-regular>{{download.name.indexOf('_--_') >= 0 ? download.name.split('_--_').pop(-1) : download.name.split('____').pop(-1)}} </h6>
+      <p>{{download.date_created | date : 'medium'}}</p>
+    </ion-col>
+    <ion-col col-12 *ngIf="sorted_downloads == ''">
+      <ion-item border-none br-lt-grey>No Downloads Found.</ion-item>
+    </ion-col>
+  </ion-row>
+<div footer-height></div>
+</ion-content>

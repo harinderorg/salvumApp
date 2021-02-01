@@ -1,0 +1,106 @@
+[
+	{
+		"name" : "Plumbing",
+		"icon" : "flaticon-water"
+	},
+	{
+		"name" : "Electrical",
+		"icon" : "flaticon-flash"
+	},
+	{
+		"name" : "Painter",
+		"icon" : "flaticon-paint"
+	},
+	{
+		"name" : "Sheetrock",
+		"icon" : "flaticon-cutter"
+	},
+	{
+		"name" : "Carpentry",
+		"icon" : "flaticon-hammer"
+	},
+	{
+		"name" : "Flooring",
+		"icon" : "flaticon-floor"
+	},
+	{
+		"name" : "Stairs",
+		"icon" : "flaticon-stair"
+	},
+	{
+		"name" : "Banister",
+		"icon" : "flaticon-floor-1"
+	},
+	{
+		"name" : "Tile",
+		"icon" : "flaticon-floor-2"
+	},
+	{
+		"name" : "Carpet",
+		"icon" : "flaticon-carpet"
+	},
+	{
+		"name" : "Cabinet",
+		"icon" : "flaticon-cabinet"
+	},
+	{
+		"name" : "Mason",
+		"icon" : "flaticon-worker"
+	},
+	{
+		"name" : "Concrete",
+		"icon" : "flaticon-concrete"
+	},
+	{
+		"name" : "Roofing",
+		"icon" : "flaticon-roof"
+	},
+	{
+		"name" : "Chimney",
+		"icon" : "flaticon-chimney"
+	},
+	{
+		"name" : "Windows",
+		"icon" : "flaticon-window"
+	},
+	{
+		"name" : "Doors",
+		"icon" : "flaticon-door"
+	},
+	{
+		"name" : "Garage Door",
+		"icon" : "flaticon-stockroom"
+	},
+	{
+		"name" : "Fence",
+		"icon" : "flaticon-barrier"
+	},
+	{
+		"name" : "Landscaping",
+		"icon" : "flaticon-park"
+	},
+	{
+		"name" : "Excavating",
+		"icon" : "flaticon-tractor"
+	},
+	{
+		"name" : "Tree Removal",
+		"icon" : "flaticon-chainsaw"
+	},
+	{
+		"name" : "Sprinklers",
+		"icon" : "flaticon-sprinkler"
+	},
+	{
+		"name" : "Pavers",
+		"icon" : "flaticon-floor-3"
+	},
+	{
+		"name" : "Paving",
+		"icon" : "flaticon-roller"
+	},
+	{
+		"name" : "Others",
+		"icon" : "flaticon-business-and-finance"
+	}
+]

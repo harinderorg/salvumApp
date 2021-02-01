@@ -1,0 +1,90 @@
+<ion-header modal-white>
+
+  <ion-navbar>
+    <ion-title text-centers>{{isEdit == 1 ? 'Edit' : 'Add'}} {{isCoworker == '1' ? 'Coworker' : 'Contact'}}</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ng-container *ngIf="(isMember == '0' && isEdit == 1) || isEdit != 1">
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-light fnt-regular>Name <span redcolor>*</span></ion-label>
+    <ion-input type="text" [(ngModel)] = "invite_name"></ion-input>
+  </ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-light fnt-regular>Email <span redcolor>*</span></ion-label>
+    <ion-input type="email" [(ngModel)] = "invite_email"></ion-input>
+  </ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-light fnt-regular>Title</ion-label>
+    <ion-input type="text" [(ngModel)] = "invite_title"></ion-input>
+  </ion-item>
+  </ng-container>
+
+  <ion-item p-lr-0 *ngIf="show_privilege != '0' && isCoworker != '1'">
+    <ion-label stacked fnt-light fnt-regular>Privilege</ion-label>
+    <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)] = "privilege" >
+      <ion-option value="0">Engineer</ion-option>   
+      <ion-option value="1">Architect</ion-option> 
+      <ion-option value="3">Project Manager</ion-option>    
+      <ion-option value="2">Other</ion-option>    
+    </ion-select>
+  </ion-item>
+
+  <ion-item p-lr-0 *ngIf="show_privilege != '0' && isCoworker == '1'">
+    <ion-label stacked fnt-light fnt-regular>Privilege</ion-label>
+    <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)] = "privilege" >
+      <ion-option value="0">Linked</ion-option>   
+      <ion-option value="1">Admin</ion-option>   
+      <ion-option value="2">Manager</ion-option>   
+      <ion-option value="3">Project Manager</ion-option>   
+      <ion-option value="4">Secretary</ion-option>  
+    </ion-select>
+  </ion-item>
+
+  <ng-container *ngIf="(isMember == '0' && isEdit == 1) || isEdit != 1">
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-light fnt-regular>Company</ion-label>
+    <ion-input type="text" [(ngModel)] = "invite_company"></ion-input>
+  </ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-light fnt-regular>Phone Number</ion-label>
+    <ion-input type="number" onkeydown="javascript: return (event.keyCode == 69 || event.keyCode == 189 || event.keyCode == 190) ? false : true" [(ngModel)] = "invite_phone" ></ion-input>  
+  </ion-item>
+
+  <ion-item p-lr-0 *ngIf="(invite_phone.length != 0) && invite_phone.length < 8 || invite_phone.length > 12">
+    <p redcolor>Phone Number length should be between 8-12 numbers.</p>
+  </ion-item>
+  </ng-container>
+
+  <ion-item p-lr-0 *ngIf="filterTradeId == '0'">
+   <ion-label stacked fnt-light fnt-regular>Select Trade <span redcolor>*</span></ion-label>
+    <ion-select [multiple]="isMultiple == '1' || isCoworker == '1'" cancelText="Cancel" okText="Okay!" [(ngModel)] = "tradeId">
+      <ion-option *ngFor="let trade of alltrades" value="{{trade._id}}">
+      {{trade.trade_name}} ({{trade.trade_task}})</ion-option>   
+    </ion-select>
+  </ion-item>
+
+  <div padding p-b-0 p-lr-0>
+  <ng-container *ngIf="(isMember == '0' && isEdit == 1) || isEdit != 1">
+    <button [disabled]="(invite_phone.length > 0 && (invite_phone.length < 8 || invite_phone.length > 12)) ? true : false" *ngIf="trade_page != '1'" ion-button color="darkblue" block  fnt-regular type="button" (click) = "addContactEvent(invite_name,invite_email,invite_title,invite_company,invite_phone,tradeId,privilege)">Save</button>
+
+    <button [disabled]="(invite_phone.length > 0 && (invite_phone.length < 8 || invite_phone.length > 12)) ? true : false" *ngIf="trade_page == '1'" ion-button color="darkblue" block  fnt-regular type="button" (click) = "addContactTrade(invite_name,invite_email,invite_title,invite_company,invite_phone,privilege)">Save</button>
+  </ng-container>
+  <ng-container *ngIf="isMember == '1' && isEdit == 1">
+  <button ion-button color="darkblue" block  fnt-regular type="button" (click) = "editContactTrade(privilege,tradeId)">Save</button>
+  </ng-container>
+  </div>
+
+
+</ion-content>

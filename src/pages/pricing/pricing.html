@@ -1,0 +1,102 @@
+<ion-content padding lightgrey has-header>
+   <ion-row main-breadcrumb ion-fixed>
+      <ion-col>
+         <ol class="breadcrumb">
+            <li (click)="root()"><a>Home</a></li>
+            <li class="active">Upgrade package</li>
+         </ol>
+      </ion-col>
+   </ion-row>
+   <div breadcrumb-height></div>
+   <ion-grid >
+      <div class="cd-pricing-switcher">
+         <p class="fieldset">
+            <input type="radio" name="duration-1" value="monthly" id="monthly-1" (click)="changePrice(0, 30)" checked> 
+            <label for="monthly-1">Monthly</label>
+            <input type="radio" name="duration-1" value="yearly" id="yearly-1" (click) ="changePrice(1 , 90)">
+            <label for="yearly-1">Quarterly</label>
+            <input type="radio" name="duration-1" value="yearly" id="yearly-2" (click) ="changePrice(2 , 180)">
+            <label for="yearly-2">Half Yearly</label>
+            <input type="radio" name="duration-1" value="yearly" id="yearly-3" (click) ="changePrice(3, 360)">
+            <label for="yearly-3">Yearly</label>
+            <!--span class="cd-switch"></span-->
+         </p>
+      </div>
+      <ion-row>
+	      <ion-col col-12 col-xl-4 offset-xl-4  offset-md-3 col-sm-12  col-md-6 >
+        <ion-item border-none br-lt-grey >
+          <ion-label fnt-regular selected="true">Select license</ion-label>
+          <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)]="licenses"  (ionChange)="addPrice($event)">
+          <ion-option value="{{item.start}}/{{item.price}}" *ngFor="let item of lincesArr" >{{item.start}}(+${{item.price}})</ion-option>
+          </ion-select>
+        </ion-item>
+		    </ion-col>
+
+        <ion-col col-12 p-lr-0>
+        <ion-list radio-group [(ngModel)]="check_value" *ngIf="isVisible == true">
+        <ion-row>
+          <ion-col col-6>
+            <ion-item>
+              <ion-label>Under existing company</ion-label>
+              <ion-radio checked value="0"></ion-radio>
+            </ion-item>
+          </ion-col>
+          <ion-col col-6>
+            <ion-item>
+              <ion-label>Under new company</ion-label>
+              <ion-radio value="1"></ion-radio>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        </ion-list>
+
+        <ion-item *ngIf="check_value == '0'">
+          <ion-label>Select Company</ion-label>
+          <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)]="companyId">
+            <ion-option value="{{company._id}}" *ngFor="let company of companies" >{{company.company_name}}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="check_value == '1'">
+         <ion-label floating fnt-light fnt-regular>Company Name*</ion-label>
+          <ion-input type="text" [(ngModel)] = "company_name"></ion-input>
+        </ion-item>
+        </ion-col>
+
+
+			 <ion-col col-12 p-lr-0>
+        <div *ngFor="let item of packageArr;" w-100>
+			      <ion-row>
+          <ion-col col-12 col-xl-4 offset-xl-4  offset-md-3 col-sm-12  col-md-6  *ngIf="item.price != 0 && item.price1 != 0 && item.price2 != 0 && item.price3 != 0">
+            <div class="pricing-box" >
+               <div class="pricing-head ">
+                  <ion-icon name="pricetag"></ion-icon>
+                  <h4 fnt-regular>{{item.title}}</h4>
+                  <div class="underline"></div>
+                  <h3 fnt-regular ><sup>$</sup>{{finalprice}}</h3>
+               </div>
+               <ion-list>
+                  <ion-item fnt-regular *ngFor="let feature of item.feature_arr;" >{{feature}}</ion-item>
+               </ion-list>
+
+               
+                <ion-item  check-package>
+
+                  <ion-label>Make Recurring Billing</ion-label>
+                  <ion-checkbox [(ngModel)]="is_recurring_billing"></ion-checkbox>
+                
+                </ion-item>
+               
+               <button ion-button color="white" round fnt-bold (click) = "Purchase(item,is_recurring_billing)">{{subscription_amount > '0' ? 'Renew' : 'Purchase'}}</button>
+            </div>
+          </ion-col>
+		 </ion-row>
+        </div>
+		          </ion-col>
+          <ion-col col-12 text-center p-lr-0>
+            <button ion-button color="green" fnt-normal (click)="openExtraspacePage()">Buy Extra Space</button>
+          </ion-col>
+      </ion-row>
+   </ion-grid>
+<div footer-height></div> 
+</ion-content>

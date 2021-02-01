@@ -1,0 +1,48 @@
+
+page-model {
+[brdr-none]
+{
+border:$none!important;
+}
+[validation-msg]
+{
+    
+ margin: $value5 $value0;
+    color: #ff0000;
+}
+
+.iti-input
+{
+width:100%!important  ;
+}
+[ fnt-12]
+{
+font-size:$value10+2;
+}
+[tags-main]
+{
+max-width:100%!important;
+[tags-text]
+{
+    display: block;
+    float: left;
+    font-family: sans-serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-right: $value5;
+    margin-bottom: $value5;
+    padding: -1+$value5 $value10;
+    max-height: $value30;
+    border-radius: 0;
+    background-color:#4a8bfc;
+  	color:$fnt-white;
+	[tags-icon]
+	{
+	color:$fnt-white;
+	}
+}
+}
+}
+.success{
+    text-align:center;
+}

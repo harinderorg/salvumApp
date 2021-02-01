@@ -1,0 +1,60 @@
+page-walletinner {
+ion-content
+{
+	 @include respond-to(handhelds2)
+	{
+	padding:$value5!important;
+	.scroll-content
+	{
+	padding:$value5!important;
+	}
+	ion-list
+	{
+	margin-bottom:$value5!important;
+	}
+	}
+}
+[wallet-main]
+{
+
+
+.item-inner
+{
+border-bottom:$none!important;
+
+ion-note.note {
+	&[my-date]
+	 {
+		 
+		 	@include respond-to(handhelds)
+	{
+    position: absolute;
+    right: 16px;
+    top: $value10;
+}
+	 }
+}
+
+}
+}
+}
+
+button.alert-button.alert-button-md.alert-button-default.alert-button-default-md
+{
+    flex: 1 1 auto;
+}
+.alert-button-group
+{
+border-top:1px solid #eee;
+}
+.alert-md 
+{
+
+.alert-button
+{ 
+.button-inner 
+{
+    justify-content: center;
+}
+}
+}

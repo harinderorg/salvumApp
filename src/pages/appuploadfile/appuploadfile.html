@@ -1,0 +1,57 @@
+<ion-header modal-white>
+
+  <ion-navbar>
+    <ion-title>Upload Files</ion-title>
+		<ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <button small type="button" class="blue" ion-button (click)="presentActionSheet()">
+        <ion-icon name="cloud-upload" m-r-5></ion-icon> Choose File
+    </button>
+
+<div table-responsive>
+            <table class="table table-queue" width="100%">
+    <thead>
+    <tr>
+        <th width="">Name</th>     
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let image of imagesArray; let i = index ">
+        <td><strong>{{image}}</strong></td>
+     
+        <td nowrap>
+            <button small type="button" class="blue" ion-button (click)="uploadImage(image, i)">				
+				  <ion-icon name="cloud-upload"></ion-icon>
+            </button>
+            <!-- <button small type="button" class="blue" ion-button>            
+				
+				 <ion-icon name="close"></ion-icon>
+            </button> -->
+            <button  small type="button" class="blue" ion-button (click)="removeFile(image, i)">
+				
+				 <ion-icon name="trash"></ion-icon>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+  <button small type="button" class="blue" ion-button (click)="uploadAllFiles()">
+         <ion-icon name="cloud-upload" m-r-5></ion-icon> Upload all
+    </button>
+
+    <button  small type="button" class="blue" ion-button (click)="dismisss()">
+  <ion-icon name="close" m-r-5></ion-icon> Close
+    </button>
+</ion-content>

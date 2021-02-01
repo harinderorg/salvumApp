@@ -1,0 +1,101 @@
+<ion-content padding lightgrey members-main has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li class="active">Members</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-searchbar [(ngModel)]="searchTerm" (ionInput)="setFilteredItems(searchTerm)" p-lr-5 padding-top0 *ngIf="allMembers?.length > 0"></ion-searchbar>
+
+<ion-list>
+  <ion-row class="row ">
+  <ion-col col-md-6 col-lg-4 col-sm-6 col-12  *ngFor="let item of items; let i = index ">
+
+			<ion-card br-lt-grey class="card card-md" padding="" text-right="" margin0 w-100>
+
+			  	<!-- <ion-row no-padding>
+			<ion-col col-4  col-sm-4 col-md-3 col-lg-3 col-xl-3> -->
+        <div class="width-imgs">
+        <ion-avatar item-start class="card-img" left>
+          <img src="assets/img/user-dummy.png" *ngIf="item.image == ''">
+          <img src="{{APIURL}}/images/{{item.image}}"  *ngIf="item.image !== ''">
+        </ion-avatar>
+        </div>
+	  <!--  </ion-col>
+			<ion-col  col-8  col-sm-8 col-md-9 col-lg-9 col-xl-9> -->
+            
+              <ion-card-content class="card-rigt-s card-content card-content-md" no-padding>
+
+
+                <ion-card-title no-padding class="card-title card-title-md">
+                 <h2 card-title fnt-bold text-left contact-mail>
+				 <ion-grid no-padding>
+				 <ion-row>
+				 <ion-col col-md-6  col-lg-6 col-xl-4 text-right>
+				 <span p-r-4 >Contact Name :</span>
+				 </ion-col>				 
+				 <ion-col col-md-6  col-lg-6 col-xl-8 col-12>
+				 {{item.name}}
+				 </ion-col>
+				 </ion-row>
+				 </ion-grid>
+				 </h2>
+ 		 			       <!--p fnt-light ></p-->
+                </ion-card-title>
+               
+                <h3 card-subtitle fnt-regular m-t-10 text-left contact-mail>
+				<ion-grid no-padding>
+				 <ion-row>
+				 <ion-col col-md-6  col-lg-6  col-xl-4 text-right>
+				<span p-r-4>Contact Email :</span> 
+					 </ion-col>				 
+				 <ion-col col-md-6  col-lg-6 col-xl-8 col-12>
+				 {{item.email}}
+					 </ion-col>
+				 </ion-row>
+				 </ion-grid>
+				</h3>
+				<div>
+				 <ion-item current-level p-lr-0>
+              <ion-label text-right  col-lg-6 col-md-6 col-xl-4 col no-padding p-r-4>Current Level :</ion-label>
+                <ion-select cancelText="Cancel" okText="Okay!" style="" [(ngModel)]="item[i]" (ionChange)="chanegLevel($event)" float-right>
+      			      <ion-option value="1" selected="true">Level 1</ion-option>
+      			      <ion-option value="2">Level 2</ion-option>
+      			      <ion-option value="3">Level 3</ion-option>
+      			      <ion-option value="4">Level 4</ion-option>
+    			      </ion-select>
+ </ion-item>
+</div>
+<div class="clearfix"></div>
+                <div social float-left m-t-5>
+   				 <button small ion-button  (click)="sendInvitation(item, i)" *ngIf="item.memberstatus == 0 || item.memberstatus == 3 || !item.memberstatus">Connect</button>
+
+                 <button [disabled]="true" small ion-button *ngIf="item.memberstatus == '1' && item.senderId == userId ">Invitation Sent</button>
+
+                 <!-- <button ion-button *ngIf="item.memberstatus == 3">Accept</button> -->
+
+                 <button small ion-button  color="secondary" (click)="resendInvitation(item)" *ngIf="item.memberstatus == 1 && item.senderId == userId ">Resend</button>
+
+                 <button small ion-button color="secondary"  (click)="acceptContact(item)" *ngIf="item.memberstatus == '1' && item.reciverId == userId ">Accept</button>
+
+                 <button small ion-button color="danger"   (click)="rejectContact(item)" *ngIf="item.memberstatus == 1 && item.reciverId == userId ">Reject</button>
+
+                 
+                </div>
+              </ion-card-content>
+	<!-- </ion-col>
+	</ion-row>	 -->
+
+		   </ion-card>
+
+     
+
+ </ion-col>
+ <ion-col *ngIf="items?.length == 0"> No Member Found.</ion-col>
+</ion-row>
+</ion-list>
+<div footer-height></div> 
+</ion-content>

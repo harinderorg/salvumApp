@@ -1,0 +1,841 @@
+<ion-content padding lightgrey has-header> 
+<div ion-fixed style="width: 100%">
+<ion-row main-breadcrumb > 
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="goToJobs()"><a>Jobs</a></li>
+        <li (click)="backToTradeDash()"><a>{{active_job_breadcrumb}}</a></li> 
+        <li (click)="backToPage()"><a>Trades</a></li> 
+        <li class="active">Add Trade</li>
+      </ol>
+    </ion-col>
+  </ion-row>
+    <ion-toolbar no-border-top add-trade p-lr-0>
+    <ion-segment [(ngModel)]="pet">
+      <ion-segment-button value="basicdetail">
+    <ion-icon name="person" fnt14 m-r-5 visible-xs></ion-icon>
+        <span hidden-xs>Basic Detail</span>
+      </ion-segment-button>
+     
+      <ion-segment-button value="invite">
+      <ion-icon name="mail" fnt14 m-r-5 visible-xs></ion-icon>
+        <span hidden-xs>Invite Bidders</span>
+      </ion-segment-button>
+        <ion-segment-button value="events">
+        <ion-icon name="calendar" fnt14 m-r-5 visible-xs></ion-icon>
+       <span hidden-xs>Events</span>
+      </ion-segment-button>
+      <ion-segment-button value="reminder">
+      <ion-icon name="clock" fnt14 m-r-5 visible-xs></ion-icon>
+       <span hidden-xs>Reminder</span>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  </div>
+  <div breadcrumb-tabs-height></div>
+  <form [formGroup]="form" (ngSubmit)="addTrade()" >
+  <div [ngSwitch]="pet">
+    <ion-list  m-t-10 m-b-0 *ngSwitchCase="'basicdetail'" >
+     <ion-list br-lt-grey white-bg  margin0 tradelist>  
+  	  <ion-list-header margin0 no-border br-btm color="light">
+        Project Detail
+      </ion-list-header> 
+      <ion-grid no-padding>
+     <ion-row pd-item-lr15>
+	 <ion-col col-12 br-item-btm disabled_fld>
+			<ion-label stacked mrgn_lft>PO/Job #</ion-label>
+		<ion-input type="text" [(ngModel)] = "job_number" name="job_number" formControlName="job_number" fnt14></ion-input>
+		<ion-input type="hidden" [(ngModel)] = "userId" name="userId" formControlName="userId"></ion-input>		
+		</ion-col>
+		 <ion-col col-12 br-item-btm disabled_fld> 
+		<ion-label stacked mrgn_lft>Job Title</ion-label>
+		<ion-input type="text" [(ngModel)] = "job_title" name="job_title" formControlName="job_title" fnt14></ion-input>		
+		</ion-col>
+    </ion-row>
+    </ion-grid>
+		 <!-- <ion-item>
+		<ion-label stacked>Trade</ion-label>
+		<ion-input type="text" [(ngModel)] = "trade_name" name="trade_name" formControlName="trade_name" (input)="getTrades($event)" fnt14></ion-input>
+		</ion-item> -->
+    <ion-row padd-mob-lr10 flat_icon_row>
+    <ion-col col-12 >
+      <ion-label stacked mrgn_lft>Trade</ion-label>
+      <ion-select br-item-btm select-pos [(ngModel)]="trade_index" name="trade_index" formControlName="trade_index" fnt14 (ionChange)="tradeSelected(trade_index)" trade_selt class="{{(trade_icon != '' && trade_icon != undefined) ? 'trade_sel_mrgn' : ''}}">
+        <ion-option value="">Select trade </ion-option>
+        <ion-option value="{{index}}" *ngFor="let trade of all_trades; let index = index ">{{trade.name}}</ion-option>
+      </ion-select>
+      <i class=" flat_icon_i {{trade_icon}}"></i> 
+      <ion-icon drop_icon_trade name="arrow-dropdown"></ion-icon>
+    </ion-col>
+
+    <!-- <ion-col col-6 br-item-btm text-center flat_icon>
+    <i class="{{trade_icon}}"></i>
+    </ion-col> -->
+    </ion-row>
+
+    <ion-row>
+    <ion-col padd-mob-lr10 col-12 [ngClass]="isOther == true ? '' : 'no_pad'">
+    <ion-label *ngIf="isOther" stacked mrgn_lft>Enter Trade</ion-label>
+      <ion-input type="{{isOther == true ? 'text' : 'hidden'}}" [(ngModel)] = "trade_name" name="trade_name" formControlName="trade_name"></ion-input>
+      <ion-input type="hidden" [(ngModel)] = "isOther" name="isOther" formControlName="isOther"></ion-input>
+      <ion-input type="hidden" [(ngModel)] = "trade_icon" name="trade_icon" formControlName="trade_icon"></ion-input>
+    </ion-col>
+    </ion-row>
+
+   <!--  <ng-container *ngIf="trade_choosed == '0'">
+      <div trade-dropdown (clickOutside)="chooseTrade(trade_name)" clickOutsideEnabled="true">
+            <ion-item *ngFor="let trade of all_trades" (click)="chooseTrade(trade)"> 
+            {{trade}}
+            </ion-item>
+      </div>    
+    </ng-container> -->
+
+    <ion-item *ngIf="form.get('trade_name').touched && form.get('trade_name').errors && form.get('trade_name').hasError('required')" class="error-text-danger">Trade name is required</ion-item>
+		 <ion-item>
+    <ion-label stacked>Trade Task Title</ion-label>
+    <ion-input type="text" [(ngModel)] = "trade_task" name="trade_task" formControlName="trade_task" fnt14></ion-input> 
+    </ion-item>
+   <!--  <ion-item>
+		<ion-label stacked>Trade Icon</ion-label>
+		<ion-input type="text" onkeydown="javascript: return (event.keyCode == 32) ? false : true" (input)="getIcons($event)" [(ngModel)] = "trade_icon" name="trade_icon" formControlName="trade_icon" fnt14></ion-input>	
+		</ion-item> -->
+    <!-- <ng-container *ngIf="trade_icon != '' && trade_icon != undefined && trade_icon != null && icon_choosed == '0'" >
+<div trade-dropdown>
+			<ion-item *ngFor="let icon of all_icons" (click)="chooseIcon(icon)"> 
+			<ion-icon name="{{icon}}"></ion-icon> {{icon}}
+			</ion-item>
+</div>		
+    </ng-container> -->
+    
+    <ion-item *ngIf="form.get('trade_icon').touched && form.get('trade_icon').errors && form.get('trade_icon').hasError('required')" class="error-text-danger">Please enter a valid trade icon</ion-item>
+    <ion-item>
+		<ion-label stacked>Job  Description</ion-label>
+		<ion-input type="text" [(ngModel)] = "job_description" name="job_description" formControlName="job_description" fnt14></ion-input>	
+		</ion-item>
+    <ion-item *ngIf="form.get('job_description').touched && form.get('job_description').errors && form.get('job_description').hasError('required')" class="error-text-danger">Please enter a valid job description</ion-item>
+
+</ion-list>
+	 <ion-list br-lt-grey m-t-10  m-b-0 white-bg tradelist>
+  	     <ion-list-header margin0 no-border br-btm color="light">
+               Project Manager
+        </ion-list-header>
+	   <ion-item>
+			<ion-label stacked>Name</ion-label>
+			<ion-input type="text" [(ngModel)] = "pm_name" name="pm_name" formControlName="pm_name" fnt14 autocomplete="new-password"></ion-input>
+	   </ion-item>
+		<ion-item *ngIf="form.get('pm_name').touched && form.get('pm_name').errors && form.get('pm_name').hasError('required')" class="error-text-danger">Please enter a valid name</ion-item>
+		 <ion-item>
+		<ion-label stacked>Contact Number</ion-label>
+		<ion-input type="text" [(ngModel)] = "pm_contact" name="pm_contact" formControlName="pm_contact" autocomplete="new-password" fnt14></ion-input>
+		</ion-item>
+		<ion-item *ngIf="form.get('pm_contact').touched && form.get('pm_contact').errors && form.get('pm_contact').hasError('required')" class="error-text-danger">Please enter a valid contact</ion-item>
+	</ion-list>	 
+	 <ion-list br-lt-grey  m-t-10  m-b-0  white-bg tradelist>
+		   <ion-list-header margin0 no-border br-btm color="light">
+               Site Location
+          </ion-list-header>
+        <ion-item>
+			<ion-label stacked>Address</ion-label>
+			<ion-input type="text" [(ngModel)] = "site_address" name="site_address" formControlName="site_address" autocomplete="new-password" fnt14></ion-input>
+		</ion-item>
+    <ion-item *ngIf="form.get('site_address').touched && form.get('site_address').errors && form.get('site_address').hasError('required')" class="error-text-danger">Please enter a valid address</ion-item>
+
+		<ion-item>
+			<ion-label stacked>City</ion-label>
+			<ion-input type="text" [(ngModel)] = "site_city" name="site_city" formControlName="site_city" autocomplete="new-password" fnt14></ion-input>
+		</ion-item>
+    <ion-item *ngIf="form.get('site_city').touched && form.get('site_city').errors && form.get('site_city').hasError('required')" class="error-text-danger">Please enter a valid city</ion-item>
+
+		<ion-item>
+			<ion-label stacked>State</ion-label>
+			<ion-input type="text" [(ngModel)] = "site_state" name="site_state" formControlName="site_state" autocomplete="new-password" fnt14></ion-input>
+		</ion-item>
+    <ion-item *ngIf="form.get('site_state').touched && form.get('site_state').errors && form.get('site_state').hasError('required')" class="error-text-danger">Please enter a valid state</ion-item>
+
+		<ion-item>
+			<ion-label stacked for="">Zip Code</ion-label>
+			<ion-input type="text" [(ngModel)] = "site_zip" name="site_zip" formControlName="site_zip"  autocomplete="new-password" fnt14></ion-input>
+		</ion-item>
+    <ion-item *ngIf="form.get('site_zip').touched && form.get('site_zip').errors && form.get('site_zip').hasError('required')" class="error-text-danger">Please enter a valid zip</ion-item>
+
+	  </ion-list>
+
+<!-- 	 <ion-list br-lt-grey m-t-10>
+  
+   	  <ion-list-header margin0 no-border br-btm color="light">
+Select Folder
+  </ion-list-header>
+
+        <ion-item>
+		<ion-label stacked>In the tree to the left please select a trade folder or create one by pressing "" *</ion-label>
+		<ion-input type="text" value="" fnt14 disabled="" m-b-10></ion-input>
+		
+		</ion-item>
+		
+		
+
+	</ion-list> -->	 
+	 	
+		   <ion-list br-lt-grey white-bg m-t-10 mrg_b_0> 
+				   <ion-list-header margin0 no-border br-btm color="light">
+						 Upload Files for Bid
+				   </ion-list-header>
+  <div padding no_tp>
+     <ion-segment [(ngModel)]="files_tab" name="files_tab" formControlName="files_tab">
+       <ion-segment-button value="local">
+         Local System
+       </ion-segment-button>
+       <ion-segment-button value="filemanager">
+         Filemanager
+       </ion-segment-button>
+       <ion-segment-button value="jobs">
+         Jobs
+       </ion-segment-button>
+     </ion-segment>
+  </div>
+  <div [ngSwitch]="files_tab">
+   <ion-list mar-mob-b0 *ngSwitchCase="'local'">
+  <div padding>
+  <fieldset >
+  <legend>
+  <b hidden-xs>Drag & Drop Files</b>
+   <b visible-xs style="display:none;">Choose Files</b>
+  </legend>
+<ion-row>
+
+<!-- <ion-col col-6 col-md-3 col-lg-3 col-xl-2 text-center  file-manager>
+<div class="white-box" margin0 drag-files>
+<div drag-text>Drag & drop files here …
+(or click to select files)</div>
+<ion-input type="file"></ion-input>
+  </div>
+    <p fnt-regular >Contract Files</p>
+</ion-col>
+
+<ion-col col-6 col-md-3 col-lg-3 col-xl-2 text-center  file-manager>
+<div class="white-box" margin0 drag-files>
+<div drag-text>Drag & drop files here …
+(or click to select files)</div>
+<ion-input type="file"></ion-input>
+  </div>
+    <p fnt-regular >Specification Files</p>
+</ion-col>
+	
+<ion-col col-6 col-md-3 col-lg-3 col-xl-2 text-center  file-manager>
+<div class="white-box" margin0 drag-files>
+<div drag-text>Drag & drop files here …
+(or click to select files)</div>
+<ion-input type="file"></ion-input>
+  </div>
+    <p fnt-regular >Drawing Files</p>
+</ion-col>
+
+<ion-col col-6 col-md-3 col-lg-3 col-xl-2 text-center  file-manager>
+<div class="white-box" margin0 drag-files>
+<div drag-text>Drag & drop files here …
+(or click to select files)</div>
+<ion-input type="file"></ion-input>
+  </div>
+    <p fnt-regular >Other Files</p>
+</ion-col> -->
+
+<ion-col col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+	<div hidden-xs ng2FileDrop [uploader]="uploader" (onFileDrop)="clickthisone('C')" class="well my-drop-zone">
+		Contract Files
+	</div>
+	<label visible-xs for="contractfiles"  fileschoose style="display:none"> 
+		<ion-item filetype text-center left>
+			<ion-icon name="cloud-upload" color="blue"></ion-icon>
+			<h4>Choose Contract Files</h4>
+		</ion-item>
+	</label> 
+    <input  type="file" (change)="clickthisone('C')" id="contractfiles" ng2FileSelect [uploader]="uploader" multiple/>
+</ion-col>
+
+<ion-col col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+<div hidden-xs ng2FileDrop [uploader]="uploader" (onFileDrop)="clickthisone('S')" class="well my-drop-zone">
+    Specification Files
+</div>
+	<label visible-xs for="specificationfiles"  fileschoose style="display:none"> 
+		<ion-item filetype text-center left>
+			<ion-icon name="cloud-upload" color="blue"></ion-icon>
+			<h4>Choose Specification Files</h4>
+		</ion-item>
+	</label> 
+<input type="file" id="specificationfiles" (change)="clickthisone('S')" ng2FileSelect [uploader]="uploader" multiple  />
+</ion-col>
+
+<ion-col col-12 col-md-6 col-lg-3  col-xl-3 file-manager>
+<div hidden-xs ng2FileDrop [uploader]="uploader" (onFileDrop)="clickthisone('D')" class="well my-drop-zone">
+    Drawing Files
+</div>
+<label visible-xs for="drawingfiles"  fileschoose style="display:none"> 
+		<ion-item filetype text-center left>
+			<ion-icon name="cloud-upload" color="blue"></ion-icon>
+			<h4>Choose Drawing Files</h4>
+		</ion-item>
+	</label> 
+<input type="file" id="drawingfiles" (change)="clickthisone('D')" ng2FileSelect [uploader]="uploader" multiple  />
+</ion-col>
+
+<ion-col col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+	<div hidden-xs  ng2FileDrop [uploader]="uploader" (onFileDrop)="clickthisone('O')" class="well my-drop-zone">
+		Other Files
+	</div>
+	<label visible-xs for="otherfiles"  fileschoose style="display:none"> 
+			<ion-item filetype text-center left>
+				<ion-icon name="cloud-upload" color="blue"></ion-icon>
+				<h4>Choose Other Files</h4>
+			</ion-item>
+	</label> 
+<input type="file" (change)="clickthisone('O')" id="otherfiles" ng2FileSelect [uploader]="uploader" multiple  />
+</ion-col>
+
+<!-- <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/> -->
+</ion-row>
+</fieldset>
+<ion-col  no-padding   col-12 *ngIf="filetype_error == '1'">
+  <p error-file>Only txt,docx,xls,xlsx,zip,doc,odt,png,jpg,jpeg,gif,pdf,csv,mp4,mov,wmv,3gp,avi,ppt,pptx,psd files are allowed.<button small type="button" (click)="closeError()" ion-button><ion-icon name="close"></ion-icon></button></p>
+</ion-col>
+<ion-col  no-padding   col-12 *ngIf="filesize_error == '1'">
+  <p error-file>File size exceeded.please upload files upto 500 MB.<button small type="button" (click)="closeErrorS()" ion-button><ion-icon name="close"></ion-icon></button></p>
+</ion-col>
+<h6 fnt-bold headtrade>Upload queue</h6>
+            <p fnt-regular>Queue length: {{ uploader?.queue?.length }}</p>
+  <div table-responsive>
+            <table class="table table-queue" width="100%">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <!--th>Size</th>
+                    <th>Progress</th>
+                    <th>Status</th-->
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of uploader.queue; let ind = index ">
+                    <td>{{ item?.file?.name }} ({{this.all_codeTypes[item.codeType]}} File)</td>
+                    <!--td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                    <td *ngIf="uploader.isHTML5">
+                        <div class="progress-outer">
+                            <div class="progress-inner" [style.width]="item.progress + '%'">
+                                {{item.progress}}%
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                        <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                        <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                    </td-->
+                    <td nowrap>
+                        <button   title="Upload "   small type="button" class="blue" ion-button
+                                (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                            <!--span class="glyphicon glyphicon-upload"></span> Upload-->
+							
+							  <ion-icon name="cloud-upload"></ion-icon>
+                        </button>
+                        <button  title="Cancel "   small type="button" class="blue" ion-button
+                                (click)="item.cancel()" [disabled]="!item.isUploading">
+                            <!--<span class="glyphicon glyphicon-ban-circle"></span> Cancel-->
+							
+							  <ion-icon name="close"></ion-icon>
+                        </button>
+                        <button  title="Remove "   small type="button" class="blue" ion-button
+                                (click)="item.remove();removeFromQueue(item?.file?.name);">
+                            <!--<span class="glyphicon glyphicon-trash"></span> Remove-->
+							
+							  <ion-icon name="trash"></ion-icon>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+  </div>
+            <div>
+                <div>
+                    Queue progress:
+                    <div class="progress-outer">
+                        <div class="progress-inner" [style.width]="uploader.progress + '%'">
+                            {{uploader.progress}}%
+                        </div>
+                    </div>
+                </div>
+                <button  small type="button" class="blue" ion-button
+                        (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> Upload all
+                </button>
+                <button small type="button" class="blue" ion-button
+                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                </button>
+                <button small type="button" class="blue" ion-button
+                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Remove all
+                </button>
+            </div>
+
+
+
+<!--   <fieldset br-lt-grey m-t-10>
+  <legend><b>Browse Files</b></legend>
+	 <ion-row>
+	 <ion-col col-12 text-center  file-manager>
+	 <ion-list br-lt-grey  company-detail> 
+
+
+  <ion-item fnt14>
+    <ion-icon name="folder-open" item-start left></ion-icon>floor_plan.jpg
+  </ion-item>
+  <ion-item fnt14>
+    <ion-icon name="folder-open" item-start left></ion-icon>floor_plan.jpg
+  </ion-item>
+    
+
+</ion-list>
+<button type="button" ion-button color="blue" drag-text fnt-regular m-b-10 fnt-normal float-right>
+ <ion-icon name="trash" m-r-5></ion-icon>
+  <span hidden-xs>Remove File</span>
+</button>
+<div drag-files float-right m-t-20 m-r-5>
+<div browse-file>
+<button type="button" ion-button color="blue" drag-text fnt-regular m-b-10 fnt-normal> <ion-icon name="folder" m-r-5></ion-icon>
+  <span hidden-xs>Browse File</span>
+</button>
+<ion-input type="file"></ion-input>
+</div>
+</div>
+	</ion-col>
+	  </ion-row>
+	  
+	  </fieldset>
+	  
+	    <button type="button" ion-button    color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left (click)="presentModal13($event)">
+            <ion-icon name="add" m-r-5></ion-icon>
+             <span hidden-xs> Salvum Files </span>
+         </button>  -->
+
+
+
+		 	<div clear-both></div>
+		 </div>
+     </ion-list>
+     <ion-list *ngSwitchCase="'filemanager'">
+     <!-- <ion-row>
+        <ion-col col-12 col-sm-12 col-xl-12 >
+          <ion-item filetype text-center left (click)="filemanagerFiles()">
+          <ion-icon name="cloud-upload" color="blue"></ion-icon>
+          <h4>Add Files From File Manager</h4>
+          </ion-item> 
+        </ion-col>
+     </ion-row> -->
+      <div padding>
+        <fieldset>
+        <legend><b>Add Files From File Manager</b></legend>
+        <ion-row>
+        <ion-col (click)="filemanagerFiles('C')" col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+          <div hidden-xs class="well my-drop-zone">
+          Contract Files
+          </div>
+          <input hidden-xs type="button" value="Choose files..." />
+		  <ion-item filetype text-center  left visible-xs style="display:none">
+              <ion-icon name="cloud-upload" color="blue"></ion-icon>
+              <h4 text-center>Choose  Contract Files</h4>
+          </ion-item> 
+        </ion-col>
+        <ion-col (click)="filemanagerFiles('S')" col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+          <div hidden-xs class="well my-drop-zone">
+          Specification Files
+          </div>
+          <input hidden-xs type="button" value="Choose files..." />
+		  <ion-item filetype text-center  left visible-xs style="display:none">
+              <ion-icon name="cloud-upload" color="blue"></ion-icon>
+              <h4 text-center>Choose  Specification Files</h4>
+          </ion-item> 
+        </ion-col>
+        <ion-col (click)="filemanagerFiles('D')" col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+          <div hidden-xs class="well my-drop-zone">
+          Drawing Files
+          </div>
+          <input hidden-xs type="button" value="Choose files..." />
+		  <ion-item filetype text-center  left visible-xs style="display:none">
+              <ion-icon name="cloud-upload" color="blue"></ion-icon>
+              <h4 text-center>Choose  Drawing Files</h4>
+          </ion-item> 
+        </ion-col>
+        <ion-col (click)="filemanagerFiles('O')" col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+          <div hidden-xs class="well my-drop-zone">
+          Other Files
+          </div>
+          <input hidden-xs type="button" value="Choose files..." />
+		  <ion-item filetype text-center  left visible-xs style="display:none">
+              <ion-icon name="cloud-upload" color="blue"></ion-icon>
+              <h4 text-center>Choose  Other Files</h4>
+          </ion-item> 
+        </ion-col>
+        </ion-row>
+        </fieldset>
+      </div>
+     </ion-list>
+     <ion-list *ngSwitchCase="'jobs'">
+     <!-- <ion-row>
+      <ion-col col-12 col-sm-12 col-xl-12 >
+        <ion-item filetype text-center left (click)="jobFiles()">
+        <ion-icon name="cloud-upload" color="blue"></ion-icon>
+        <h4>Add Files From Jobs</h4>
+        </ion-item> 
+      </ion-col>
+    </ion-row> -->
+      <div padding>
+        <fieldset>
+        <legend><b>Add Files From Jobs</b></legend>
+        <ion-row>
+        <ion-col (click)="jobFiles('C')" col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+          <div hidden-xs class="well my-drop-zone">
+          Contract Files
+          </div>
+          <input hidden-xs type="button" value="Choose files..." />
+		   <ion-item filetype text-center  left visible-xs style="display:none">
+				<ion-icon name="cloud-upload" color="blue"></ion-icon>
+				<h4 text-center>Choose Contract Files</h4>
+           </ion-item> 
+        </ion-col>
+        <ion-col (click)="jobFiles('S')" col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+          <div hidden-xs class="well my-drop-zone">
+          Specification Files
+          </div>
+          <input hidden-xs type="button" value="Choose files..." />
+		   <ion-item filetype text-center  left visible-xs style="display:none">
+				<ion-icon name="cloud-upload" color="blue"></ion-icon>
+				<h4 text-center>Choose Specification Files</h4>
+           </ion-item> 
+        </ion-col>
+        <ion-col (click)="jobFiles('D')" col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+          <div hidden-xs class="well my-drop-zone">
+          Drawing Files
+          </div>
+          <input hidden-xs type="button" value="Choose files..." />
+		   <ion-item filetype text-center  left visible-xs style="display:none">
+				<ion-icon name="cloud-upload" color="blue"></ion-icon>
+				<h4 text-center>Choose Drawing Files</h4>
+           </ion-item> 
+        </ion-col>
+        <ion-col (click)="jobFiles('O')" col-12 col-md-6 col-lg-3 col-xl-3 file-manager>
+          <div hidden-xs class="well my-drop-zone">
+          Other Files
+          </div>
+          <input hidden-xs type="button" value="Choose files..." />
+		   <ion-item filetype text-center  left visible-xs style="display:none">
+				<ion-icon name="cloud-upload" color="blue"></ion-icon>
+				<h4 text-center>Choose Other Files</h4>
+           </ion-item> 
+        </ion-col>
+        </ion-row>
+        </fieldset>
+      </div>
+     </ion-list>
+     </div>
+	  </ion-list>
+	  
+    <ion-list br-lt-grey m-t-10 white-bg>
+     <ion-list-header  margin0 no-border br-btm color="light">
+     List Of Added Files
+     </ion-list-header>
+     <ion-item *ngFor="let file of all_files; let i=index ">
+     {{file.name.search('____') >= 0 ? file.name.split('____').pop(-1) : file.name.split('_--_').pop(-1)}} ({{all_codeTypes[file.codeType]}} File) 
+     <button type="button" ion-button clear item-end margin0 button-none (click)="deleteFiles(file.name,i)">
+     <ion-icon name="trash" fnt20></ion-icon>
+     </button>
+     </ion-item>
+     <ion-item *ngIf="all_files == ''">No Files Added.</ion-item>
+    </ion-list>
+
+    <ion-list br-lt-grey m-t-10 m-b-50 white-bg>
+     <ion-list-header  margin0 no-border br-btm color="light">
+     File uploader categories
+     </ion-list-header>
+     <ion-row  upload-main *ngIf="file_uploader_cats != ''">
+        <ion-col col-6 col-md-3 upload-th>Name</ion-col>
+        <ion-col col col-md-2 upload-th>Visible</ion-col>
+        <ion-col col col-md-2 upload-th>Required</ion-col>
+     </ion-row>
+     <ion-row  upload-main *ngFor="let cat of file_uploader_cats; let i=index ">
+        <ion-col col-6 col-md-3  upload-td>{{cat.name}}</ion-col>
+        <ion-col col col-md-2  upload-td><ion-checkbox formControlName="visible" [(ngModel)]="cat.visible" [checked]="cat.visible"></ion-checkbox></ion-col>
+        <ion-col col col-md-2  upload-td><ion-checkbox formControlName="required" [(ngModel)]="cat.required" [disabled]="!cat.visible" [checked]="cat.required && cat.visible"></ion-checkbox></ion-col>
+     </ion-row>
+    </ion-list>
+
+    </ion-list>
+
+	    <ion-list *ngSwitchCase="'invite'" m-t-10  m-b-0  >
+ <div list-invite w-100>
+
+	 
+	<ion-list br-lt-grey  white-bg margin0 tradelist>
+	  <ion-list-header margin0 no-border br-btm color="light">
+Invite Bidders Using Any Method Below
+  </ion-list-header>
+  <ion-item>
+    <ion-icon small name="contact" item-start></ion-icon>
+   For Contacts That Are In Salvum Contacts Section
+   <button (click)="addContactInvites($event)" type="button" ion-button color="blue" fnt-normal fnt-regular item-end>
+   <ion-icon name="contact" item-end></ion-icon>  
+   <span hidden-xs>Add Contacts</span>
+   </button>
+  </ion-item>
+    <ion-item>
+    <ion-icon small name="people" item-start></ion-icon>
+ For Adding Salvum Groups To A Job
+   <button (click)="addGroupInvites()" type="button" ion-button color="blue" fnt-normal fnt-regular item-end> <ion-icon name="people" item-end></ion-icon>  <span hidden-xs> Add Groups</span> </button>
+  </ion-item>
+    <ion-item>
+    <ion-icon small name="mail" item-start></ion-icon>
+  For Adding A Single External E-mail 
+   <button (click)="addContactManually()" type="button" ion-button color="blue" fnt-normal fnt-regular item-end> <ion-icon name="mail" item-end></ion-icon>  <span hidden-xs> Add External Contacts</span></button>
+  </ion-item>
+    <ion-item>
+    <ion-icon small name="code-download" item-start></ion-icon>
+ For Adding Contacts That Have Been Imported To External Contact Section 
+   <button (click)="addExternalContacts()" type="button" ion-button color="blue" fnt-normal fnt-regular item-end> <ion-icon name="code-download" item-end></ion-icon> 
+ <span hidden-xs>Import External Contacts </span>  </button>
+  </ion-item>
+</ion-list>
+
+  <ion-list br-lt-grey  white-bg   m-t-10  m-b-50>
+    <ion-list-header margin0 no-border br-btm color="light">
+    List Of Invited Bidders
+    </ion-list-header>
+    <ion-row  mb-invites-15 *ngFor="let invitees of all_invitees; let i=index ">
+        <ion-col col-12 col-sm-6 col-md-4 col-xl-4 >
+		<ion-item p-lr-0>
+		{{invitees.invite_email}}
+		</ion-item>
+		</ion-col>
+        <ion-col col-9  col-sm-5 col-md-4 col-xl-4>
+          <ion-item p-lr-0>
+          <ion-select #bid_status_val (ionChange)="changeBidStatus(i,bid_status_val.value)" cancelText="Cancel" okText="Okay!"  p-l-0>
+            <ion-option value="1" [selected]="invitees.bid_status == '1' ? true : false">Waiting</ion-option>
+            <ion-option value="2" [selected]="invitees.bid_status == '2' ? true : false">Bidding</ion-option>
+            <ion-option value="3" [selected]="invitees.bid_status == '3' ? true : false">Not Bidding</ion-option>
+            <ion-option value="4" [selected]="invitees.bid_status == '4' ? true : false">Undecided</ion-option>  
+          </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col col-3  col-sm-1 col-md-4 col-xl-4>
+        <ion-item p-lr-0>
+          <button type="button" ion-button clear item-end margin0 button-none (click)="deleteInvitees(i)">
+             <ion-icon name="trash" fnt20></ion-icon>
+          </button>
+        </ion-item>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="all_invitees == ''">
+      <ion-col>
+        <ion-item p-lr-0>No Invites Added.</ion-item>  
+      </ion-col>
+    </ion-row>
+  </ion-list>
+</div>
+	</ion-list>
+	 <ion-list *ngSwitchCase="'events'" m-t-10 m-b-0>
+	
+
+	 
+	 <ion-row no-padding>
+	 <ion-col col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 paddingtop0>
+<ion-list br-lt-grey margin0 white-bg calendar-detail tradelist>
+  <ion-list-header margin0 no-border br-btm color="light" calendar-top>
+<button float-left ion-button type="button" (click)="goPreviousMonth()"><ion-icon name="arrow-dropleft-circle"></ion-icon></button><span title-year float-left>{{viewTitle}}</span><button float-right ion-button type="button" (click)="goNextMonth()"><ion-icon name="arrow-dropright-circle"></ion-icon></button> 
+
+<!-- <button ion-button type="button" [disabled]="isToday" (click)="today()">Today</button> -->
+  </ion-list-header>
+  <ion-item year-div>
+  <ion-label>Year</ion-label>
+  <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "curr_year" (ionChange)="goYear(curr_year)" name="curr_year" formControlName="curr_year">
+  <ion-option *ngFor="let year of allYears" value="{{year}}">{{year}}</ion-option>
+</ion-select>
+</ion-item>
+  </ion-list>
+
+<!--   <ion-header>
+    <ion-navbar color="primary">
+        <ion-title>{{viewTitle}}</ion-title>
+        <ion-buttons end>
+            <button ion-button type="button" [disabled]="isToday" (click)="today()">Today</button>
+            <button type="button" ion-button (click)="changeMode('month')">M</button>
+            <button type="button" ion-button (click)="changeMode('week')">W</button>
+            <button type="button" ion-button (click)="changeMode('day')">D</button>
+            <button type="button" ion-button (click)="loadEvents()">Load Events</button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header> -->
+<!--ion-content class="has-header" style="min-height: 300px;"-->
+<div white-bg  padding br-lt-grey style="min-height: 300px;">
+    <calendar [eventSource]="eventSource"
+              [calendarMode]="calendar.mode"
+              [currentDate]="calendar.currentDate"
+              (onCurrentDateChanged)="onCurrentDateChanged($event)"
+              (onEventSelected)="onEventSelected($event)"
+              (onTitleChanged)="onViewTitleChanged($event)"
+              (onTimeSelected)="onTimeSelected($event)"
+              step="30">
+    </calendar>
+    <!-- <div style="text-align: center;">
+      <button ion-button type="button">SUBMIT</button>
+    </div> -->
+	</div>
+<!--/ion-content-->
+
+
+ </ion-col>
+ <ion-col col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 paddingtop0>
+
+<ion-list br-lt-grey margin0 tradelist>
+  <ion-list-header margin0 no-border br-btm color="light">
+  List Of  Events
+  </ion-list-header>
+
+  <ion-item *ngFor="let single_event of my_events; let indx = index">
+    <ion-icon name="list" item-start></ion-icon>
+    <span>{{single_event.event_title}}</span> <span>({{single_event.event_time}})</span>
+    <button (click)="editEvent(single_event._id,single_event,indx)" type="button" ion-button clear item-end margin0><ion-icon name="create" fnt20></ion-icon></button>
+    <button (click)="deleteEvents(indx)" type="button" ion-button clear item-end margin0><ion-icon name="trash" fnt20></ion-icon></button>
+  </ion-item>
+  <ion-item *ngIf="my_events == ''">
+  No events found.
+  </ion-item>
+
+</ion-list>
+  <button m-b-50 ion-button type="button" color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left (click)="presentModal14($event)" [disabled]="add_disabled">
+      <ion-icon name="add" m-r-5></ion-icon>
+      <span>Add Event </span>
+   </button>
+
+ </ion-col>
+  </ion-row>
+
+    </ion-list>
+	    <ion-list *ngSwitchCase="'reminder'" m-t-10 m-b-0>
+
+ <ion-list-header margin0 no-border br-btm color="light">
+  Bidding Reminder Emails (Set bid deadline in the trade calendar)
+</ion-list-header>
+ <ion-list tradelist radio-group br-lt-grey m-t-10 m-b-0 formControlName="reminder_one_month" [(ngModel)]="reminder_one_month" >
+  <ion-list-header margin0 no-border br-btm color="light">
+    1 Month Before Due Date:
+  </ion-list-header>
+
+  <ion-item>
+    <ion-label>Yes</ion-label>
+    <ion-radio value="1"></ion-radio>
+  </ion-item>
+
+  <ion-item> 
+    <ion-label>No</ion-label>
+    <ion-radio checked="true" value="0"></ion-radio>
+  </ion-item>
+  </ion-list>
+
+ <ion-list tradelist radio-group br-lt-grey m-t-10 m-b-0 formControlName="reminder_two_weeks" [(ngModel)]="reminder_two_weeks">
+  <ion-list-header margin0 no-border br-btm color="light">
+   2 Weeks Before Due Date:
+  </ion-list-header>
+
+  <ion-item>
+    <ion-label>Yes</ion-label>
+    <ion-radio value="1"></ion-radio>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>No</ion-label>
+    <ion-radio checked="true" value="0"></ion-radio>
+  </ion-item>
+
+</ion-list>
+
+ <ion-list tradelist radio-group br-lt-grey m-t-10 m-b-0 formControlName="reminder_one_week" [(ngModel)]="reminder_one_week">
+  <ion-list-header margin0 no-border br-btm color="light">
+ 1 Week Before Due Date:
+  </ion-list-header>
+
+  <ion-item>
+    <ion-label>Yes</ion-label>
+    <ion-radio value="1"></ion-radio>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>No</ion-label>
+    <ion-radio checked="true" value="0"></ion-radio>
+  </ion-item>
+
+</ion-list>
+
+ <ion-list tradelist radio-group br-lt-grey m-t-10 m-b-0 formControlName="reminder_three_days" [(ngModel)]="reminder_three_days">
+  <ion-list-header margin0 no-border br-btm color="light">
+3 Days Before Due Date:
+  </ion-list-header>
+
+  <ion-item>
+    <ion-label>Yes</ion-label>
+    <ion-radio value="1"></ion-radio>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>No</ion-label>
+    <ion-radio checked="true" value="0"></ion-radio>
+  </ion-item>
+
+</ion-list>
+
+ <ion-list tradelist radio-group br-lt-grey m-t-10 m-b-50 formControlName="reminder_one_day" [(ngModel)]="reminder_one_day">
+  <ion-list-header margin0 no-border br-btm color="light">
+1 Day Before Due Date:
+  </ion-list-header>
+
+  <ion-item>
+    <ion-label>Yes</ion-label>
+    <ion-radio value="1"></ion-radio>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>No</ion-label>
+    <ion-radio value="0" checked="true"></ion-radio>
+  </ion-item>
+
+</ion-list>
+ 
+    </ion-list>
+ </div>
+<button id="form_submit_btn{{timestamp}}" style="display: none;" ion-button type="submit" color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left >
+      <ion-icon name="checkmark" m-r-5></ion-icon>
+      <span>Save</span>
+   </button>
+ <!-- <button ion-button color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left>
+      <ion-icon name="close" m-r-5></ion-icon>
+      <span>Close</span>
+   </button> 
+ <button type="button"  ion-button color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left>
+      <ion-icon name="trash" m-r-5></ion-icon>
+      <span>Delete</span>
+   </button> -->
+
+ </form>
+ <div footer-height></div> 
+ </ion-content>
+ <div button-fix>
+ <button (click)="prev()" type="button" *ngIf="pet != 'basicdetail'" ion-button color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left>
+      <ion-icon name="arrow-round-back" m-r-5></ion-icon>
+      <span>Prev</span>
+   </button>
+  <button ion-button type="button" (click)="form_submit_btn()" color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left >
+      <ion-icon name="checkmark" m-r-5></ion-icon>
+      <span>Save</span>
+   </button>
+   <button (click)="next()" type="button" *ngIf="pet != 'reminder'" ion-button color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left>
+      <ion-icon name="arrow-round-forward" m-r-5></ion-icon>
+      <span>Next</span>
+   </button>
+   </div>

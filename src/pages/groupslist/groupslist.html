@@ -1,0 +1,43 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Select Groups</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding select-contact>
+<ion-grid no-padding>
+<ion-row>
+<ion-col col-12>  
+<ion-list margin0>
+
+  <ng-container *ngFor="let group of allGroups">
+     <ion-grid no-padding>
+   <ion-row br-b-btm>
+    <ion-col col-xl-6 col-lg-6 col-md-6 col-6>
+      <ion-item p-lr-0  border-none>
+        <ion-label>{{group.name}}</ion-label>
+        <ion-checkbox [(ngModel)]="group._id" (ionChange)="insertGroupToArray($event,group)" ></ion-checkbox>
+      </ion-item>
+    </ion-col>
+      </ion-row>
+	 </ion-grid>
+  </ng-container>
+
+  <ion-item p-lr-0 *ngIf="allGroups == ''">
+    No Groups Found On This Levels.
+  </ion-item>
+
+</ion-list>
+</ion-col>
+<ion-col col-4>
+<div padding p-b-0 p-lr-0 *ngIf="allGroups != '' && selected_groups.length > 0">
+	<button ion-button color="darkblue" block  fnt-regular type="button" (click) = "addGroups()">Submit</button>
+</div>
+</ion-col>
+</ion-row>
+</ion-grid>
+</ion-content>

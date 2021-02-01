@@ -1,0 +1,213 @@
+<ion-content padding lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed *ngIf="userId != undefined && userId != '' && userId != null"> 
+<ion-col>
+  <ol class="breadcrumb"> 
+    <li (click)="root()"><a>Home</a></li>
+    <li (click)="goToBids()"><a>Bidding</a></li>
+    <li (click)="backBtn()"><a>{{bid_job_name}}</a></li>
+    <li class="active">Submit bid</li>
+  </ol>
+</ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-row>
+<ion-col col-xl-12>
+     
+<ion-list  br-lt-grey group-head head-profile>
+<ion-list-header margin0 color="light" no-border  br-btm>Submit Bid</ion-list-header> 
+	<div padding bg-white>
+	<ng-container *ngIf="userId == null">
+	<ion-item>
+		<ion-label floating>First Name<span error>*</span></ion-label>
+		<ion-input type="text" [(ngModel)] = "first_name" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+		<ion-label floating>Last Name<span error>*</span></ion-label>
+		<ion-input type="text" [(ngModel)] = "last_name" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+		<ion-label floating>Company Name<span error>*</span></ion-label>
+		<ion-input type="text" [(ngModel)] = "company_name" fnt14></ion-input>
+	</ion-item>
+	</ng-container>
+
+	<ion-item>
+		<ion-label floating>Comments<span error>*</span></ion-label>
+		<ion-textarea type="text" [(ngModel)] = "bid_comments" ></ion-textarea>
+	</ion-item>
+
+	<ion-row>
+		<ion-col col-12   col-sm-6 col-xl-6>
+			<ion-item filetype text-center  left (click) = "uploadFiles('normal')">
+			<ion-icon name="cloud-upload" color="blue"></ion-icon>
+			<h4 text-center>Drag & Drop Files To Upload From System</h4>
+			</ion-item> 
+		</ion-col>
+		<ion-col col-12 col-sm-6 col-xl-6 *ngIf="userId != null">
+			<ion-item filetype text-center  left (click)="filemanagerFiles()">
+			<ion-icon name="cloud-upload" color="blue"></ion-icon>
+			<h4>Add Files From Salvum</h4>
+			</ion-item> 
+		</ion-col>
+	</ion-row>
+
+	<ion-row *ngIf="files !=''">
+		<ion-item *ngFor="let file of files; let indx = index ">
+		{{file.file_name.indexOf('_--_') >= 0 ? file.file_name.split('_--_').pop(-1) : file.file_name.split('____').pop(-1)}}
+		<button (click) = "removeFile(indx)"><ion-icon name="close"></ion-icon></button>
+		</ion-item>
+	</ion-row>
+	</div>
+<!-- *ngIf="userId != undefined && userId != null && userId != ''" -->
+	<div mrgn_btm>
+	
+		<ion-row submitbid-list  *ngFor="let cat of uploader_categories; let index = index ">
+			<ng-container *ngIf="cat.name == 'Bid breakdown'">
+			    <div submitbid-main>
+					<ion-list-header margin0 color="lightgrey" no-border  br-btm>{{cat.name}}<span error>{{cat.required == true ? '*' : ''}}</span></ion-list-header>
+					<div padding submitbid-inner  width_100>
+			
+					<ion-list radio-group [(ngModel)]="bid_breakdown_type">
+					  <ion-item p-lr-0 no-border>
+					    <ion-label>Enter manually</ion-label>
+					    <ion-radio value="1"></ion-radio>
+					  </ion-item>
+
+					  <ion-item p-lr-0 no-border>
+					    <ion-label>Upload document</ion-label>
+					    <ion-radio [checked]="true" value="0"></ion-radio>
+					  </ion-item>
+					</ion-list>
+			
+				<div *ngIf="bid_breakdown_type == '0'">
+					<ion-col col-12   col-sm-6 col-xl-6>
+						<ion-item filetype text-center  left (click) = "uploadFiles('breakdown')">
+						<ion-icon name="cloud-upload" color="blue"></ion-icon>
+						<h4 text-center>Drag & Drop OR Upload Bid Breakdown Doc</h4>
+						</ion-item> 
+					</ion-col>
+					<ion-item *ngFor="let bid_files of bid_breakdown_files; let ind = index ">
+						{{bid_files.file_name}}
+					<button (click) = "removeBidFile(ind)"><ion-icon name="close"></ion-icon></button>
+					</ion-item>
+				</div>
+				<div  *ngIf="bid_breakdown_type == '1'">
+					<ion-item p-lr-0>
+						<ion-label floating>Enter bid breakdown</ion-label>
+						<ion-textarea type="text" [(ngModel)] = "bid_breakdown_manual" fnt14></ion-textarea>
+					</ion-item>
+				</div>
+				<div>
+					<ion-item p-lr-0>
+						<ion-input  [disabled]="true" type="hidden" [(ngModel)] = "bid_total_price" fnt14></ion-input>
+					</ion-item>
+					<p>Bid total price - ${{bid_total_price | number:'.2'}}</p>
+				</div>
+				<button small ion-button fnt-regular (click) = "createBidBreakdown()">{{bid_breakdown_tasks.length == 0 ? 'Create Bid Breakdown' : 'Add Task'}}</button>
+			
+					<div class="scrollable">
+						<ion-row table-submit *ngIf="bid_breakdown_tasks.length > 0">
+							<ion-col th-head>Task</ion-col>
+							<ion-col th-head>Cost</ion-col>
+							<ion-col th-head>Percent</ion-col>
+							<ion-col th-head>Days</ion-col>
+							<ion-col th-head>Actions</ion-col>
+						</ion-row>
+						<ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
+						<ion-item p-lr-0 *ngFor="let task of bid_breakdown_tasks; let i = index ">
+						<ion-row  table-inner >
+							<ion-col  td-data>{{task.task}}</ion-col>
+							<ion-col  td-data>${{task.cost }}</ion-col>
+							<!-- number:'.2' -->
+							<ion-col  td-data>{{task.percent}}%</ion-col>
+							<ion-col  td-data>{{task.days}}</ion-col>
+							<ion-col  td-data>
+								<button (click)="editTask(i,task)" title="Edit" type="button" ion-button><ion-icon name="create"></ion-icon></button>
+								<button (click)="delTask(i)" title="Delete" type="button" ion-button><ion-icon name="close"></ion-icon></button>
+							</ion-col>
+						</ion-row>
+						</ion-item>
+						</ion-list>
+					</div>
+			</div>
+			     </div>
+			</ng-container>
+			<ng-container *ngIf="cat.name != 'Bid breakdown' && cat.name != 'Total Estimated Cost'">
+			 <div submitbid-main>
+			<ion-list-header margin0 color="lightgrey" no-border  br-btm>{{cat.name}}<span error>{{cat.required == true ? '*' : ''}}</span></ion-list-header>
+			<div padding  submitbid-inner width_100>
+			
+					<ion-list (ionChange)="typeChecked($event,index,cat)" radio-group >
+					  <ion-item p-lr-0 no-border>
+					    <ion-label>Upload document</ion-label>
+					    <ion-radio [checked]="submitted_categories.indexOf(cat.name) >= 0 ? ((submitted_categories_vals[submitted_categories.indexOf(cat.name)]['type'] == '0' || submitted_categories_vals[submitted_categories.indexOf(cat.name)]['type'] == undefined) ? true : false) : true" value="0"></ion-radio>
+					  </ion-item>
+
+					  <ion-item p-lr-0 no-border>
+					    <ion-label>Enter manually</ion-label>
+					    <ion-radio value="1" [checked]="submitted_categories.indexOf(cat.name) >= 0 ? (submitted_categories_vals[submitted_categories.indexOf(cat.name)]['type'] == '1' ? true : false) : false"></ion-radio>
+					  </ion-item>
+					</ion-list>
+				
+				<div  *ngIf="((cat.type == '0' || cat.type == undefined) && submitted_categories.indexOf(cat.name) == -1) || (submitted_categories.indexOf(cat.name) >= 0 && (submitted_categories_vals[submitted_categories.indexOf(cat.name)]['type'] == '0' || submitted_categories_vals[submitted_categories.indexOf(cat.name)]['type'] == undefined))">
+					<ion-col col-12   col-sm-6 col-xl-6>
+						<ion-item filetype text-center  left (click) = "uploadFiles('other',cat.name)">
+						<ion-icon name="cloud-upload" color="blue"></ion-icon>
+						<h4 text-center>Drag & Drop OR Upload {{cat.name}} Doc</h4>
+						</ion-item> 
+					</ion-col>
+					<!-- {{submitted_categories_vals | json}} -->
+					<ng-container *ngFor="let cats of submitted_categories_vals">
+						<ion-col col-12 *ngIf="cats.cat == cat.name">
+							<ion-item *ngFor="let cat_files of cats.files; let ind = index ">
+								{{cat_files.file_name}}
+								<button (click) = "removeCatFiles(ind,cat.name)"><ion-icon name="close"></ion-icon></button>
+							</ion-item>
+						</ion-col>
+					</ng-container>
+				</div>
+				<div *ngIf="(cat.type  == '1' && submitted_categories.indexOf(cat.name) == -1) || (submitted_categories.indexOf(cat.name) >= 0 && submitted_categories_vals[submitted_categories.indexOf(cat.name)]['type'] == '1')">
+					<ion-item p-lr-0>
+						<ion-label floating>Enter {{cat.name}}</ion-label>
+						<ion-textarea type="text" (ionChange)="summaryChanged($event,cat)" value="{{submitted_categories.indexOf(cat.name) >= 0 ? (submitted_categories_vals[submitted_categories.indexOf(cat.name)]['summary']) : ''}}" fnt14></ion-textarea>
+					</ion-item>
+				</div>
+			</div>
+			</div>
+			</ng-container>
+			<ng-container *ngIf="cat.name == 'Total Estimated Cost'">
+			<div submitbid-main>
+			<ion-list-header margin0 color="lightgrey" >{{cat.name}}<span error>{{cat.required == true ? '*' : ''}}</span></ion-list-header>
+				<div padding  submitbid-inner  width_100 class="append_dollar_n">
+					<ion-item p-lr-0>
+						<ion-label stacked>Enter {{cat.name}}</ion-label>
+						<ion-input onkeydown="javascript: return ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8  || event.keyCode == 46 || event.keyCode == 9 || event.keyCode == 188 || event.keyCode == 190) ? true : false" (blur)="summaryChanged(total_estimated_cost,cat)" [(ngModel)]="total_estimated_cost" type="text" placeholder="0" fnt14></ion-input>
+					</ion-item>
+					<ion-icon name="logo-usd"></ion-icon>
+				</div>	
+			</div>	
+			</ng-container>
+		</ion-row>
+
+    
+   </div>
+    <!--div padding btn-footer>
+		<button small ion-button fnt-regular float-right (click) = "submitBid(bid_comments,first_name,last_name,company_name)">{{applied_bids > 0 ? 'Re-submit Bid' : 'Submit Bid'}}</button>
+		<button small ion-button fnt-regular float-right (click) = "saveDraft(bid_comments)">Save Draft</button>
+		<button small ion-button fnt-regular float-right (click) = "backBtn()">Back</button>
+	</div-->
+	<div clearboth></div>
+	
+</ion-list>
+
+</ion-col>
+</ion-row>
+<div footer-height></div>
+</ion-content>
+<div padding btn-footer button-fix>
+		<button small ion-button fnt-regular float-right (click) = "submitBid(bid_comments,first_name,last_name,company_name)">{{applied_bids > 0 ? 'Re-submit Bid' : 'Submit Bid'}}</button>
+		<button small ion-button fnt-regular float-right (click) = "saveDraft()">Save Draft</button>
+		<button small ion-button fnt-regular float-right (click) = "backBtn()">Back</button>
+	</div>

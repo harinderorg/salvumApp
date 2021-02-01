@@ -1,0 +1,59 @@
+<ion-content padding has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+     <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="licenseTo()"><a>License</a></li>
+        <li class="active">Add License</li>
+     </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-row>
+<ion-col col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 col-xl-4 offset-xl-4>
+<ion-list margin0 br-lt-grey>
+<ion-list-header margin0 color="light" br-btm>Extra License</ion-list-header>
+  <ion-item>
+    <ion-label>Select License</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)]="licenses"  (ionChange)="addPrice($event)">
+      <ion-option value="{{item.start}}/{{item.price}}/{{item._id}}" *ngFor="let item of lincesArr" >{{item.start}}(+${{item.price}})</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-list radio-group [(ngModel)]="check_value">
+  <ion-row>
+    <ion-col col-6>
+      <ion-item>
+        <ion-label>Under existing company</ion-label>
+        <ion-radio checked value="0"></ion-radio>
+      </ion-item>
+    </ion-col>
+    <ion-col col-6>
+      <ion-item>
+        <ion-label>Under new company</ion-label>
+        <ion-radio value="1"></ion-radio>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  </ion-list>
+
+  <ion-item *ngIf="check_value == '0'">
+    <ion-label>Select Company</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)]="companyId">
+      <ion-option value="{{company._id}}" *ngFor="let company of companies" >{{company.company_name}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item *ngIf="check_value == '1'">
+   <ion-label floating fnt-light fnt-regular>Company Name*</ion-label>
+    <ion-input type="text" [(ngModel)] = "company_name"></ion-input>
+  </ion-item>
+ 
+  <div padding bg-white>
+      <button ion-button fnt-normal color="blue" block (click)="goToPaymentPage(item)"> Buy Now</button>
+  </div>
+</ion-list>
+</ion-col>
+</ion-row>
+<div footer-height></div>
+</ion-content>

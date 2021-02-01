@@ -1,0 +1,55 @@
+page-editcontract
+{
+	[schedule-contract]
+	{
+		[schedule-main]
+		{    
+		 padding: $value10;
+		 background:$whitecolor;
+		}
+			[edit-schedule]
+			{
+				ion-item
+				{  padding-right:$value0!important;
+					ion-label
+					{
+						margin-top:$value0;
+					}
+				   padding-left:$value0;	
+				}
+			[date-contract]
+			{
+				ion-datetime
+				{
+					padding-top:$value10; 
+				}
+			}
+		 }
+	}
+	ion-list
+	{
+	   ion-item
+	   {  box-shadow:none!important;
+		   border-bottom: none!important;
+		   padding-right:$value15!important;
+		   .item-inner
+			{ 
+			ion-label
+			{
+			text-transform:capitalize;
+			} 
+			  box-shadow:none!important; 
+			  border-bottom: 1px solid #dedede!important;   
+			}
+		   &:last-child
+			{
+			padding-bottom: $value15;
+			.item-inner
+			{ 
+			  box-shadow:none!important; 
+			  border-bottom: 1px solid #dedede!important;   
+			}
+			}
+	  }
+	}
+}

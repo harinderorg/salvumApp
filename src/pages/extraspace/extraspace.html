@@ -1,0 +1,44 @@
+<ion-content padding lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+    <ion-col>
+       <ol class="breadcrumb">
+          <li (click)="root()"><a>Home</a></li>
+          <li *ngIf="page_type != '1'" (click)="package()"><a>Upgrade Package</a></li>
+          <li class="active">Buy Extra Space</li>
+       </ol>
+    </ion-col>
+ </ion-row>
+ <div breadcrumb-height></div>
+<ion-grid >
+<ion-row>
+<ng-container *ngFor="let extra of extraSpaceArr;">
+<ion-col col-12 col-xl-4 col-sm-12 col-md-6 *ngIf="extra.status == 1">
+<div class="pricing-box">
+<div class="pricing-head ">
+<!--ion-icon name="pricetag"></ion-icon-->
+<h4 fnt-regular text-uppercase><i>{{extra.name}}</i></h4>
+<div class="underline"></div>
+<h3 fnt-regular><sup>$</sup>{{extra.price}}</h3>
+</div>
+<ion-list>
+ <ion-item fnt-regular>{{extra.data}} {{extra.type}}</ion-item>
+  <ion-item fnt-regular *ngIf="extra.offer != ''">
+  Discount {{extra.offer}}
+  </ion-item>
+  <ion-item fnt-regular *ngIf="extra.final_price != ''">
+  Total:
+  ${{extra.final_price}}</ion-item>
+</ion-list>
+
+<button  buy-button ion-button color="white" round fnt-bold (click)="GoToPayMentPage(extra)">Buy</button>
+</div>
+</ion-col>
+</ng-container>
+<ion-col *ngIf="extraSpaceArr == ''">
+<ion-item>No packages found.</ion-item>
+</ion-col>
+
+</ion-row>
+</ion-grid>
+<div footer-height></div> 
+</ion-content>
