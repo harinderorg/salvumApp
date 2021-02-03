@@ -1,0 +1,18 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Action items</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+	<ion-row no-padding margin-top actitms-main>
+		<ion-col no-padding>
+			<p actitms *ngFor="let item of action_items" margin0 fnt-regular><ion-icon name="checkmark-circle"></ion-icon> {{item}}</p>
+		</ion-col> 
+	</ion-row>
+</ion-content>

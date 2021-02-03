@@ -1,0 +1,40 @@
+<ion-content padding sites-recipt has-header *ngIf="isVisible == true">
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+     <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="wallet()"><a>Wallet</a></li>
+        <li (click)="sites()"><a>Site</a></li>
+        <li *ngIf="from_detail == '1'" (click)="sitedetails()"><a>View Site</a></li>
+        <li class="active">Recipts</li>
+     </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-row>
+	<ion-col col-12 col-sm-6 col-md-6 *ngFor="let recipt of recipts">
+		<ion-card>
+		  <ion-card-header>
+		    <h3>Order Id : {{recipt.orderId}}<span flt-right>${{recipt.amount}}</span></h3>	    
+		  </ion-card-header>
+		  <ion-card-content>
+			  <ion-row>
+			    <ion-col col-8>
+					<h2 fnt-bold fnt14 *ngFor="let item of recipt.cart">
+					{{item.name}}<br>
+					Price:  {{item.currency}}{{item.price}} ({{item.cart_count}} {{item.cart_count == 1 ? 'item' : 'items'}})</h2>
+				</ion-col>
+				<ion-col col-4>
+					<h2 fnt-bold fnt14 flt-right>{{recipt.date_created | date : 'MMM d, y, h:mm a'}}</h2>
+				</ion-col>
+			  </ion-row>
+		  </ion-card-content>
+		</ion-card>
+	</ion-col>
+
+	<ion-col col-12 *ngIf="recipts == ''">
+		<ion-item text-center>No recipts found under this website.</ion-item>
+	</ion-col>
+</ion-row>
+<div footer-height></div>
+</ion-content>

@@ -1,0 +1,40 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>{{modal_title}}</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons> 
+  </ion-navbar>
+</ion-header>
+<div breadcrumd-popup ion-fixed>
+	<ion-row>
+		<ion-col col-4 *ngIf="selected_files != ''">		 
+			<button ion-button color="darkblue" block  fnt-regular type="button" (click) = "addFiles()">Submit</button>
+		</ion-col>
+	</ion-row>
+</div>
+<ion-content padding [ngClass]="selected_files != '' ? 'show_btn' : ''">
+
+<ion-row no-padding>
+  <ion-item p-lr-0 *ngIf="isShared == '1' && file_path == 'nopath'">
+   <ion-label floating fnt-light fnt-regular>Select level*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "onLevel">
+      <ion-option *ngFor="let level of opened_levels" value="{{level}}">
+      Level {{level}}</ion-option>    
+    </ion-select>
+  </ion-item>
+  <ion-col col-3 *ngFor="let file of smail_files">
+    <div class="white-box "  m-b-0 > 
+      <div text-center>
+        <img text-center src="assets/img/{{this.file_types.indexOf(file.name.split('.').pop().toLowerCase()) >= 0 ? file.name.split('.').pop().toLowerCase() : 'folder'}}.png"/>
+      </div>
+    </div>
+    <ion-checkbox class="check-abs" (ionChange)="insertFilesToArray($event,file)" ></ion-checkbox>
+    <p fnt-regular m-5-0 text-center>{{file.name.split('____').pop(-1)}} </p>
+  </ion-col>
+  <ion-col col-12 *ngIf="smail_files == ''">
+    <ion-item p-lr-0>No Files Found.</ion-item>
+  </ion-col>  
+</ion-row>
+</ion-content>

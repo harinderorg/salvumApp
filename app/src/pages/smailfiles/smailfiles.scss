@@ -1,0 +1,50 @@
+ page-smailfiles {
+  	[breadcrumd-popup]
+	{ 
+	   width:100%; top: 56px;
+	   background:#fff;
+      ion-label
+	  {
+	      font-size: $value10+2!important;
+	  }
+	  button
+	  {
+	    margin:$value0;
+	  }	
+
+	  ion-item
+	  {
+	     ion-select
+		 {
+		     font-size: $value10+2!important;
+		 }
+	  
+	}
+	}
+	.show_btn
+	{
+	.scroll-content
+	{
+	padding-top:40px!important;
+	
+	 padding-left:$value0!important;
+	 padding-right:$value0!important;
+	
+	}
+	}
+	ion-content
+	 {
+	 p
+		{  
+           font-size:$value10+2;
+		   margin-bottom: $value0;
+		}
+	 }
+	 .white-box 
+	{   
+		min-height: 125px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}

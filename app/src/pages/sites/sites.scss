@@ -1,0 +1,87 @@
+page-sites
+ {
+
+[sites-list]
+{
+[rec-p]{
+	    color: #1975d2 !important;
+    font-size: 15px;
+}
+  @include respond-to(handhelds2)
+	{
+	padding:$value5!important;
+	.scroll-content
+	{
+	padding:$value5!important;
+	}
+	ion-list
+	{
+	margin-bottom:$value5!important;
+	}
+	}
+ion-item-sliding
+{
+ion-item
+{
+.item-inner
+{
+border:$none!important;
+
+
+}
+}
+h3
+{
+	@include respond-to(handhelds2)
+	{
+	font-size:$value10+2;
+	}
+}
+h2
+{
+	@include respond-to(handhelds2)
+	{
+	font-size:-1+$value15;
+	margin-top:$value0!important;
+	}
+}
+}
+
+h3
+{
+	font-size:$value15+3;
+	margin-bottom:$value5;
+	color:$darkblue2;
+	
+}
+}
+}
+[margintop0]:first-child
+{
+margin-top:$value0!important;
+}
+[padding-left5]
+{
+padding-left:$value5
+}
+[btn-hides ]
+{
+@include respond-to(handhelds2)
+{
+display:$none
+}
+
+}
+
+[list-hover]
+{	
+&:hover
+{
+		    box-shadow: 0px 0px 2px 1px rgba(0 , 0 , 0 , 0.07);
+}	
+cursor:pointer;
+}
+.rounded-circle
+{
+object-fit: cover;
+}

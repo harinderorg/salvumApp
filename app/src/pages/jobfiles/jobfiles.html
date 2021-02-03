@@ -1,0 +1,134 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Job Files</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<div breadcrumd-popup ion-fixed>
+		<ion-row>
+			<ion-col col-9 col-md-9 col-lg-9 col-xl-9 >
+				<ion-item border-none br-lt-grey>
+					<ng-container *ngFor="let bread of breadcrums; let last = last; let index = index ">
+					<a *ngIf="bread == 'jobs_data' && bread != 'directory'" (click) = "getAllFiles()">Files</a>
+					<a *ngIf="bread != 'jobs_data' && bread != 'directory'" (click) = "clickBreadcrumb(bread)">{{bread}}</a>
+					{{(last != true && index != 0) ? '->' : ''}}  
+					</ng-container>
+				</ion-item>
+			</ion-col>
+			<ion-col col-3  col-md-3 col-lg-3 col-xl-3>		
+					<button ion-button color="darkblue" block  fnt-regular type="button" (click) = "addFiles()">Submit</button>	
+			</ion-col>
+		<ion-col col-4  col-md-4 col-lg-4 col-xl-4>		
+		<ion-item p-lr-0 *ngIf="folders == '0'">
+			<ion-label floating fnt-light fnt-regular>Filter Job*</ion-label>
+			<ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "job_id" (ionChange)="changeJob(job_id)"> 
+			  <ion-option value="0">All</ion-option>
+			  <ion-option *ngFor="let job of jobs" value="{{job.jobId}}">
+			  {{job.job_title}}</ion-option>    
+			</ion-select>
+		</ion-item>
+		</ion-col>
+		<ion-col col-4  col-md-4 col-lg-4 col-xl-4>		
+		<ion-item p-lr-0 *ngIf="job_id != 0 && folders == '0'">
+			<ion-label floating fnt-light fnt-regular>Filter Trade*</ion-label>
+			<ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "trade_id" (ionChange)="changeTrade(trade_id)"> 
+			  <ion-option value="0">All</ion-option>
+			  <ion-option *ngFor="let trade of trades" value="{{trade.tradeId}}">
+			  {{trade.trade_name}} ({{trade.trade_task}})</ion-option>    
+			</ion-select>
+		</ion-item>
+		</ion-col>
+		<ion-col col-4 *ngIf="show_file_code == '1'" col-md-4 col-lg-4 col-xl-4 style="display: none;">		
+		<ion-item p-lr-0 >
+		   <ion-label floating fnt-light fnt-regular>Select File Type*</ion-label>
+		    <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)] = "file_code">
+		      <ion-option value="C">Contract</ion-option>    
+		      <ion-option value="S">Specification</ion-option>    
+		      <ion-option value="D">Drawing</ion-option>    
+		      <ion-option value="O">Other</ion-option>    
+		    </ion-select>
+		</ion-item>
+		</ion-col>
+		<ion-col col-4  col-md-4 col-lg-4 col-xl-4>		
+		<ion-item p-lr-0 *ngIf="isShared == '1' && file_path == 'nopath'">
+			<ion-label floating fnt-light fnt-regular>Select level*</ion-label>
+			<ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "onLevel">
+			  <ion-option *ngFor="let level of opened_levels" value="{{level}}">
+			  Level {{level}}</ion-option>    
+			</ion-select>
+		</ion-item>
+		</ion-col>
+		</ion-row>
+	</div>
+<ion-content padding> 
+<ion-grid no-padding> 
+<ion-row no-padding>
+<ion-col col-12>  
+<ion-list margin0>	
+  <ion-row *ngIf="folders == '0'" > 
+      <ion-col col-6 col-md-3 col-lg-3 col-xl-3 text-center file-manager *ngFor="let photo of sorted_photos; let i = index ">
+		<div class="white-box job-files-list" margin0 (click) = "clickFolder(photo.file_name)"> 
+			<div>
+				<ng-container *ngIf="photo.file_name.indexOf('.') >= 0 && has_thumbs.indexOf(photo.file_name.split('.').pop().toLowerCase()) >= 0">
+				<img *ngIf="is_video.indexOf(photo.file_name.split('.').pop().toLowerCase()) >= 0" text-center src="{{APIURL}}/salvum/directory/thumbnails/{{photo.file_name.substr(0, photo.file_name.lastIndexOf('.'))}}-thumbnail-320x240-0001.png"/>
+				<img *ngIf="is_video.indexOf(photo.file_name.split('.').pop().toLowerCase()) == -1" text-center src="{{APIURL}}/salvum/directory/jobs_data/{{photo.file_name}}"/>
+				</ng-container> 
+
+				<img *ngIf="photo.file_name.indexOf('.') >= 0 && has_thumbs.indexOf(photo.file_name.split('.').pop().toLowerCase()) == -1" text-center src="assets/img/{{this.file_types.indexOf(photo.file_name.split('.').pop().toLowerCase()) >= 0 ? photo.file_name.split('.').pop().toLowerCase() : 'txt'}}.png"/> 
+
+				<img *ngIf="photo.file_name.indexOf('.') == -1" text-center src="assets/img/folder.png"/> 
+ 	<ion-checkbox class="check-abs"  (ionChange)="insertFilesToArray($event,photo)" ></ion-checkbox><!-- *ngIf="file_types.indexOf(photo.file_name.split('.').pop().toLowerCase()) >= 0" -->
+		<i class="iconfile {{photo.trade_icon == null ? 'arrow-dropdown' : photo.trade_icon}}"></i>
+		<!-- <h2  fnt-regular>File</h2> -->
+		<h6 fnt-regular>{{photo.file_name.search('_--_') >= 0 ? photo.file_name.split('_--_').pop(-1) : photo.file_name.split('____').pop(-1)}} </h6>
+	 <p><ion-icon name="ios-calendar-outline"></ion-icon> {{photo.date_created | date : 'M/d/y'}}</p>
+			</div>
+		</div>
+	
+		<!-- <p>{{photo.date_created | date : 'medium'}}</p> -->
+		<!-- <ion-badge>{{photo.status == '0' ? 'Pending' : ''}}</ion-badge> -->
+	</ion-col>
+	<ion-col col-12 *ngIf="sorted_photos == ''">
+		<ion-item  border-none br-lt-grey>No Files Found</ion-item>
+	</ion-col>
+   </ion-row>
+
+   <ion-row *ngIf="folders == '1'">
+      <ion-col col-6 col-md-3 col-lg-3 col-xl-2 text-center file-manager *ngFor="let related_file of related_files; let i = index ">
+		<div class="white-box job-files-list" margin0 (click)="openIt(related_file.path,related_file.type)"> 
+			<div>
+				<ng-container *ngIf="related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0">
+				<img *ngIf="is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0" text-center src="{{APIURL}}/salvum/directory/thumbnails/{{related_file.name.substr(0, related_file.name.lastIndexOf('.'))}}-thumbnail-320x240-0001.png"/>
+				<img *ngIf="is_video.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1" text-center src="{{APIURL}}/salvum/{{related_file.path}}"/>
+				</ng-container> 
+
+				<img *ngIf="related_file.type == 'file' && has_thumbs.indexOf(related_file.name.split('.').pop().toLowerCase()) == -1" text-center src="assets/img/{{this.file_types.indexOf(related_file.name.split('.').pop().toLowerCase()) >= 0 ? related_file.name.split('.').pop().toLowerCase() : 'txt'}}.png"/> 
+
+				<img *ngIf="related_file.type == 'directory'" text-center src="assets/img/folder.png"/> 
+
+<ion-checkbox class="check-abs"  (ionChange)="insertFilesToArray($event,related_file)" ></ion-checkbox><!-- *ngIf="related_file.type != 'directory'"  -->
+
+		<i class="iconfile {{related_file.trade_icon == null ? 'arrow-dropdown' : photo.trade_icon}}"></i>
+		
+<!-- <h2  fnt-regular>File</h2> -->
+		<h6 fnt-regular>{{related_file.name.search('_--_') >= 0 ? related_file.name.split('_--_').pop(-1) : related_file.name.split('____').pop(-1)}} </h6>	
+		 <!-- <p><ion-icon name="ios-calendar-outline"></ion-icon> 5/5/2020</p> -->
+			</div>
+		</div>
+		
+	</ion-col>
+	<ion-col col-12 *ngIf="related_files == ''">
+		<ion-item border-none br-lt-grey>No Files Found In This Folder.</ion-item>
+	</ion-col> 
+   </ion-row>
+
+</ion-list>
+</ion-col>
+
+
+</ion-row>
+</ion-grid>
+</ion-content>

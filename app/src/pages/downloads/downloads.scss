@@ -1,0 +1,86 @@
+page-downloads {
+ 	.breadcrumbs-row [class^="flaticon-"]:before, .breadcrumbs-row [class*=" flaticon-"]:before, .breadcrumbs-row [class^="flaticon-"]:after, .breadcrumbs-row [class*=" flaticon-"]:after{
+    font-size: 1.2em;
+}
+ion-content
+{
+	
+	    margin-top: $value10;
+	     @include respond-to(handhelds2)
+		 {
+		   margin-top: $value0;
+		   .top-scorll-list
+		   {
+			  min-height:$value30;
+		   }
+		   [fixed_height]
+		   {
+			   display:inline-block!important;
+			   width:100%;
+		   }
+		  .breadcrumbs-row
+		  {
+			   margin: $value0;  
+		  }
+		}
+}
+[fixed-top-div]
+{ 
+    width: 100%;
+    background: #e6e6e6;
+    /*padding: $value0 $value0 $value0  12px;*/
+   
+    @include respond-to(handhelds2)
+    {
+      padding: $value0;
+      ion-list
+      {
+      margin: $value0;
+      }
+    }
+}
+[manage-job]
+{
+	ion-fab
+	{
+		ion-fab-list[side="top"] 
+		{
+		    margin: $value40 $value0;	
+			
+		}
+	button
+	{
+      &.fab
+		{
+    width: $value30;
+    height: $value30;
+    line-height: $value30;
+     }
+	 ion-icon
+	 {
+	font-size:-1+$value15;	 
+	line-height: $value30!important;	 
+	 }
+	}
+		
+	}
+h6
+{
+	margin:$value5 $value0;
+	font-size:-1+$value15;
+	
+}
+p
+{
+	margin-bottom:$value5
+	
+}
+
+	
+	
+	
+}
+}
+.margin-top-30{
+	margin-top : $value30;
+}

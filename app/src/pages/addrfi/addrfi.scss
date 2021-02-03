@@ -1,0 +1,14 @@
+page-addrfi {
+@include respond-to(handhelds2)
+{
+ion-item
+{
+padding-right:$value15+1!important; 
+}
+[padd-mob-lr15]
+{
+padding-left:$value10+1;
+padding-right:$value10+1; 
+}
+}
+}

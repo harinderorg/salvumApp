@@ -1,0 +1,44 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>View RFI</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+<ion-row>
+<ion-col col-12  fnt-regular>Ques: - {{rfi?.question}} ({{rfi?.question_date | date : 'medium'}})</ion-col>
+<ion-col *ngIf="rfi?.question != rfi?.question_engg && role != 'contractor'" col-12 fnt-regular>Modified Ques: - {{rfi?.question_engg}}</ion-col>
+<ion-col col-12>
+	<ion-item  *ngFor="let file of rfi?.question_files" p-lr-0>
+	  <span float-left> 
+	   <ion-icon name="document"></ion-icon>
+	   {{file.indexOf('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}}
+      </span>	   
+	   <a *ngIf="isBrowser ==  'true'" float-right href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}" ><ion-icon margin0 name="download" item-end ></ion-icon></a>
+	   <a float-right *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file,file)" href="javascript:void(0)" ><ion-icon margin0 name="download" item-end ></ion-icon></a>
+	</ion-item>
+</ion-col>
+<ion-col *ngIf="rfi?.answer != ''" col-12 m-t-10 fnt-regular>Ans: - 
+<ng-container *ngFor="let ans of rfi?.answer; let ind = index ">
+	<p><span [innerHTML]="ans"></span></p>
+	{{rfi?.answer_date[ind] | date : 'medium'}}
+
+	<ion-col col-12>
+	<ion-item  *ngFor="let afile of rfi?.answer_files[ind]" p-lr-0>
+	  <span float-left> 
+	      <ion-icon name="document"></ion-icon>
+	   {{afile.indexOf('_--_') >= 0 ? afile.split('_--_').pop(-1) : afile.split('____').pop(-1)}}
+	   </span>
+	   <a *ngIf="isBrowser ==  'true'" float-right href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{afile}}&ext={{afile.split('.').pop().toLowerCase()}}" ><ion-icon margin0 name="download" item-end ></ion-icon></a>
+	   <a float-right float-right *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+afile,afile)" href="javascript:void(0)" ><ion-icon margin0 name="download" item-end ></ion-icon></a>
+	 </ion-item>
+</ion-col>
+	<hr>
+</ng-container>
+</ion-col>
+
+</ion-row>
+</ion-content>

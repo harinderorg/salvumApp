@@ -1,0 +1,108 @@
+<ion-content padding has-header> 
+<ion-row main-breadcrumb ion-fixed> 
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="goToJobs()"><a>Jobs</a></li>
+        <li (click)="backToTradeDash()"><a>{{active_job_breadcrumb}}</a></li> 
+        <li (click)="backToPage()"><a>RFIs</a></li> 
+        <li class="active">Ask Engg</li>
+      </ol>
+    </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+	<ion-row>
+		<ng-container *ngIf="step1 == true">
+		<h4>Edit the RFI questions:-</h4> 
+			<ion-col col-12>
+				<ng-container *ngFor="let rfi of rfis; let index = index ">
+					<ion-item p-lr-0 >
+						<ion-label stacked fnt-light fnt-regular>RFI {{rfi.orders}}</ion-label>
+						<ion-textarea type="text" [(ngModel)] = "rfi.question"></ion-textarea>
+					</ion-item>
+					<p *ngIf="rfi.question_files == '' || rfi.question_files == undefined">No attachments <button ion-button (click)="addAttchs(rfi._id,index)">Add</button></p>
+					<p *ngIf="rfi.question_files != '' && rfi.question_files != undefined">Attachments <button ion-button (click)="addAttchs(rfi._id,index)">Add more</button></p>
+					<ion-item p-lr-0 *ngFor="let file of rfi.question_files; let indx = index ">
+					{{file.indexOf('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}} &nbsp;&nbsp;
+					<button (click)="removeAttach(index,indx)" ion-button><ion-icon name="close"></ion-icon></button>
+					<a *ngIf="isBrowser ==  'true'"  (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}"><button ion-button><ion-icon name="download"></ion-icon></button></a>
+					<a *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file,file)" href="javascript:void(0)"><button ion-button><ion-icon name="download"></ion-icon></button></a>
+					</ion-item>
+				</ng-container>
+
+				<div padding p-b-0 p-lr-0  col-12  clearboth>
+					<button ion-button  block  fnt-regular (click)="saveNextFirst()">Save & Next</button>
+				</div>
+			</ion-col>
+		</ng-container>
+		<ng-container *ngIf="step2 == true">
+			<ion-col col-12>
+				<ion-list radio-group br-lt-grey m-t-10 m-b-0 [(ngModel)]="send_type">
+				<ion-list-header margin0 no-border br-btm color="light">
+				How to Send Rfi
+				</ion-list-header>
+
+				<ion-item class="rfi_items">
+				<ion-label>Email</ion-label>
+				<ion-radio value="email" class="rfi_radios"></ion-radio>
+				</ion-item>
+
+				<ion-item class="rfi_items">
+				<ion-label>Smail</ion-label>
+				<ion-radio value="smail" class="rfi_radios"></ion-radio>
+				</ion-item>
+
+				<ion-item class="rfi_items">
+				<ion-label>Portal</ion-label>
+				<ion-radio value="portal" class="rfi_radios"></ion-radio>
+				</ion-item>
+
+				</ion-list>
+			</ion-col>
+			<ion-col col-4>
+				<button ion-button  block  fnt-regular (click)="saveNextSecond(send_type)">Save & Next</button>
+			</ion-col>
+			<ion-col col-4>
+				<button ion-button  block  fnt-regular (click)="backStepSecond()">Back</button>
+			</ion-col>
+		</ng-container>
+		<ng-container *ngIf="step3 == true">
+			<ion-col col-12>
+				<ion-item p-lr-0 *ngIf="send_type != 'smail'">
+					<ion-label stacked fnt-regular>Email address</ion-label>
+					<ion-input type="text" [(ngModel)] = "email_address" ></ion-input>
+				</ion-item>
+
+				<ion-item p-lr-0 *ngIf="send_type == 'smail'">
+					<p>Email address</p>
+					<ion-searchbar (ionInput)="filterEmails($event)" [(ngModel)] = "email_address" placeholder="Search Emails..."></ion-searchbar>
+					<ng-container *ngIf="dropdown == true">
+						<ng-container *ngFor="let user of emails">
+							<ion-item *ngIf="user._id != userId" (click)="selectEmail(user.email)" crsr_pointr>
+								{{user.email}}
+							</ion-item>
+						</ng-container>
+						<ng-container *ngIf="emails == ''">
+							<ion-item>
+								No match found.
+							</ion-item>
+						</ng-container>
+					</ng-container>
+				</ion-item>
+
+				<ion-item p-lr-0>
+					<ion-label stacked fnt-light fnt-regular>Description</ion-label>
+					<ion-textarea type="text" [(ngModel)] = "description"></ion-textarea>
+				</ion-item>
+
+				<ion-col col-4>
+					<button ion-button  block  fnt-regular (click)="askEngg(email_address,description)">Submit</button>
+				</ion-col>
+				<ion-col col-4>
+					<button ion-button  block  fnt-regular (click)="backStepThird()">Back</button>
+				</ion-col>
+			</ion-col>
+		</ng-container>
+	</ion-row>
+<div footer-height></div> 
+</ion-content>

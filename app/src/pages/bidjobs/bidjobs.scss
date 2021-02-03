@@ -1,0 +1,142 @@
+page-bidjobs {
+ ion-content
+{ 	
+	    margin-top: $value10;
+		ion-badge
+		{
+			@include respond-to(handhelds2)
+			{
+			   font-size:$value12; 
+			}
+		}
+		 [bidjobtabs]
+			{
+			 ion-item
+			 {
+			    &.bg-blue
+				 {
+				 color:#fafafa;
+				 .inviteicon
+				 {
+				  filter:invert(0);
+				 }
+			 } 
+			
+			 .inviteicon
+				 {
+				   width: 16px;
+				   top: 3px;
+				   position:relative;
+				    filter:invert(1);
+				 }
+			  color:#000;
+			   }
+			}
+		 @include respond-to(handhelds2)
+		 {
+		  margin-top: $value0;
+         .scroll-content
+		  {
+		   padding-top:$value0!important;		  
+		  }
+		   [bidjobtabs]
+		   {
+		    ion-item
+			{
+			 border:none!important;
+			
+			}
+			
+		   }
+		 }
+}
+[fixed-top-div]
+{
+    width: 100%;
+    background: #e6e6e6;
+    /*padding: $value0 $value0 $value0  12px;*/
+   
+    @include respond-to(handhelds2)
+    {
+      padding: $value0;
+      ion-list
+      {
+      margin: $value0;
+      }
+	  ion-searchbar
+	  {
+	   padding: $value5 $value15!important;
+	   .searchbar-input
+	   {
+	        padding-top: 7px;
+			padding-bottom: 7px;
+			min-height: 35px;
+	   }
+	  }
+    }
+} 
+}
+[bidjobs]
+{
+[head]
+{
+ion-item
+{
+.item-inner
+{
+border-bottom:1px solid $br-lt-grey!important;
+}
+background:$fnt-white;
+border:$none!important;
+padding:$value15   $value15!important;
+}    display: flex;
+border-bottom:1px solid $br-lt-grey;
+}
+ion-item
+{
+.item-inner
+{
+h2
+{
+   font-weight: 700;
+   color: $darkblue2;
+font-size:$value14;
+	
+}
+h5
+{
+margin: $value10 $value0  $value15  $value0; white-space:normal;
+}
+p{
+white-space:normal;margin: $value10 $value0;font-size:13px;
+}
+border:$none!important;
+}
+border-bottom:1px solid $br-lt-grey;
+padding-top:$value10;
+padding-bottom:$value10;
+}
+ion-badge
+{
+	font-weight:normal;
+	@include respond-to(handhelds2)
+	{
+     i
+	 {
+	 &:before
+	 {
+	 font-size:14px;
+	 }
+	 }
+	}
+}
+background:$fnt-white;
+box-shadow: 0 1px 6px rgba(57,73,76,.07);
+}
+.bg-blue{
+	background:$darkblue2;
+	color:$fnt-white;
+}
+.tab1, .tab2 {
+	cursor : pointer;
+}

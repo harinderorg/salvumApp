@@ -1,0 +1,63 @@
+<ion-content padding lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="goToJobs()"><a>Jobs</a></li>
+      <li (click)="goToComps()"><a>Companies</a></li> 
+      <li (click)="backToPage()"><a>Employees</a></li> 
+      <li class="active">Employee details</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-row class="row ">	
+  <ion-col col-12 col-md-6 col-lg-4  offset-lg-4>
+<ion-list br-lt-grey margin0 company-detail> 
+<ion-list-header margin0 no-border br-btm>
+  <ion-item fnt14 no-border>
+    <ion-avatar item-start>
+    <ion-icon *ngIf="employee_detail.employee_image == '' || employee_detail.employee_image == null"  circle-pic name="person" text-center></ion-icon>
+    <img w-h-img circle-pic *ngIf="employee_detail.employee_image != '' && employee_detail.employee_image != null" src="{{APIURL}}/images/{{employee_detail.employee_image}}">
+    </ion-avatar>
+    <h2>{{employee_detail.employee_name}}</h2>
+    <p>{{employee_detail.employee_email}}</p>
+	  </ion-item> 
+  </ion-list-header>
+   <ion-item fnt14>
+  Status
+    <ion-badge  item-end fnt14 color="green" fnt-normal>{{employee_detail.status == '1' ? 'Accept' : (employee_detail.status == '0' ? 'Pending' : 'Declined')}}</ion-badge>
+  </ion-item>
+  <ion-item fnt14> 
+   <ion-label fnt-light fnt-regular def-col>
+    Privilege</ion-label>
+    <ion-note [hidden]="hide_this" item-end fnt14 >{{employee_detail.privilege == '1' ? 'Admin' : 'Linked'}}</ion-note>
+
+    <button [hidden]="hide_this" (click)="clickPrivilege(employee_detail.privilege)" ion-button clear item-end  padding0><ion-icon name="create" fnt20></ion-icon></button>
+ 
+    <button [hidden]="!hide_this" (click)="cancelPrivilege()" ion-button clear item-end  padding0><ion-icon name="close" fnt20></ion-icon></button>
+
+    <ion-select  [hidden]="!hide_this" cancelText="Cancel" okText="Okay!" [(ngModel)] = "new_privilege" (ionChange)="privilegeChanged(employee_detail._id,new_privilege)">
+      <ion-option value="0">Linked</ion-option>   
+      <ion-option value="1">Admin</ion-option>   
+      <ion-option value="2">Manager</ion-option>   
+      <ion-option value="3">Project Manager</ion-option>   
+      <ion-option value="4">Secretary</ion-option>   
+    </ion-select>
+  </ion-item>
+
+      <ion-item fnt14>
+   
+      Action
+    <ion-note margin0 item-end fnt14> 
+    <button *ngIf="assocJobs != ''" ion-button clear item-end  padding0 (click)="viewJobs()" title="View Jobs"><ion-icon name="eye" fnt20></ion-icon></button>
+    <button *ngIf="assocJobs != ''"  ion-button clear item-end  padding0 (click)="assignJobs()" title="Assign Jobs"><ion-icon name="briefcase-outline" fnt20></ion-icon></button>
+    <button (click)="deleteEmployees(employee_detail._id)" ion-button clear item-end  padding0 title="Remove"><ion-icon name="trash" fnt20></ion-icon></button>
+	</ion-note>
+  </ion-item> 
+
+</ion-list>
+  </ion-col>
+  </ion-row>
+<div footer-height></div> 
+</ion-content>

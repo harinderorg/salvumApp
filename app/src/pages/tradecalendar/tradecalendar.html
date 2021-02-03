@@ -1,0 +1,72 @@
+<ion-content lightgrey padding has-header>
+<ion-row main-breadcrumb ion-fixed> 
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="goToJobs()"><a>Jobs</a></li>
+      <li (click)="backToTradeDash()"><a>{{active_job_breadcrumb}}</a></li> 
+      <li (click)="backToPage()"><a>Trades</a></li> 
+      <li class="active">Trade Calendar</li>
+    </ol>
+  </ion-col>
+ </ion-row>
+<div breadcrumb-height></div>
+<ion-row no-padding>
+	 <ion-col col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12>
+ 
+  <ion-list br-lt-grey margin0 calendar-detail>
+  <ion-list-header margin0 no-border br-btm color="light" calendar-top>
+<button float-left ion-button type="button" (click)="goPreviousMonth()"><ion-icon name="arrow-dropleft-circle"></ion-icon></button><span title-year float-left>{{viewTitle}}</span><button float-right ion-button type="button" (click)="goNextMonth()"><ion-icon name="arrow-dropright-circle"></ion-icon></button> 
+
+<!-- <button ion-button type="button" [disabled]="isToday" (click)="today()">Today</button> -->
+  </ion-list-header>
+  <ion-item year-div>
+  <ion-label>Year</ion-label>
+  <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "curr_year" (ionChange)="goYear(curr_year)">
+  <ion-option *ngFor="let year of allYears" value="{{year}}">{{year}}</ion-option>
+</ion-select>
+</ion-item>
+  </ion-list>
+
+<div  white-bg padding br-lt-grey style="min-height: 300px;">
+<!--   <template #template let-view="view" let-row="row" let-col="col">
+    <div class="calendar-day {{ view.dates[row*7+col].events[0]?.color }}">
+      {{view.dates[row*7+col].label}}
+    </div>
+  </template> -->
+
+    <calendar [eventSource]="eventSource"
+              [calendarMode]="calendar.mode"
+              [currentDate]="calendar.currentDate"
+              (onCurrentDateChanged)="onCurrentDateChanged($event)"
+              (onEventSelected)="onEventSelected($event)"
+              (onTitleChanged)="onViewTitleChanged($event)"
+              (onTimeSelected)="onTimeSelected($event)"
+              step="30">
+    </calendar>
+</div>
+
+ </ion-col>
+<ion-col col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12>
+<ion-list br-lt-grey margin0>
+  <ion-list-header margin0 no-border br-btm color="light">
+  List Of  Events
+  </ion-list-header>
+  <ion-item *ngFor="let single_event of my_events">
+    <ion-icon name="list" item-start></ion-icon>
+    <span>{{single_event.event_title}}</span> <span>({{single_event.event_time}})</span>
+    <button (click) = "editEvent(single_event,single_event._id)" ion-button clear item-end margin0><ion-icon name="document" fnt20></ion-icon></button>
+    <button (click) = "deleteEvent(single_event._id)" ion-button clear item-end margin0><ion-icon name="trash" fnt20></ion-icon></button>
+  </ion-item>
+  <ion-item *ngIf="my_events == ''">
+  No Events Found.
+  </ion-item> 
+</ion-list>
+  <button ion-button type="button" color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left (click)="add_new_event($event)" [disabled]="add_disabled">
+      <ion-icon name="add" m-r-5></ion-icon>
+      <span>Add Event </span>
+   </button>
+ </ion-col>
+  </ion-row>
+<div footer-height></div>
+</ion-content>

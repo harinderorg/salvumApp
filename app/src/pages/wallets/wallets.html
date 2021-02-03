@@ -1,0 +1,49 @@
+<ion-content padding lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li class="active">Wallet</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-grid class="grid" no-padding="">
+
+    <ion-row class="row">
+
+<ion-col col-4 col-md-4 col-lg-4 (click)="openSitePage()">
+
+            <ion-card  wallet-div br-lt-grey padding text-center>
+ <ion-icon fnt25 name="globe"></ion-icon>
+<h1 fnt-light>Sites</h1>            
+
+            </ion-card>
+
+      </ion-col>
+<ion-col col-4 col-md-4 col-lg-4 (click)="openPasswordPage()"> 
+
+            <ion-card   wallet-div  br-lt-grey  padding text-center>
+ <ion-icon fnt25 name="key"></ion-icon>
+              
+<h1 fnt-light>Passwords</h1>
+            
+
+            </ion-card>
+
+      </ion-col>
+<ion-col col-4 col-md-4 col-lg-4 (click)="openWalletPage()">
+
+            <ion-card br-lt-grey wallet-div padding text-center>
+ <ion-icon fnt25 name="card"></ion-icon>
+              
+<h1 fnt-light>Wallets</h1>
+            
+
+            </ion-card>
+
+      </ion-col>
+	      </ion-row>
+		  </ion-grid>
+<div footer-height></div>
+</ion-content>

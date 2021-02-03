@@ -1,0 +1,192 @@
+<ion-content lightgrey padding big-detail has-header [ngClass]="errors.indexOf(userId) >= 0 ? 'no-header' : ''">
+<ion-row main-breadcrumb ion-fixed *ngIf="isVisible == '1' && userId != undefined && userId != '' && userId != null"> 
+    <ion-col>
+      <ol class="breadcrumb"> 
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="goToBids()"><a>Bidding</a></li>
+        <li class="active">{{job_name}}</li>
+      </ol>
+    </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+    <ion-row class="row" *ngIf="isVisible == '1'">
+        <ion-col  padd-mob-0 col-12 col-md-12 col-lg-8 col-xl-9>
+            <ion-row>
+                <ion-col padd-mob-0 col-12 col-md-6 col-lg-4>
+                    <ion-list br-lt-grey margintop0 company-detail>
+                        <ion-list-header margin0 no-border br-btm color="light">
+                            Main Contacts
+                        </ion-list-header>
+                        <ion-item fnt14 no-border>
+                            <ion-avatar item-start>
+                                <ion-icon *ngIf="posted_image == ''"  circle-pic name="person" text-center></ion-icon>
+                                <img circle-pic *ngIf="posted_image !== ''" src="{{APIURL}}/images/{{posted_image}}">
+                            </ion-avatar>
+                            <h2>{{posted_by}}</h2>
+                            <p>{{posted_email}}</p>
+                        </ion-item>
+                    </ion-list>
+                    <ion-list br-lt-grey margintop0 company-detail>
+                        <ion-list-header margin0 no-border br-btm color="light">
+                            Project Manager
+                        </ion-list-header>
+                        <ion-item fnt14>
+                            Name
+                            <ion-note  item-end fnt14>{{pm_name}}</ion-note>
+                        </ion-item>
+                        <ion-item fnt14>
+                            Contact
+                            <ion-note  item-end fnt14>{{pm_contact}}</ion-note>
+                        </ion-item>
+                    </ion-list>
+                    <ion-list br-lt-grey margintop0 company-detail>
+                        <ion-list-header margin0 no-border br-btm color="light">
+                            Job Info
+                        </ion-list-header>
+                        <ion-item fnt14>
+                            PO/Job
+                            <ion-note  item-end fnt14>{{job_number}}</ion-note>
+                        </ion-item>
+                        <ion-item fnt14>
+                            Job Title
+                            <ion-note  item-end fnt14>{{job_name}}</ion-note>
+                        </ion-item>
+                        <ion-item fnt14>
+                            Trade
+                            <ion-note  item-end fnt14>{{trade_name}}</ion-note>
+                        </ion-item>
+                        <ion-item fnt14>
+                            Site Location
+                            <ion-note  item-end fnt14>{{site_address}}</ion-note>
+                        </ion-item>
+                    </ion-list>
+                </ion-col>
+                <ion-col padd-mob-0 col-12 col-md-6 col-lg-8>
+                    <div class="white-box" m-b-15 centerbox>
+                        <h6 fnt-bold>Trade Task</h6>
+                        <p fnt-light>{{trade_task}}</p>
+                        <h6 fnt-bold>Job Description</h6>
+                        <p fnt-light>{{job_description}}
+                        </p>
+                    </div>
+                    <ion-list br-lt-grey  company-detail *ngIf="all_attachments != ''">
+                        <ion-list-header margin0 no-border br-btm color="light">
+                            Attachments
+                        </ion-list-header> 
+                        <ion-item     fnt14 *ngFor = "let file of all_attachments">
+                            <ion-icon  small name="attach" item-start  left></ion-icon>
+                            
+                            {{file.file_name.indexOf('_--_') >= 0 ? file.file_name.split('_--_').pop(-1) : file.file_name.split('____').pop(-1)}}
+                            ({{this.all_codeTypes[file.code]}} File)
+                            <a *ngIf="isBrowser ==  'true'" (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL +'/salvum/directory/jobs_data/'+file.file_name}}&ext={{file.file_name.split('.').pop().toLowerCase()}}" item-end >
+                                <ion-icon name="download" item-end ></ion-icon>
+                            </a>
+                            <a *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/jobs_data/'+file.file_name,file.file_name)" href="javascript:void(0)" item-end >
+                                <ion-icon name="download" item-end ></ion-icon>
+                            </a>
+                        </ion-item>
+                    </ion-list>
+                    <h6 *ngIf="applied_bids != ''">Applied Bids</h6>
+                    <ion-list br-lt-grey  company-detail applied-bid *ngFor="let applied_bid of applied_bids">
+                        <ion-list-header margin0 no-border br-btm color="light">
+                            <ion-note  item-end>{{applied_bid.bid_date | date: 'medium'}} </ion-note>
+                            <p fnt-light margin0>{{applied_bid.bid_comments}}
+                            <ion-badge title="Bid is rejected. check your email for reasons." *ngIf="applied_bid.isAccepted == '0'" color="danger">Rejected</ion-badge>
+                            </p>
+                            <p *ngIf="applied_bid.bidId == bidJobId && applied_bid.reply_comment != '' && applied_bid.reply_comment != null && applied_bid.reply_comment != undefined">
+                                <b>Reply:</b> {{applied_bid.reply_comment}} 
+                            </p>
+                        </ion-list-header>
+                        <ion-item fnt14 *ngFor="let file of applied_bid.files">
+                            <ion-icon name="document" item-start left></ion-icon>
+                            {{file.indexOf('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}}
+                        </ion-item>
+                    </ion-list>
+
+                </ion-col>
+            </ion-row>
+        </ion-col>
+        <ion-col padd-mob-0 col-12  col-md-12 col-lg-4 col-xl-3>
+            <ion-row>
+                <ion-col padd-mob-0 col-12 col-md-4 col-lg-12 p-b-15 right-dashboard *ngFor="let event of all_events">
+                    <ion-item left margin0 dashboard dashboard-right1>
+                        {{event.event_tagline}}
+                        <p fnt-light>
+                            {{event.event_time}}
+                        </p>
+                        <ion-icon class="icon-right" name="calendar" item-end margin0></ion-icon>
+                        <ion-row>
+                            <ion-col col-12>
+                                <h2 fnt-regular>
+                                    <sup>
+                                        <small>
+                                            <ion-icon class="icon-dashboard" name="arrow-up"></ion-icon>
+                                        </small>
+                                    </sup>
+                                    {{event.start_date | date : 'mediumDate'}}
+                                </h2>
+                            </ion-col>
+                        </ion-row>
+                    </ion-item >
+                </ion-col>
+
+                <ion-col padd-mob-0 col-12 *ngIf="isAwarded != '1'">
+                    <ng-container *ngIf="isBidExpired == false">
+                        <ion-item  border-none br-lt-grey color="white" m-b-15 br-lt-grey>
+                            <ion-label>Your Status</ion-label>
+                            <ion-select [(ngModel)]="bid_original_status" (ionChange)="changeStatusBid(bidJobId,bid_original_status)" color="white">
+                            <ion-option [disabled]="true" value="1">Waiting</ion-option>
+                            <ion-option value="2">Bidding</ion-option>
+                            <ion-option value="3">Not Bidding</ion-option>
+                            <ion-option value="4">Undecided</ion-option>
+                            <ion-option [disabled]="true" value="5">Submitted</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ng-container>
+                    <button *ngIf="errors.indexOf(userId) == -1" (click)="myRFIs()" m-t-0  ion-button block fnt-regular m-b-15 color="blue">
+                        <ion-icon name="help"></ion-icon>
+                        &nbsp;&nbsp; RFI (Request For Information)
+                    </button>
+                    <button (click)="downloadAll()" ion-button block fnt-regular m-b-15 color="blue" >
+                        <ion-icon name="download"></ion-icon>
+                        &nbsp;&nbsp; Download Attachments
+                    </button>
+                    <button (click)="myTransmittals()" m-t-0 ion-button block fnt-regular m-b-15 color="blue">
+                        <ion-icon name="paper-plane"></ion-icon>
+                        &nbsp;&nbsp; Transmittals
+                    </button>
+                    <ng-container *ngIf="isBidExpired == false">
+                        <button ion-button block fnt-regular color="blue" (click)="openSubmitbidPage(bid_original_status)">
+                            <ion-icon name="arrow-up"></ion-icon>
+                            &nbsp;&nbsp;{{applied_bids?.length > 0 ? 'Re-submit Bid' : 'Submit Bid'}}
+                        </button>
+                    </ng-container>
+                </ion-col>
+                <ion-col padd-mob-0 col-12 *ngIf="isAwarded == '1'">
+					<button *ngIf="errors.indexOf(userId) == -1" (click)="myRFIs()" m-t-0 ion-button block fnt-regular m-b-15 color="blue">
+                        <ion-icon name="help"></ion-icon>
+                        &nbsp;&nbsp; RFI (Request For Information)
+                    </button>
+                    <button (click)="downloadAll()" ion-button block fnt-regular m-b-15 color="blue" >
+                        <ion-icon name="download"></ion-icon>
+                        &nbsp;&nbsp; Download Attachments
+                    </button>
+                    <button (click)="myTransmittals()" m-t-0 ion-button block fnt-regular m-b-15 color="blue">
+                        <ion-icon name="paper-plane"></ion-icon>
+                        &nbsp;&nbsp; Transmittals
+                    </button>
+                    <button *ngIf="errors.indexOf(userId) == -1" (click)="viewContract()" ion-button block fnt-regular m-b-15 color="blue" >
+                        <ion-icon name="eye"></ion-icon>
+                        &nbsp;&nbsp; View Contract
+                    </button>
+                    <button *ngIf="errors.indexOf(userId) == -1" (click)="downloadPdf()" ion-button block fnt-regular m-b-15 color="blue" >
+                        <ion-icon name="download"></ion-icon>
+                        &nbsp;&nbsp; Download Contract
+                    </button>
+                </ion-col>			
+            </ion-row>
+        </ion-col>
+    </ion-row>
+<a download href="{{downloaded_href}}" id="download_zip_attachments"  style="visibility: hidden;"></a>
+<div footer-height></div> 
+</ion-content>

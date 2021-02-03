@@ -1,0 +1,363 @@
+<div (click)="closeDropDown()" class="shadow" style="display: none;"></div>
+<ion-content padding lightgrey has-header (window:resize)="caclHeight()">
+<div ion-fixed id="calc_height_bids{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb> 
+	<ion-col>
+	  <ol class="breadcrumb">
+	    <li (click)="root()"><a>Home</a></li>
+	    <li (click)="goToJobs()"><a>Jobs</a></li>
+	    <li (click)="backToPage()"><a>{{active_job_breadcrumb}}</a></li> 
+	    <li class="active">Bids</li>
+	  </ol>
+	</ion-col>
+</ion-row>
+<!-- <trade-breadcrumbs (click) = "clickTrade()"></trade-breadcrumbs> -->
+
+
+<ion-row class="breadcrumbs-row" *ngIf="all_bids != ''">
+  <ion-col pos-right col-12 col-md-3 col-sm-3>
+    <ng2-dropdown (onShow)="onDropdownShow()">
+      <ng2-dropdown-button [showCaret]="true">
+          Filter <div class="filter_icons" (click)="$event.stopPropagation()">
+	      <a [ngClass]="sort_icon == true ? 'active' : ''" (click)="sortTrades('a')">ABC</a><img *ngIf="sort_icon == true" width="12" height="12" src="assets/img/{{order_default_p == false ? 'down' : 'up'}}.png">&nbsp;&nbsp;&nbsp;
+	      <a [ngClass]="sort_icon == false ? 'active' : ''" (click)="sortTrades('n')">123</a><img *ngIf="sort_icon == false" width="12" height="12" src="assets/img/{{order_advanced_p == false ? 'down' : 'up'}}.png">
+      </div>
+      </ng2-dropdown-button>
+      <ng2-dropdown-menu dropmenu>
+      
+      <div padding>
+        <ion-segment [(ngModel)]="nav_filter" class="filter_list">
+          <ion-segment-button value="default">
+            Default <ion-icon cls (click)="cancelAllFilters('d',filter)" name="close"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="advanced">
+            Advanced <ion-icon cls (click)="cancelAllFilters('a',filter)" name="close"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <div [ngSwitch]="nav_filter" class="filter_list">
+        <ion-list *ngSwitchCase="'default'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of tradeTypes | orderBy: order_default : order_default_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade,filter)" [ngClass]="filter_trade_names.indexOf(trade.trade_name) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>All {{trade.trade_name}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'advanced'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of trades | orderBy: order_advanced : order_advanced_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade,filter)" [ngClass]="filter_trades.indexOf(trade.tradeId) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>{{trade.trade_task?.length > 13 ? trade.trade_task.substr(0,13)+'...' : trade.trade_task}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+      </div>
+      </ng2-dropdown-menu>
+    </ng2-dropdown>
+  </ion-col>
+  <ion-col col-12 col-sm-9 col-md-9>
+	<div class="top-scorll-list">
+	<div class="self-control">
+		<ion-icon lefticon name="ios-arrow-dropleft-circle" (click)="scroll('left')"></ion-icon>
+		<ion-icon  righticon name="ios-arrow-dropright-circle" (click)="scroll('right')"></ion-icon>
+	</div>
+	<div class="drop-scroll">   
+	    <button title="{{trade.trade_task}}" *ngFor="let trade of filter_list; let i = index" class="trade-btn">
+	      <i class="{{trade.trade_icon}}"></i> {{trade.trade_task?.length > 25 ? trade.trade_task.substr(0,25)+'...' : trade.trade_task}}
+	      <ion-icon (click)="cancelFilter(trade,i)" name="close"></ion-icon>
+	    </button>    
+	</div>
+	</div>
+   </ion-col>
+</ion-row>
+
+
+
+<!-- <ion-list  head color="white" margin0>
+<ion-grid>
+<ion-row>
+  <ion-col col-12 col-xl-4 col-lg-4 col-md-6 col-sm-12>
+    <ion-item no-border>
+	    <ion-label>Filter by</ion-label>
+	    <ion-select (ionChange)="filterTrades(filter)" [(ngModel)]="filter">
+	      <ion-option value="all" selected="">All</ion-option>
+	      <ion-option value="['0']">Pre Awarded</ion-option>
+	      <ion-option value="['1','2','3','4']">Post Awarded</ion-option>  
+	    </ion-select>
+  	</ion-item>
+   </ion-col>
+	<ion-col col-xl-3 col-md-4 col-12 button-hide col-lg-4 col-md-6 col-sm-12>
+		<button (click)="addManualBids()" ion-button color="blue" fnt-regular m-b-10 fnt-normal left>
+		<ion-icon name="add"></ion-icon>    
+		</button>  
+		<button (click)="deleteBids()" ion-button color="blue" fnt-regular m-b-10 fnt-normal left>
+		<ion-icon name="trash" ></ion-icon>       
+		</button>
+
+	</ion-col>
+  </ion-row>
+  </ion-grid>
+</ion-list> -->
+
+</div>
+<div fixheightmob clearfix id="fixed_height_bids{{timestamp}}"></div>
+
+
+
+<ion-row> 
+      <ion-col col-xl-12 col-sm-12 col-12 paddingtop0 p-lr-0 clearboth>  		  
+        <ion-list margin0 scroll-mobile>
+			<expandable-list *ngFor="let bid of sorted_bids; let index=index " >
+
+				<expandable-list-item disabled = "false">
+				<!-- [isExpanded]="true" -->
+					<span title>					 
+						<ion-row main-position>
+							<ion-col col-1 disp-flex><i class="{{bid.trade_icon}}"></i></ion-col>
+							<ion-col col-3 disp-flex><span head style="display:none">Trade Title </span><span paragraph>{{bid.trade_name}}</span></ion-col>
+							<ion-col col-7 disp-flex><span head style="display:none">Trade Task </span><span paragraph>{{bid.trade_task}}</span></ion-col>
+							<ion-col col-1 disp-flex icons-transmittal>
+								<!-- <button small ion-button clear item-end margin0 button-none pdg0 title="Status"><ion-icon name="create" fnt20></ion-icon></button> -->
+							</ion-col>
+						</ion-row>
+					</span>
+					<span item>
+					<div class="">
+						<expandable-list inside *ngFor="let bidd of bid.all_bids; let ind = index ">
+						<div comment-main>
+						<a class="icon-comment" *ngIf="bidd.indicator == true"> 
+							<ion-icon class="success_mark" name="checkmark-circle"></ion-icon>
+						</a>
+						<a class="icon-comment" *ngIf="bidd.indicator == false">
+							<button (click)="notifyBidder(bidd.bid,bid.jobId,bidd.userId,bidd.posted_email,bidd.posted_by,bidd.bid_comments,bidd.bid_breakdown,bid.required_uploads,bidd.all_cats)" notify_bidder color="blue" small ion-button title="Notify sub-contractor to bid again">Notify</button>
+							<ion-icon class="error_mark" name="alert"></ion-icon>
+						</a>
+						        <p comments-text>{{bidd.bid_comments}} <ion-icon *ngIf="bidd.reply_comment == undefined || bidd.reply_comment == '' || bidd.reply_comment == null" (click)="replyBid(bidd.userId,bid.tradeId,bidd.bid)" name="undo" color="blue" title="Reply">  </ion-icon></p>
+								<ion-note>{{bidd.bid_date | date : 'short'}} </ion-note>
+								<div price-text>{{(bidd?.bid_breakdown?.total_estimated_cost != undefined && bidd?.bid_breakdown?.total_estimated_cost != '') ? '$'+(bidd?.bid_breakdown?.total_estimated_cost) : ''}}
+								</div>
+						
+					<p notes-text>{{bidd.notes}}</p>
+						<ion-badge color="light" pd_l_0><ion-icon class="ion-ios-person-outline" m-r-5></ion-icon>{{bidd.posted_by}} &nbsp;<ion-icon  class="ion-ios-mail-outline" m-r-5></ion-icon>{{bidd.posted_email}}</ion-badge>
+						
+						<h3 attachicon fnt-regular m-t-5 *ngIf="bidd.files.length > 0">			<ion-fab  float-left  [style.z-index]="999-index" >
+						    <button ion-fab  mini color="light"><ion-icon name="attach"></ion-icon> </button>
+						    <ion-fab-list>
+							 <div question *ngFor="let file of bidd.files; let f_ind = index ">
+							 	<span float-left>
+							   	<ion-icon name="document"></ion-icon>
+							      {{file.search('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}}
+								</span>
+
+								<a (click)="downloadFiles('directory/bids_data/'+file,bid.tradeId,file,index,ind,f_ind,baseUrl+'/download?file='+APIURL+'/salvum/directory/bids_data/'+file+'&ext='+file.split('.').pop().toLowerCase())">
+									<ion-icon name="download" item-end ></ion-icon>
+								</a>
+
+								<!-- <a id="down_{{index}}{{ind}}{{f_ind}}" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}"></a> -->
+
+								<!-- <a *ngIf="isBrowser == 'false'" (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file,file)" href="javascript:void(0)"></a> -->
+							</div>
+						    </ion-fab-list>
+						   </ion-fab>
+						</h3>
+					
+						<button btn-mob (click)="addNote(index,ind,bidd.notes,bidd.bid)" small ion-button clear item-end margin0 button-none pdg0 title="Notes" type="button"><ion-icon name="create"></ion-icon></button>
+
+						<button btn-mob ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end (click)="goToTrade(bid.jobId,bid.tradeId)" title="Go to Trade">
+						    <ion-icon name="ios-redo" item-end></ion-icon>  
+						</button>
+
+						<button btn-mob title="Award" *ngIf="bidd.isAwarded == '0'" ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end (click)="awardJob(bid.Iid,bidd.bid,bid.jobId,bid.tradeId,bidd.userId,bidd.posted_by,bidd.posted_email)">
+						    <ion-icon class="ion-ios-trophy-outline" item-end></ion-icon>  
+						</button>
+						<button btn-mob title="Sign Contract" *ngIf="bidd.isAwarded == '1'" ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end (click)="signContract(bid.Iid,bidd.bid,bid.tradeId)">
+						   <ion-icon class="ion-ios-create-outline" item-end></ion-icon> 
+						</button>
+
+						<button btn-mob title="Cancel Contract" *ngIf="bidd.isAwarded == '3'" (click)="cancelContract(bid.Iid,bidd.bid)" ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end >
+						    <ion-icon class="ion-md-close" item-end></ion-icon> 
+						</button>
+						<button  btn-mob title="Download Contract" *ngIf="bidd.isAwarded == '3' || bidd.isAwarded == '4'" (click)="downloadPdf(bid.Iid,bid.tradeId)" ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end >
+						 <ion-icon class="ion-md-download" item-end></ion-icon>  
+						</button>
+						<button btn-mob *ngIf="bidd.isAwarded == '3' || bidd.isAwarded == '4'" title="Export" (click)="exportPdf(bid,bidd.bid_comments,bidd.files,bidd.bid_breakdown,bidd.posted_by,bidd.posted_email,bid.tradeId)" ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end >
+						 <ion-icon name="log-out" item-end></ion-icon>  
+						</button>
+					
+						</div>
+						<expandable-list-item disabled = "false">
+							<span item>
+
+								<ng-container *ngFor="let cats of bid.uploader_categories">
+									<ng-container *ngIf="cats.name != 'Total Estimated Cost' && cats.name != 'Bid breakdown'">
+										<div cat-white *ngIf="cats.visible == true">
+											{{cats.name}}<span color_red> {{cats.required == true ? '*' : ''}}</span> : <ion-checkbox (ionChange)="catChecked($event,index,ind,bidd.bid,cats.name)" class="checker_box" [checked]="bidd.all_cats.indexOf(cats.name) >= 0 ? true : false"></ion-checkbox>
+											<br>
+											<div *ngIf="bidd?.all_cats_values[cats.name]?.type == '0'">
+												<ng-container *ngFor="let file of bidd?.all_cats_values[cats.name]?.files">
+													{{file.file_name}}
+													<a *ngIf="isBrowser == 'true'" (click)="downloadFile(file.name,bid.tradeId)" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file.name}}&ext={{file.name.split('.').pop().toLowerCase()}}" ><ion-icon name="download" item-end ></ion-icon></a>
+													<a *ngIf="isBrowser == 'false'" (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file.name,file.name)" href="javascript:void(0)"><ion-icon name="download" item-end ></ion-icon></a>
+													<br>
+												</ng-container>
+											</div>
+											<div *ngIf="bidd?.all_cats_values[cats.name]?.type == '1'">
+												{{bidd?.all_cats_values[cats.name]?.summary}}
+											</div>
+										</div>
+
+									</ng-container>
+									<ng-container *ngIf="cats.name == 'Bid breakdown'">
+										<div cat-white *ngIf="cats.visible == true">
+											{{cats.name}}<span color_red> {{cats.required == true ? '*' : ''}}</span> : <ion-checkbox (ionChange)="breakdownChecked($event,index,ind,bidd.bid,cats.name)" class="checker_box" [checked]="((bidd?.bid_breakdown?.bid_breakdown_type == '0' && bidd?.bid_breakdown?.bid_breakdown_files?.length > 0) || (bidd?.bid_breakdown?.bid_breakdown_type == '1' && bidd?.bid_breakdown?.bid_breakdown_manual != '' && bidd?.bid_breakdown?.bid_breakdown_manual != null && bidd?.bid_breakdown?.bid_breakdown_manual != undefined) ? true : false)"></ion-checkbox>
+											<br>
+											<div cat-white *ngIf="bidd?.bid_breakdown?.bid_breakdown_type == '0'">
+												<ng-container *ngFor="let file of bidd?.bid_breakdown?.bid_breakdown_files">
+													{{file.file_name}}
+													<a *ngIf="isBrowser == 'true'" (click)="downloadFile(file.name,bid.tradeId)" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file.name}}&ext={{file.name.split('.').pop().toLowerCase()}}" ><ion-icon name="download" item-end ></ion-icon></a>
+													<a *ngIf="isBrowser == 'false'" (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file.name,file.name)" href="javascript:void(0)"><ion-icon name="download" item-end ></ion-icon></a>
+													<br>
+												</ng-container>
+											</div>
+											<div *ngIf="bidd?.bid_breakdown?.bid_breakdown_type == '1'">
+												{{bidd?.bid_breakdown?.bid_breakdown_manual}}
+											</div>
+											<div cat-white *ngIf="bidd?.bid_breakdown?.bid_breakdown_tasks?.length > 0">
+											<ng-container>
+												<ion-row table-submit>
+													<ion-col th-head>Task</ion-col>
+													<ion-col th-head>Cost</ion-col>
+													<ion-col th-head>Percent</ion-col>
+													<ion-col th-head>Days</ion-col>
+												</ion-row>
+												<ion-list table-body>
+												<ion-item  p-lr-0 *ngFor="let task of bidd?.bid_breakdown?.bid_breakdown_tasks; let i = index ">
+												<ion-row  table-inner >
+													<ion-col  td-data>{{task.task}}</ion-col>
+													<ion-col  td-data>${{task.cost}}</ion-col>
+													<ion-col  td-data>{{task.percent}}%</ion-col>
+													<ion-col  td-data>{{task.days}}</ion-col>
+												</ion-row>
+												</ion-item>
+												<ion-item p-lr-0> 
+													<ion-row  table-inner >
+														<ion-col colspan="4" td-data>Total Cost - ${{bidd?.bid_breakdown?.bid_total_price}}</ion-col>
+													</ion-row>
+												</ion-item>
+												</ion-list>
+											</ng-container>
+											</div>
+										</div>
+									</ng-container>
+									<ng-container *ngIf="cats.name == 'Total Estimated Cost'">
+									<div cat-white *ngIf="cats.visible == true">
+										{{cats.name}}<span color_red> {{cats.required == true ? '*' : ''}}</span> : <ion-checkbox (ionChange)="catChecked($event,index,ind,bidd.bid,cats.name)" class="checker_box" [checked]="bidd.all_cats.indexOf(cats.name) >= 0 ? true : false"></ion-checkbox>
+											<br>
+											{{(bidd?.bid_breakdown?.total_estimated_cost != undefined && bidd?.bid_breakdown?.total_estimated_cost != '') ? '$'+bidd?.bid_breakdown?.total_estimated_cost : ''}}
+											</div>
+									</ng-container>
+								</ng-container>
+							</span>
+						</expandable-list-item>
+						</expandable-list>
+					</div>
+					</span>
+				</expandable-list-item>
+			</expandable-list>
+       <ion-row>
+           <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="sorted_bids == ''">
+           	<ion-item border-none br-lt-grey>No Bids Found.</ion-item>
+           </ion-col>
+		</ion-row>
+         
+		
+		 </ion-list>
+		 
+      </ion-col>
+   </ion-row>
+
+
+
+
+
+
+<!-- <ion-row>
+<ion-col right-adendum col-12 col-md-6 col-xl-6  *ngFor="let bid of sorted_bids; let index=index ">
+<ion-item min_hgt>
+<ion-label>
+		<h2 margintop0 fnt-bold><i class="{{bid.trade_icon}}"></i> {{bid.trade_name}}</h2>
+		<h4>{{bid.trade_task?.length > 70 ? bid.trade_task.substr(0,70)+'...' : bid.trade_task}}</h4>
+		<p fnt-regular mrgn_t_b_4> -->
+	<!-- 	<ion-icon class="ion-ios-clock-outline" m-r-5></ion-icon> {{bid.bid_date | date : 'short'}}
+		</p>  -->
+		<!-- <h5 fnt-regular mrgn_t_b_4>{{bid.bid_comments}}  <ion-icon *ngIf="bid.reply_comment == undefined || bid.reply_comment == '' || bid.reply_comment == null" (click)="replyBid(bid.userId,bid.tradeId,bid.bid)" name="undo" color="blue" title="Reply">  </ion-icon></h5> -->
+		<!-- <ng-container *ngIf="bid.reply_comment != undefined && bid.reply_comment != '' && bid.reply_comment != null">
+		Reply - {{bid.reply_comment}}<br>
+		</ng-container> -->
+<!-- 		<ng-container *ngIf="bid.reply_comment == undefined || bid.reply_comment == '' || bid.reply_comment == null">
+			<div class="comment_box comment_{{bid.bid}}" style="display: none;">
+				<ion-item p-lr-0>
+					<ion-textarea type="text" [(ngModel)] = "reply_comments" placeholder="Enter reply..."></ion-textarea>
+				</ion-item>
+				<button ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end (click)="sendReply(bid.bid,reply_comments,index,bid.posted_email,bid.posted_by,bid.Iid)">  
+					 <span hidden-xs>Send </span>
+				</button>
+			</div> 
+		</ng-container> -->
+		
+<!-- 		<ion-badge color="light" pd_l_0><ion-icon class="ion-ios-person-outline" m-r-5></ion-icon>{{bid.posted_by}}</ion-badge> <br>
+		<ion-badge color="light" pd_l_0><ion-icon  class="ion-ios-mail-outline" m-r-5></ion-icon>{{bid.posted_email}}</ion-badge> -->
+
+<!-- 
+<h3 fnt-regular m-t-5 *ngIf="bid.files.length > 0">					   
+   <ion-fab  float-left  [style.z-index]="999-index" >
+    <button ion-fab  mini color="light"><ion-icon name="attach"></ion-icon> </button>
+    <ion-fab-list>
+	 <div question *ngFor="let file of bid.files">
+	 	<span float-left>
+	   	<ion-icon name="document"></ion-icon>
+	      {{file.search('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}}
+		</span>
+		<a *ngIf="isBrowser == 'true'" (click)="downloadFile(file,bid.tradeId)" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}" ><ion-icon name="download" item-end ></ion-icon></a>
+		<a *ngIf="isBrowser == 'false'" (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file,file)" href="javascript:void(0)"><ion-icon name="download" item-end ></ion-icon></a>
+	</div>
+    </ion-fab-list>
+   </ion-fab>
+</h3> -->
+
+<!-- </ion-label> -->
+<!-- <button ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end (click)="goToTrade(bid.jobId,bid.tradeId)" title="Go to Trade">
+    <ion-icon name="ios-redo" item-end></ion-icon>  
+</button>
+
+<button title="Awarded" *ngIf="bid.isAwarded == '0'" ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end (click)="awardJob(bid.Iid,bid.bid,bid.jobId,bid.tradeId)">
+    <ion-icon class="ion-ios-trophy-outline" item-end></ion-icon>  
+</button>
+<button title="Sign Contract" *ngIf="bid.isAwarded == '1'" ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end (click)="signContract(bid.Iid,bid.bid,bid.tradeId)">
+   <ion-icon class="ion-ios-create-outline" item-end></ion-icon> 
+</button>
+
+<button title="Cancel Contract" *ngIf="bid.isAwarded == '3'" (click)="cancelContract(bid.Iid,bid.bid)" ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end >
+        <ion-icon class="ion-md-close" item-end></ion-icon> 
+</button>
+<button title="Download" *ngIf="bid.isAwarded == '3' || bid.isAwarded == '4'" (click)="downloadPdf(bid.Iid,bid.tradeId)" ion-button color="blue" fnt-regular m-b-10 fnt-normal item-end >
+   <ion-icon class="ion-md-download" item-end></ion-icon>  
+</button> -->
+<!-- 	<ion-note item-end> 
+	  <label class="form-check-label">
+	      <input [(ngModel)]="bid._id" (change)="insertToArray($event,bid.bid)" type="checkbox" class="form-check-input">
+	  </label>
+	</ion-note> -->
+
+<!-- </ion-item>
+</ion-col>
+</ion-row> -->
+<!-- <ion-col>
+<ion-item *ngIf="sorted_bids == ''">No Bids Found.</ion-item>
+</ion-col> -->
+<div footer-height></div>
+</ion-content>

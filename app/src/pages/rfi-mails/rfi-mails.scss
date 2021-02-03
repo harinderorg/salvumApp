@@ -1,0 +1,50 @@
+page-rfi-mails {
+  .breadcrumbs-row [class^="flaticon-"]:before, .breadcrumbs-row [class*=" flaticon-"]:before, .breadcrumbs-row [class^="flaticon-"]:after, .breadcrumbs-row [class*=" flaticon-"]:after{
+    font-size: 1.2em;
+}
+ion-content
+{
+
+	    margin-top: $value10;
+	 @include respond-to(handhelds2)
+    {
+      margin-top: $value0;
+	  
+	   background: #e6e6e6!important;
+	   .breadcrumbs-row {
+    margin-bottom: $value0;
+	.top-scorll-list
+	   {
+	   min-height:$value30;
+	   }
+   }
+	   
+	   ion-item-sliding
+	   {
+	    border:none;
+		margin-bottom:$value15;
+	   }
+    }
+}
+[fixed-top-div]
+{ 
+    width: 100%;
+    background: #e6e6e6;
+    /*padding: $value0 $value0 $value0  12px;*/
+   
+    @include respond-to(handhelds2)
+    {
+      padding: $value0;
+      ion-list
+      {
+      margin: $value0;
+      }
+    }
+}
+[custom_number]{
+    font-size: 30px;
+    border: 1px solid;
+    border-radius: 50%;
+    padding: 3px 10px;
+}
+}

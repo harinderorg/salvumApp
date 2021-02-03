@@ -1,0 +1,110 @@
+<ion-content padding lightgrey billing-history has-header>
+<ion-row main-breadcrumb ion-fixed>
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li class="active">History</li>
+      </ol>
+    </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+ <ion-list group-head head-profile margin0>
+      <!---ion-list-header margin0 color="lightgrey" no-border  br-btm-->
+	  	   <ion-row>  
+		    <ion-col col-12>
+         <h5 fnt-bold main-head margin0>  Upgrade Membership Billing History </h5>
+		 </ion-col>
+      <!--/ion-list-header-->
+
+      <ng-container *ngFor="let item of data">
+	 
+         <ion-col col-12 col-md-6 col-lg-6  col-xl-4 *ngIf="item.amount > 0"> 
+      <ion-item  border-none br-lt-grey fnt14 list-hover>
+
+		                  <ion-thumbnail item-start icon-ionic text-center>
+                         <ion-icon name="clock-outline" item-start left></ion-icon>
+                  </ion-thumbnail>
+            <h2 fnt-bold>Upgrade Membership </h2> 
+			<ion-note item-end m-t-5 > {{item.created_date}} </ion-note>
+			<ion-badge  fnt-regular  m-t-5 > Paid</ion-badge>
+            <h5  fnt-regular m-t-5 >${{item.amount}}</h5>
+      </ion-item> 
+	  </ion-col>
+      </ng-container>
+	       <ion-col col-12  *ngIf="pack_data == ''">
+      <ion-item fnt14 border-none br-lt-grey>
+      No Membership Billing History Yet
+      </ion-item>
+	  	  </ion-col>
+		  </ion-row>
+    </ion-list>
+
+
+    <ion-list   group-head head-profile margin0>
+      <!--ion-list-header margin0 color="lightgrey" no-border  br-btm -->
+
+			   <ion-row>  
+		    <ion-col col-12>
+         <h5 fnt-bold main-head   m-t-10 m-b-0>          Addon License Billing History</h5>
+		 </ion-col>
+      <!--/ion-list-header-->
+
+		      <ng-container  *ngFor="let lic of license" >
+	           <ion-col col-12 col-md-6 col-lg-6  col-xl-4>
+       <ion-item  border-none br-lt-grey fnt14 list-hover >
+
+		                  <ion-thumbnail item-start icon-ionic text-center>
+                         <ion-icon name="clock-outline" item-start left></ion-icon>
+                  </ion-thumbnail>
+            <h2 fnt-bold>{{lic.license_count}} Addon License</h2> 
+		  <ion-note item-end m-t-5 > {{lic.start_date}} </ion-note>
+		  <ion-badge fnt-regular  m-t-5 >   Paid</ion-badge>
+          <h5  fnt-regular m-t-5 >${{(lic.amount == '' || lic.amount == null || lic.amount == undefined) ? '0' : lic.amount}}</h5>
+        </ion-item> 
+			  </ion-col>
+			        </ng-container>
+			  	       <ion-col col-12 *ngIf="license == ''" >
+        <ion-item fnt14 border-none br-lt-grey> 
+        No License Billing History Yet
+        </ion-item> 
+		
+			  	  </ion-col>
+		  </ion-row>
+    </ion-list>
+
+
+
+      <ion-list group-head head-profile  margin0>
+      <!--ion-list-header margin0 color="lightgrey" no-border  br-btm-->
+
+				   <ion-row>  
+		    <ion-col col-12>
+         <h5 fnt-bold  main-head  m-b-0 m-t-10 >   Additional Space Billing History</h5>
+		 </ion-col>
+      <!---/ion-list-header-->
+	
+			       <ng-container  *ngFor="let space of extraSpace" >
+	           <ion-col col-12 col-md-6 col-lg-6  col-xl-4>
+       <ion-item border-none br-lt-grey fnt14 list-hover>
+
+		                  <ion-thumbnail item-start icon-ionic text-center>
+                         <ion-icon name="clock-outline" item-start left></ion-icon>
+                  </ion-thumbnail>
+           <h2 fnt-bold>Buy {{space.data}} {{space.type}} Additional Space</h2> 
+		   <ion-note item-end m-t-5 > {{space.created_date}} </ion-note >
+		  <ion-badge fnt-regular  m-t-5 > Paid</ion-badge>
+           <h5  fnt-regular m-t-5 >
+          ${{space.amount}}
+		  </h5>
+        </ion-item>  
+					  </ion-col>
+					       </ng-container>
+			  	       <ion-col col-12 *ngIf="isExtraspace == ''">
+        <ion-item fnt14  border-none br-lt-grey>
+        No Additional Space Billing History Yet
+        </ion-item> 
+		  	  </ion-col>
+		  </ion-row>
+    </ion-list>
+<div footer-height></div>
+</ion-content>

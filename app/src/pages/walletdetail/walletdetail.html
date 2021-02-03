@@ -1,0 +1,71 @@
+<ion-content padding lightgrey has-header overflow-scroll="true">
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="wallet()"><a>Wallet</a></li>
+      <li (click)="wallets()"><a>Wallets</a></li>
+      <li class="active">Wallets Detail</li> 
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-row class="row ">
+<ion-col col-12 col-md-6 col-lg-4  offset-lg-4>
+<ion-list box-shadow *ngFor="let item of new; let i = index ">   
+<ion-item fnt14>
+<div text-center>
+      <img circle-pic src="assets/img/credit-card.png">
+    </div>
+	  
+  </ion-item>
+  <ion-item fnt14 style="display: none;">
+ 
+      Card Name:
+    <ion-note  item-end fnt14>{{item.cardName}}</ion-note>
+  </ion-item>
+   <ion-item fnt14>
+   
+      Cardholder Name
+    <ion-note  item-end fnt14>{{item.cardHolderName}}</ion-note>
+  </ion-item>
+   <ion-item fnt14>
+   
+      Card Number
+    <ion-note  item-end fnt14 [hidden]= "toggoleShowHide" >{{item.cardNumber}}</ion-note>
+
+    <ion-note  item-end fnt14 [hidden]= "!toggoleShowHide">Hidden</ion-note>
+  </ion-item>
+  <ion-item fnt14>
+   
+    Expiry Date
+    <ion-note  item-end fnt14>{{item.expiryDate}}</ion-note>
+  </ion-item>
+  <ion-item fnt14 >
+   
+    CVV
+    <ion-note  item-end fnt14 [hidden]= "toggoleShowHide" >{{item.cvv}}</ion-note>
+
+    <ion-note  item-end fnt14 [hidden]= "!toggoleShowHide">Hidden</ion-note>
+
+  </ion-item>
+  <ion-item fnt14>
+   
+      Card Type
+    <ion-note  item-end fnt14>{{item.cardType}}</ion-note>
+  </ion-item>
+      <ion-item fnt14>
+   
+      Action
+    <ion-note margin0 item-end fnt14> <button ion-button clear padding0 (click)="showConfirm(item ,i)"><ion-icon name="trash"></ion-icon> </button>
+     </ion-note>
+  </ion-item> 
+   <ion-item fnt14>
+ <ion-label>  Show/Hide</ion-label> 
+  <ion-toggle [(ngModel)]="itemCompleted"  (ionChange)="itemClicked(itemCompleted)" data-tap-disabled="true"></ion-toggle>
+</ion-item>
+</ion-list>
+  </ion-col>
+  </ion-row>
+<div footer-height></div> 
+</ion-content>

@@ -1,0 +1,183 @@
+page-editgroup
+ {
+	 [bothclear]
+	 {
+		 @include respond-to(handhelds2)
+		 {
+			 clear:both;
+			 display:block!important
+		 }
+	 }
+[list-group]
+{
+	ion-list
+	{
+	
+	
+		.label {
+			@include respond-to(handhelds2)
+			{
+			 font-size: $value10+2!important;	
+				
+			}
+   
+    }
+		
+		
+		
+	}
+.white-box {
+    padding:$value0 $value15 $value15;
+}
+[contact-top]
+{
+	       @include respond-to(handhelds2)
+			{
+			  padding-left: 2px;	
+			}
+    margin-top: $value10;
+    padding-bottom: $value10;
+    display: inline-block;
+    width: 100%;
+    padding-left: $value15;
+   /* border-bottom: 1px solid #ddd;*/
+	.check
+	{
+	margin-left:$value5;
+	display:flex;
+	align-items:center;
+	}
+
+
+} 
+
+    ion-list-header
+	{
+	    border-bottom: 1px solid #ddd;
+	}
+	ion-item-group
+	{
+	ion-item
+	{
+	 /*   border-bottom: 1px solid #ddd;*/
+		cursor:pointer;
+		&:first-child
+		{
+		      border-top: 1px solid #ddd;	
+		}
+		ion-label
+		{
+			font-family:$font-regular
+			
+		}
+	}
+	}
+}
+}
+[group-head]
+{
+ion-list-header
+{border-top:$none;
+/* border-top-right-radius:$value8;
+border-top-left-radius:$value8; */
+}
+ion-badge
+{
+    font-weight: 500;
+	margin-right:$value0;
+}
+/* border-top-right-radius:$value8;
+border-top-left-radius:$value8; */
+@include respond-to(handhelds2)
+{
+	margin-top:$value0!important;
+	
+}
+margin-top:$value15!important;
+}
+ion-header
+{
+ion-navbar
+{
+/*.ion-ios-apps
+{
+@include respond-to(handhelds2)
+{
+display:$none;
+}
+}
+.ion-md-apps
+{
+@include respond-to(handhelds2)
+{
+display:$none;
+}
+}*/
+}
+}
+[edit-group]
+{
+.white-box
+{
+@include respond-to(handhelds2)
+{
+background:$whitecolor;
+padding:$value10!important;
+}
+}
+}
+[edit-group]
+{
+ion-item-group
+{
+ion-badge
+{
+span
+{
+@include respond-to(handhelds2)
+{
+display:$none;
+}
+}
+}
+}
+ion-item.item 
+{
+@include respond-to(handhelds2)
+{
+padding-left:$value5;
+}ion-label
+{
+    @include respond-to(handhelds2)
+	{white-space: initial;
+	}	}
+}
+ion-list
+{
+ @include respond-to(handhelds2)
+	{margin: $value0;
+	}
+}
+}
+[group-head]
+{
+ion-list-header
+{
+ ion-item
+{ 
+ion-checkbox
+{
+margin:$value0!important;
+
+}
+.item-inner
+{
+border:$none!important;
+}
+line-height: normal;
+    font-size: $value0;
+    min-height: $value0;
+    background: transparent;
+}
+}
+}

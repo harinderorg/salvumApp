@@ -1,0 +1,1414 @@
+<ion-split-pane file-split [when]="md"  [class.actives]="isParaActive">
+<ion-menu [content]="content" side="left" class="show-menu">
+   <ion-header>
+      <ion-toolbar>
+         <ion-title>Smail</ion-title>
+      </ion-toolbar>
+   </ion-header>
+   <ion-content>
+      <ion-list>
+         <div class="outer-filter " w-100 padding p-b-0>
+            <div>Filter Levels</div>
+            <!-- <div *ngFor="let n of levelArray; let i = index "> -->
+              <!--  <button menuClose ion-item  (click)="filterLevel(i)" class="filter" [ngClass]="(n.checked == true) ? 'checked' : ' '" >
+               {{ n.level}}
+               </button> -->
+			   			   <ion-grid m-t-10 no-padding w-100> 
+								<ion-row no-padding w-100> 
+ <ion-col col-12>
+            <div class="checkbox-inline">
+                <div class="checkbox-button" *ngIf="enable_level1 == 'false'">
+                 <label>
+                  <input type="checkbox" name="chk[]" id="hl1" (change)="filterLevel($event,'level1')" checked="{{this.shown_levels.indexOf('level1') >= 0 ? 'checked' : ''}}" class="ldi"><span>1</span>
+                 </label>
+              </div>
+               <div class="checkbox-button" *ngIf="enable_level2 == 'false'">
+                 <label>
+                  <input type="checkbox" name="chk[]" id="hl2"  (change)="filterLevel($event,'level2')" checked="{{this.shown_levels.indexOf('level2') >= 0 ? 'checked' : ''}}" class="ldi"><span>2</span>
+                 </label>
+              </div>
+               <div class="checkbox-button" *ngIf="enable_level3 == 'false'">
+                 <label>
+                  <input type="checkbox" name="chk[]" id="hl3" (change)="filterLevel($event,'level3')" checked="{{this.shown_levels.indexOf('level3') >= 0 ? 'checked' : ''}}" class="ldi"><span>3</span>
+                 </label>
+              </div>
+               <div class="checkbox-button" *ngIf="enable_level4 == 'false'">
+                 <label>
+                  <input type="checkbox" name="chk[]" id="hl4" (change)="filterLevel($event,'level4')" checked="{{this.shown_levels.indexOf('level4') >= 0 ? 'checked' : ''}}" class="ldi"><span>4</span>
+                 </label>
+              </div>
+          </div>
+                  </ion-col>
+                        <ion-col style="display:none" col-2 *ngIf="enable_level1 == 'false'">1 <ion-checkbox (ionChange)="filterLevel($event,'level1')" checked="{{this.shown_levels.indexOf('level1') >= 0 ? 'true' : 'false'}}"></ion-checkbox></ion-col>
+                        <ion-col  style="display:none"  col-2 *ngIf="enable_level2 == 'false'">2 <ion-checkbox (ionChange)="filterLevel($event,'level2')" checked="{{this.shown_levels.indexOf('level2') >= 0 ? 'true' : 'false'}}"></ion-checkbox></ion-col>
+                        <ion-col  style="display:none"  col-2 *ngIf="enable_level3 == 'false'">3 <ion-checkbox (ionChange)="filterLevel($event,'level3')" checked="{{this.shown_levels.indexOf('level3') >= 0 ? 'true' : 'false'}}"></ion-checkbox></ion-col>
+                        <ion-col style="display:none"  col-2 *ngIf="enable_level4 == 'false'">4 <ion-checkbox (ionChange)="filterLevel($event,'level4')" checked="{{this.shown_levels.indexOf('level4') >= 0 ? 'true' : 'false'}}"></ion-checkbox></ion-col>
+
+
+							   <!-- <ion-col col-2> -->
+								  <!-- <button menuClose ion-item  (click)="filterLevel(i)" class="filter"  [ngClass]="(n.checked == true) ? 'checked' : ' '" >
+								  {{ n.level}}
+								  </button> -->
+								  <!-- <ion-checkbox (ionChange)="filterLevel(i+1,$event)" checked="{{this.opened_levels.indexOf('level' + (i + 1)) >= 0 ? 'true' : 'false'}}"></ion-checkbox> -->
+								  <!-- </ion-col> -->
+			   			   </ion-row>
+						   </ion-grid>  
+            <!-- </div> -->
+         </div> 
+         <div menuClose ion-item>
+            <button   color="blue" add-share-btn ion-button (click)="presentPrompt()">
+               <ion-icon name="md-add" ></ion-icon>
+            </button>
+            <button  color="danger"  remove-share-btn  ion-button (click)="presentConfirm()">
+               <ion-icon name="md-remove" ></ion-icon>
+            </button>
+         </div>
+
+
+         <button menuClose ion-item *ngFor="let p of pages " (click)="openPage(p)" [ngClass]="(preState == p.title && is_main == '1') ? 'checked' : ' '">
+         <ion-icon color="blue" [name]="p.icon" item-left></ion-icon>
+         {{p.title}}
+         </button>
+         <div *ngFor="let n of directory | orderBy: name : reverse , let i = index " class="divitem" >
+            <div >
+            <div class="divitem_drop" id="{{n.name}}" (mouseover)="mouseOverDrop($event, n.name)">
+               <button id="click_{{n.name}}" ion-item detail-none no-lines  (click)="clickNode(n)" 
+               [ngClass]="(selectedNode == n.name) ? ' checked' : ''"  icon-left >
+               <ion-grid >
+                  <ion-row width-100>
+                     <ion-col col-1 no-padding>
+                        <ion-icon name="folder" color="blue"></ion-icon>
+                     </ion-col>
+                     <ion-col col-10 no-padding p-l-10 style="text-transform: capitalize;">
+                        {{n.name}}
+                     </ion-col>
+                     <ion-col col-1 no-padding>
+                        <span item-left *ngIf="n.children.length > 0" margin0>
+                        <ion-icon [color]="isSelected(n) ? 'primary' : 'blue'" [name]="isSelected(n) ? 'ios-arrow-down' : 'ios-arrow-forward'"></ion-icon>
+                        </span> 
+                        <span item-left *ngIf="n.children.length == 0" >
+                           <ion-icon ></ion-icon>
+                        </span>
+                     </ion-col>
+                  </ion-row>
+               </ion-grid>
+               </button>
+               </div>
+               <!-- <smail-child-node [nodes]="n.children"  *ngIf="n.children && n.type == 'directory'" [hidden]="!isSelected(n)" ></smail-child-node> reorder="true" 
+                  (ionItemReorder)="reorderItems($event);"  [hidden]="!isSelected(n)"-->
+               <ion-list *ngIf="n.children" [hidden]="!isSelected(n)">
+               <div *ngFor="let n of n.children; let i = index " class="divitem level-folder" >
+               <div [dragula]='"uniqueBagId"' id="{{n.level}}##{{n.name}}##{{n.userId}}##{{n._id}}" (mouseover)="dropSmails(n._id)">
+                  <div ion-item detail-none no-lines  
+                     [ngClass]="{nodeactive:  selectedNode == n.name}" icon-left  id="0{{n._id}}">
+                     <ion-row w-100>
+                        <ion-col col-9>
+                           <ion-grid tree-view>
+                              <ion-row  w-100  (click)="clickNodeChild(n)">
+                                 <ion-col col-2>
+                                    <ion-icon name="folder" color="blue"></ion-icon>
+                                 </ion-col>
+                                 <ion-col col-10 p-l-10 >
+                                    {{n.name}}
+                                 </ion-col>
+                              </ion-row>
+                           </ion-grid>
+                        </ion-col >
+                        <ion-col col-3 edit-folder>
+                           <span float-right  (click)="editFolder(n, n._id)" >
+                              <ion-icon name="md-create" color="blue"></ion-icon>
+                           </span>
+                           <span  float-right (click)="clickNodeChild(n)" >
+                           <ion-icon [color]="isSelected(n) ? 'primary' : 'blue'" [name]="isSelectedChild(n) ? 'ios-arrow-down' : 'ios-arrow-forward'"></ion-icon>
+                           </span> 
+                        </ion-col>
+                     </ion-row>
+                  </div>
+                  <div ion-item detail-none no-lines id="{{n._id}}" style="display:none;">
+                     <ion-row>
+                        <ion-col col-8>
+                           <input type="text" w-100 id="val_{{n._id}}">
+                        </ion-col>
+                        <ion-col col-4 text-right>
+                           <ion-icon  btn-check color="danger" name="close" (click)="cancelFolder(i, n._id)"></ion-icon>
+                           <ion-icon btn-check name="checkmark" color="green" (click)="renameFolder(i, n._id)"></ion-icon>
+                        </ion-col>
+                     </ion-row>
+                  </div>
+                  </div>
+                  <!-- <smail-static-node  [nodes]="static"  *ngIf="static" [hidden]="!isSelected(n)" ></smail-static-node> -->
+                  <ion-item  (click)="clickNodeStatic('inbox')" [hidden]="!isSelectedChild(n)" padd-inner-0>
+                     <div ion-item detail-none no-lines  
+                        [ngClass]="{nodeactive: isSelectedStatic('inbox')}" icon-left  id="000" p-l-40>
+                        <ion-grid tree-view>
+                           <ion-row>
+                              <ion-col col-4>
+                                 <ion-icon name="folder" color="blue"></ion-icon>
+                              </ion-col>
+                              <ion-col col-8 >
+                                 Inbox
+                              </ion-col>
+                           </ion-row>
+                        </ion-grid>
+                     </div>
+                  </ion-item>
+                  <ion-item  (click)="clickNodeStatic('sent')" class="divitem" [hidden]="!isSelectedChild(n)" padd-inner-0>
+                     <div ion-item detail-none no-lines  
+                        [ngClass]="{nodeactive: isSelectedStatic('sent')}" icon-left  id="111" p-l-40>
+                        <ion-grid tree-view>
+                           <ion-row>
+                              <ion-col col-4>
+                                 <ion-icon name="folder" color="blue"></ion-icon>
+                              </ion-col>
+                              <ion-col col-8 >
+                                 Sent
+                              </ion-col>
+                           </ion-row>
+                        </ion-grid>
+                     </div>
+                  </ion-item>
+               </div>
+      </ion-list>
+      </div>
+      </div>
+      </ion-list>
+   </ion-content>
+</ion-menu>
+<!-- <ion-nav [root]="rootPage" #content swipeBackEnabled="false" main></ion-nav> -->
+</ion-split-pane>
+
+   <!-- <ion-buttons end header-icon hide-icon  btn-tree>
+      <button btn-grid  fnt-white  [class.actives]="isBtnActive" (click)="toggleClass()">
+      <ion-icon class="ion-md-arrow-dropleft-circle" hide-t-icon white-color ></ion-icon>
+      <ion-icon class="ion-md-arrow-dropright-circle" show-t-icon white-color style=""></ion-icon>
+      </button>
+   </ion-buttons> -->
+   <ion-row main-breadcrumb ion-fixed style="top:60px">
+      <ion-col>
+         <ol class="breadcrumb">
+            <li (click)="root()"><a>Home</a></li>
+            <li (click)="smail()"><a>Smail</a></li>
+            <li class="{{bread_level == '' ? 'active' : ''}}"  *ngIf="preState == 'Inbox'"><a>Inbox</a></li>
+            <li class="{{bread_level == '' ? 'active' : ''}}" *ngIf="preState == 'Sent'"><a>Sent</a></li>
+            <!-- <li class="active" *ngIf="preState == 'Folder' || preState == 'null'">{{selectedLevel}}</li> -->
+            <li class="text-capital" (click)="clickNode(bread_level_node)" *ngIf="bread_level != '' && bread_folder != ''"><a>{{bread_level}}</a></li>
+            <li class="active text-capital" *ngIf="bread_level != '' && bread_folder == ''">{{bread_level}}</li>
+            <li (click)="clickNodeChild(bread_folder_node)" *ngIf="bread_folder != '' && bread_static != ''"><a>{{bread_folder}}</a></li> 
+            <li class="active" *ngIf="bread_folder != '' && bread_static == ''">{{bread_folder}}</li> 
+            <li class="active" *ngIf="bread_static != ''">{{bread_static}}</li>  
+         </ol>
+      </ion-col>
+   </ion-row>
+
+<ion-content file-content has-header [class.actives]="isParaActive" lightgrey>
+<div breadcrumb-height></div>
+   <ion-grid>
+      <ion-row no-padding w-100>
+         <ion-col col-12 col-xl-4 col-lg-5>
+          <ion-grid no-padding>
+             <ion-row w-100>
+               <ion-col col-1 hide-side style="display:none">
+            <ion-buttons text-center  header-icon hide-icon  btn-tree btn-smail-splitp>
+               <button btn-grid btn-side    [class.actives]="isBtnActive" (click)="toggleClass()">
+               <ion-icon class="ion-md-arrow-dropleft-circle" hide-t-icon r ></ion-icon>
+               <ion-icon class="ion-md-arrow-dropright-circle" show-t-icon  style=""></ion-icon>
+               </button>
+            </ion-buttons>
+            </ion-col>
+                <ion-col col-xl-12 col-lg-12>
+            <ion-searchbar paddingtop0 p-lr-0  [(ngModel)]="searchTerm" (ionInput)="searchFn(searchTerm, selectedJob, gaming, selectedTrade, false, selectedType)"></ion-searchbar>
+            </ion-col>
+            </ion-row>
+             </ion-grid>
+         <!-- <ion-col>
+            <ion-searchbar  paddingtop0 p-lr-0  [(ngModel)]="searchTerm" (ionInput)="searchFn(searchTerm, selectedJob, gaming, selectedTrade, false, selectedType)"></ion-searchbar>
+         </ion-col> -->
+            <div class="white-box" m-b-0 padding0>
+               <ion-row>
+                  <ion-col col-xl-12 col-md-12 col-md-12 col-12 m-b-10 top-smail>
+                     <ion-list margintop0 >
+                        <ion-item col-3 col-md-3  col-lg-3 col-xl-3 left p-l-5>
+                           <ion-label stacked>Jobs</ion-label>
+                           <ion-select [(ngModel)]="selectedJob" (ionChange)="searchFn(searchTerm, selectedJob, gaming, selectedTrade, true, selectedType)">
+                           <ion-option [disabled]="true" *ngIf="jobListingResult == ''" value="">No jobs</ion-option>
+                           <ion-option *ngIf="jobListingResult != ''" value="">All Job</ion-option>
+                           <ion-option value="{{job._id}}" *ngFor="let job of jobListingResult"> {{job.job_title}}</ion-option>
+                           <!-- <ion-option value="Renovate Bathroom">Renovate Bathroom</ion-option> -->
+                           </ion-select>
+                        </ion-item>
+                        <div class="icon-outer-abs">
+                        <ion-item col-3 col-md-3  col-lg-3  col-xl-3  left p-l-5 (click)="tradesFilter()">
+                           <ion-label stacked>Trades</ion-label>
+                           <ion-select [disabled]="true" [(ngModel)]="selectedTrade"></ion-select>
+
+                           <!-- <ion-select [(ngModel)]="selectedTrade" (ionChange)="searchFn(searchTerm, selectedJob, gaming, selectedTrade, false, selectedType)">
+                           <ion-option [disabled]="true" *ngIf="trades == ''" value="">No trades</ion-option>
+                           <ion-option value="{{trade._id}}" *ngFor="let trade of trades">{{trade.trade_name}}</ion-option>
+                           </ion-select> -->
+                        </ion-item>
+                        <div class="icon-inner-abs">
+                           <i *ngIf="selected_trade_icon != null" class="{{selected_trade_icon}}"></i>
+                        </div>
+                        </div>
+                  
+                        <ion-item col-3 col-md-3  col-lg-3  col-xl-3  left p-l-5>
+                           <ion-label stacked>Type</ion-label>
+                           <ion-select [(ngModel)]="selectedType" (ionChange)="searchFn(searchTerm, selectedJob, gaming, selectedTrade, false, selectedType)">
+                           <ion-option value="addendum"> Addendum</ion-option>
+                           <ion-option value="rfi"> RFI</ion-option>
+                           <ion-option value="change_order"> Change Order</ion-option>
+                           </ion-select>
+                        </ion-item>
+
+                        <ion-item col-3 col-md-3   col-lg-3 col-xl-3  left  p-l-5>
+                           <ion-label stacked>Status</ion-label>
+                           <ion-select [(ngModel)]="gaming" (ionChange)="searchFn(searchTerm, selectedJob, gaming, selectedTrade, false, selectedType)">
+                           <ion-option value="1" >Read</ion-option>
+                           <ion-option value="0" >Unread</ion-option>
+                           </ion-select>
+                        </ion-item>      
+                  </ion-list></ion-col>
+
+                  <ion-col col-6 col-xl-6 col-md-6 col-md-6 m-b-10 top-smail >
+                  <div m-b-10 smail-header >
+                     <ng-container *ngIf="items?.length > 0 && selectedFolder == ''">
+                     <ion-badge color="white">
+                        <ion-checkbox  [(ngModel)]="ischecked" (click)="allChecked(ischecked)" ></ion-checkbox>
+                     </ion-badge>
+                     <ion-badge color="blue" (click)="trash()">
+                        <ion-icon title="Delete" name="trash" color="" ></ion-icon>
+                     </ion-badge>
+                     <ion-badge color="blue" (click)="reload()">
+                        <img ref_svg src="assets/img/refresh.svg" title="Refresh" >
+                     </ion-badge>
+                     </ng-container>
+                     <ion-badge *ngIf="(selectedJob != undefined && selectedJob != null && selectedJob != '') || (selectedType != '' && selectedType != undefined) || (gaming != '' && gaming != undefined) " color="blue" (click)="resetFilters()"> 
+                        <ion-icon title="Reset Filters" name="refresh"></ion-icon>
+                     </ion-badge>
+                     <ion-badge color="blue"   (click)="goToJobs()" *ngIf="selectedJob != undefined && selectedJob != null && selectedJob != ''">
+                        <ion-icon title="Go to Job" icon name="briefcase"></ion-icon>
+                     </ion-badge>
+                     <div style="display: none;" class="go_to_reset" id="go_to_reset{{timestamp}}"> 
+                        <ion-badge color="blue" (click)="goToJob()">
+                           <ion-icon title="Go to" name="open"></ion-icon>
+                        </ion-badge>
+                     </div>
+                  </div>
+                  </ion-col>
+
+                  <ion-col col-xl-6 col-md-6 col-md-6 col-6 m-b-10 top-smail>   <ion-item  p-l-0 smail-checkox>
+                        <ion-label>
+                <!--            <div float-left *ngFor="let n of openedLevel; let i = index " >
+                              <ion-checkbox  float-left color="blue" checked="{{n.checked}}" [(ngModel)]="n.checked" m-r-0 (click)="filterList(n.checked, n.level)" ></ion-checkbox>
+                              <span level-text float-left>{{n.level}}</span>
+                           </div> -->
+
+                           <div class="checkbox-inline">
+                              <div class="checkbox-button" *ngFor="let n of openedLevel; let i = index ">
+                                <label>
+                                 <input [(ngModel)]="n.checked" type="checkbox" name="chk[]" id="hl1{{n.level}}" (click)="filterList(n.checked, n.level)" checked="{{n.checked ? 'checked' : ''}}" class="ldi"><span>{{n.level}}</span>
+                                </label>
+                              </div>
+                           </div>
+
+                        </ion-label>
+                     </ion-item>   
+                  </ion-col>
+                  <!-- <ion-col col-xl-2 col-md-2 col-md-2 col-6 m-b-10 right_btns>
+                     <button small ion-button icon-left  color="blue" fnt-regular  (click)="goToJobs()" *ngIf="selectedJob != undefined && selectedJob != null && selectedJob != ''">
+                        <ion-icon title="Go to Job" icon name="briefcase"></ion-icon>
+                     </button>
+                     <div style="display: none;" id="go_to_reset"> 
+                        <button small ion-button icon-left color="blue" fnt-regular  (click)="goToJob()">
+                           <ion-icon title="Go to" name="open"></ion-icon>
+                        </button>
+                        <button small ion-button icon-left color="blue" fnt-regular  (click)="resetFilters()"> 
+                           <ion-icon title="Reset" name="close"></ion-icon>
+                        </button>
+                     </div>
+                    
+                  </ion-col> -->
+                  <ion-col col-xl-12 col-md-12 col-12 border-smail *ngIf="selectedFolder == ''">
+                     <ion-list smail-main margin0>
+                        <!-- <div m-b-10 smail-header *ngIf="items?.length > 0">
+                           <ion-badge color="white">
+                              <ion-checkbox  [(ngModel)]="ischecked" (click)="allChecked(ischecked)" ></ion-checkbox>
+                           </ion-badge>
+                           <ion-badge color="blue" (click)="trash()">
+                              <ion-icon title="Delete" name="trash" color="" ></ion-icon>
+                           </ion-badge>
+                           <ion-badge color="blue" (click)="reload()">
+                              <ion-icon title="Refresh" name="refresh" color="" ></ion-icon>
+                           </ion-badge>
+                        </div> -->
+                        <ion-scroll smail-left scrollY="true" style="width: 100%;  height: 44vh">
+                           <ion-item-sliding  *ngFor="let x of items ; let index = index ;"> 
+
+                              <ion-item smail-list advertise *ngIf="index == 0">
+                                 <p>I am <br>advertisement.</p>
+                              </ion-item>
+
+                              <ion-item smail-list [ngClass]="{unread: x.read == false}">
+                                 <ion-checkbox  color="blue" [(ngModel)]="x.id" (click)="listCheckbox(x.id, x)"> {{x.toArray.length}}</ion-checkbox> 
+                                 <!-- Sent mails Image -->  
+                                 
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="(opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && (x.toArray.length == 1 && x.toArray[0].image != '' &&  preState != 'Inbox' && preState != 'Folder'  && ( (userId == x.toArray[0].senderId && x.toArray[0].senderThumb == 'Show') || (userId != x.toArray[0].senderId && x.toArray[0].receiverThumb == 'Show') )) && x.unconnected == '0'">
+                                 <img src="{{baseUrl}}/images/{{x.toArray[0].image}}" user-pic>
+                                 <span friend-request   left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar>
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="(x.toArray.length == 1 && preState != 'Inbox' && preState != 'Folder' && x.toArray[0].image == '') && (opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && x.unconnected == '0'">
+                                 <img src="assets/img/m7.png" user-pic >
+                                 <span   friend-request    left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar>
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="(x.toArray[0].image != '' &&x.toArray.length == 1 && preState != 'Inbox' && preState != 'Folder' && ( (userId == x.toArray[0].senderId && x.toArray[0].senderThumb == 'Hide') || (userId != x.toArray[0].senderId && x.toArray[0].receiverThumb == 'Hide'))) && (opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && x.unconnected == '0'">
+                                 <img src="assets/img/m7.png" user-pic >
+                                 <span friend-request   left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar>
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="(x.toArray.length > 1) && (opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && x.unconnected == '0'">
+                                 <img src="assets/img/group.jpg" user-pic >
+                                 <span friend-request   left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar>
+                                 <!-- end sent mails images conditions -->
+                                 <!-- user inbox mails images  -->
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="(x.image != '' && x.toArray.length == 1 && (preState == 'Inbox' || preState == 'Folder') && (userId == x.toArray[0].senderId && x.toArray[0].senderThumb == 'Show' || userId != x.toArray[0].senderId && x.toArray[0].receiverThumb == 'Show')) && (opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && x.unconnected == '0'">
+                                 <img src="{{baseUrl}}/images/{{x.image}}" user-pic>
+                                 <span    friend-request left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar>
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="(x.image != '' && x.toArray.length == 1 && (preState == 'Inbox' || preState == 'Folder') && ((userId == x.toArray[0].senderId && x.toArray[0].senderThumb == 'Hide' || !x.toArray[0].senderThumb) || (userId != x.toArray[0].senderId && x.toArray[0].receiverThumb == 'Hide' || !x.toArray[0].receiverThumb) )) && (opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && x.unconnected == '0'">
+                                 <img src="assets/img/m7.png" user-pic >
+                                 <span   friend-request  left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar> 
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="(x.image == '' && x.toArray.length == 1 && ( preState == 'Inbox' || preState == 'Folder')) && (opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && x.unconnected == '0'">
+                                 <img src="assets/img/m7.png" user-pic >
+                                 <span   friend-request  left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar> 
+                                 
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length == 1 && opened_levels.indexOf(x.snd_level) == -1 && x.snd_level != 'level0' && x.snd_level != 'level5' && x.unconnected == '0'">
+                                 <img src="assets/img/m7.png" user-pic >
+                                 <span   friend-request  left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar>
+
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length == 1  && x.unconnected == '1'">
+                                 <img src="assets/img/m7.png" user-pic >
+                                 <span   friend-request  left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar>
+
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length > 1 && opened_levels.indexOf(x.snd_level) == -1 && x.snd_level != 'level0' && x.snd_level != 'level5' && x.unconnected == '0'">
+                                 <img src="assets/img/group.jpg" user-pic >
+                                 <span   friend-request  left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar>
+
+                                 <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length > 1 && x.unconnected == '1'">
+                                 <img src="assets/img/group.jpg" user-pic >
+                                 <span   friend-request  left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                 <a *ngIf="x.mails.length > 0" style="">
+                                 {{x.mails.length}}
+                                 </a>  
+                                 </span>
+                                 </ion-avatar> 
+                                 <!-- end inbox images condition here-->
+                                 <ion-label (click)="openSmaildetailPage(x, index)">
+                                    <ng-container *ngIf="preState == 'Inbox'">
+                                       <span *ngIf="1 <= (x.isGroupMsg == true ? x.level : x.receiverLevel)" class="new-level1-small"></span>
+                                       <span *ngIf="2 <= (x.isGroupMsg == true ? x.level : x.receiverLevel)" class="new-level2-small"></span>
+                                       <span *ngIf="3 <= (x.isGroupMsg == true ? x.level : x.receiverLevel)" class="new-level3-small"></span>
+                                       <span *ngIf="4 <= (x.isGroupMsg == true ? x.level : x.receiverLevel)" class="new-level4-small"></span>
+                                    </ng-container>
+                                    <ng-container *ngIf="preState == 'Sent'">
+            								 	<span *ngIf="1 <= (x.isGroupMsg == true ? x.level : x.senderLevel)" class="new-level1-small"></span>
+            									<span *ngIf="2 <= (x.isGroupMsg == true ? x.level : x.senderLevel)" class="new-level2-small"></span>
+            									<span *ngIf="3 <= (x.isGroupMsg == true ? x.level : x.senderLevel)" class="new-level3-small"></span>
+            									<span *ngIf="4 <= (x.isGroupMsg == true ? x.level : x.senderLevel)" class="new-level4-small"></span>
+                                    </ng-container>
+                                    <div class="new-level" left>
+                                       <span class="level1"></span>  
+                                       <span class="level2"></span>  
+                                       <span class="level3"></span>  
+                                       <span class="level4"></span>    
+                                    </div>
+                                  
+                                    <div *ngIf="preState == 'Sent' && x.subject != 'Friend Request' && x.subject != 'Invitation to join company on Salvum'">
+                                       <h2 (mousedown)="dragMail(x._id)"  (mouseleave)="dragOut()" draggable="true" title="Drag mail" class="{{x.sent_read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}}" *ngFor="let user of x.toArray" left  smail-name>
+                                       <ion-icon *ngIf="(user.snd_level == 'level5' && user.userId != userId) || x.unconnected == '1'" class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                       {{(opened_levels.indexOf(user.snd_level) >= 0 || user.snd_level == 'level0' || user.snd_level == 'level5') ? (x.unconnected == '1' ? 'Unconnected User' : user.name) : (x.unconnected == '1' ? 'Unconnected User' : user.snd_level+' contact update')}} <span smail-comma>,</span></h2>
+                                    </div>
+                                    <div *ngIf="preState != 'Sent' && x.subject != 'Friend Request' && x.subject != 'Invitation to join company on Salvum'"> 
+                                       <h2 (mousedown)="dragMail(x._id)"  (mouseleave)="dragOut()" draggable="true" title="Drag mail"  class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}} text-capital" left smail-name>
+                                       <ion-icon [ngClass]="'unc'+index" *ngIf="(x.snd_level == 'level5' && x.fromId[0].userId != userId) || x.unconnected == '1'" class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                       {{(opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') ? (x.unconnected == '1' ? 'Unconnected User' : x.name) : (x.unconnected == '1' ? 'Unconnected User' : x.snd_level+' contact update')}} <span smail-comma>,</span></h2>
+                                    </div>
+                                    <div *ngIf="x.subject == 'Friend Request'  && preState != 'Sent'"> 
+                                       <h2 class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}} text-capital" left smail-name>{{x.name}}</h2>
+                                    </div>
+                                    <div *ngIf="x.subject == 'Friend Request'  && preState == 'Sent'"> 
+                                       <h2 class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}} text-capital" left smail-name *ngFor="let user of x.toArray">{{user.name}}</h2>
+                                    </div>
+
+                                    <div *ngIf="x.subject == 'Invitation to join company on Salvum' && preState != 'Sent'"> 
+                                       <h2 class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}} text-capital" left smail-name>{{(opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') ?  x.name : x.snd_level+' contact update'}}</h2>
+                                    </div>
+                                    <div *ngIf="x.subject == 'Invitation to join company on Salvum' && preState == 'Sent'"> 
+                                       <h2 class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}} text-capital" left smail-name *ngFor="let user of x.toArray">{{(opened_levels.indexOf(user.snd_level) >= 0 || user.snd_level == 'level0' || user.snd_level == 'level5') ? user.name :  user.snd_level+' contact update'}}</h2>
+                                    </div>
+                                    <ng-container *ngIf="preState != 'Sent'">
+                                    <p class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}}"  left clearboth *ngIf="x.subject != 'Friend Request' ">
+                                    <!-- && (opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0') -->
+                                       {{x.subject}}     
+                                    </p>
+                                    <div clearboth></div>
+                                    <p class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}}" *ngIf="x.subject == 'Friend Request'" style=""> Friend Request
+                                    </p>
+                                    </ng-container>
+                                    <ng-container *ngIf="preState == 'Sent'">
+                                    <p class="{{x.sent_read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}}"  left clearboth *ngIf="x.subject != 'Friend Request' ">
+                                       {{x.subject}}     
+                                    </p>
+                                    <div clearboth></div>
+                                    <p class="{{x.sent_read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}}" *ngIf="x.subject == 'Friend Request'" style=""> Friend Request
+                                    </p>
+                                    </ng-container>
+                                 </ion-label>
+                                 <ion-icon class="icon-attach" name="attach" item-end *ngIf="x.attacment?.length > 0" (click)="openSmaildetailPage(x, index)"></ion-icon>
+                                 <ion-note item-end (click)="openSmaildetailPage(x, index)" style="">{{x.date | date: 'h:mm a dd MMM'}}</ion-note>
+                                 <ion-icon title="Undo" item-end  class="ion-ios-undo" color="blue" btn-undo *ngIf="preState == 'Sent' && x.subject != 'Friend Request' && x.subject != 'Invitation to join company on Salvum' && x.sent_read == false" (click)="undo(x, index)"></ion-icon>
+                              </ion-item>
+                           </ion-item-sliding>
+                           <div  email-msg  *ngIf="items?.length == 0 && has_loaded == '1'">
+                              No emails found!
+                           </div>
+                        </ion-scroll>
+                     </ion-list>
+                  </ion-col>
+                  <ion-col col-xl-12 col-md-12 col-12 border-smail *ngIf="selectedFolder != ''"> 
+                     <ion-list smail-main margin0>
+                        <!-- <div m-b-10 smail-header *ngIf="items.length > 0">
+                           <ion-badge color="white">
+                              <ion-checkbox  [(ngModel)]="ischecked" (click)="allChecked(ischecked)"></ion-checkbox>
+                           </ion-badge>
+                           <ion-badge color="blue" (click)="trash()">
+                              <ion-icon name="trash" ></ion-icon>
+                           </ion-badge>
+                           <ion-badge color="blue" (click)="reload()">
+                              <ion-icon name="refresh"  ></ion-icon>
+                           </ion-badge>
+                        </div> -->
+                        <ion-scroll smail-left scrollY="true" style="width: 100%;  height: 41vh">
+                        <!-- {{items.length}} -->
+                           <ion-item-sliding *ngFor="let x of items; let index = index ">
+                              <!-- && selectedLevel == 'level'+x.level"-->
+
+                              <ion-item  smail-list [ngClass]="{unread: x.read == false}" >
+							  
+                              <ion-checkbox color="blue" [(ngModel)]="x.id" (click)="listCheckbox(x.id, x)"></ion-checkbox>
+
+                              <!-- if user sender -->
+                              <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="(opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && (x.toArray.length == 1  && userId == x.toArray[0].senderId) && x.unconnected == '0' ">
+                                 <img src="{{baseUrl}}/images/{{x.image}}" user-pic *ngIf="x.image != '' && x.toArray[0].receiverThumb == 'Show'">
+
+                                 <img src="assets/img/m7.png" user-pic *ngIf="x.image == '' && x.toArray[0].receiverThumb == 'Show'">
+
+                                 <img src="assets/img/m7.png" user-pic *ngIf="x.image != '' && x.toArray[0].receiverThumb == 'Hide'">
+
+                                 <img src="assets/img/m7.png" user-pic *ngIf="x.image == '' && x.toArray[0].receiverThumb == 'Hide'">
+
+                                 <span friend-request left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                    <a *ngIf="x.mails.length > 0" style="">
+                                    {{x.mails.length}}
+                                    </a>  
+                                 </span>
+                              </ion-avatar>
+
+                              <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="(opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && (x.toArray.length == 1  && userId != x.toArray[0].senderId)  && x.unconnected == '0'">
+                                 <img src="{{baseUrl}}/images/{{x.toArray[0].image}}" user-pic *ngIf="x.toArray[0].image != '' && x.toArray[0].senderThumb == 'Show'">
+
+                                 <img src="assets/img/m7.png" user-pic *ngIf="x.toArray[0].image == '' && x.toArray[0].senderThumb == 'Show'">
+
+                                 <img src="assets/img/m7.png" user-pic *ngIf="x.toArray[0].image == '' && x.toArray[0].senderThumb == 'Hide'">
+
+                                 <img src="assets/img/m7.png" user-pic *ngIf="x.toArray[0].image != '' && x.toArray[0].senderThumb == 'Hide'">
+
+                                 <span friend-request   left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                    <a *ngIf="x.mails.length > 0" style="">
+                                    {{x.mails.length}}
+                                    </a>  
+                                 </span>
+                              </ion-avatar>
+
+
+                            <!--   <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length == 1 && x.toArray[0].image == '' && userId == x.toArray[0].senderId ">
+                                 <img src="assets/img/m7.png" user-pic>
+                                 <span friend-request   left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                    <a *ngIf="x.mails.length > 0" style="">
+                                    {{x.mails.length}}
+                                    </a>  
+                                 </span>
+                              </ion-avatar> -->
+
+                             <!--  <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length == 1 && x.image == '' && userId != x.toArray[0].senderId ">
+                                 <img src="assets/img/m7.png" user-pic>
+                                 <span friend-request   left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                    <a *ngIf="x.mails.length > 0" style="">
+                                    {{x.mails.length}}
+                                    </a>  
+                                 </span>
+                              </ion-avatar> -->
+
+
+                              
+                              <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length > 1 && (opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') && x.unconnected == '0'">
+                              <img src="assets/img/group.jpg" user-pic >
+                                 <span friend-request   left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                    <a *ngIf="x.mails.length > 0" style="">
+                                    {{x.mails.length}}
+                                    </a>  
+                                 </span>
+                              </ion-avatar>
+
+                              <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length > 1 && opened_levels.indexOf(x.snd_level) == -1 && x.snd_level != 'level0' && x.snd_level != 'level5' && x.unconnected == '0'">
+                              <img src="assets/img/group.jpg" user-pic >
+                                 <span friend-request   left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                    <a *ngIf="x.mails.length > 0" style="">
+                                    {{x.mails.length}}
+                                    </a>  
+                                 </span>
+                              </ion-avatar>
+
+                              <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length == 1 && opened_levels.indexOf(x.snd_level) == -1 && x.snd_level != 'level0' && x.snd_level != 'level5' && x.unconnected == '0'">
+                              <img src="assets/img/m7.png" user-pic>
+                              </ion-avatar>
+
+                              <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length > 1 && x.unconnected == '1'">
+                              <img src="assets/img/group.jpg" user-pic >
+                                 <span friend-request   left clearboth *ngIf="x.subject != 'Friend Request' ">  
+                                    <a *ngIf="x.mails.length > 0" style="">
+                                    {{x.mails.length}}
+                                    </a>  
+                                 </span>
+                              </ion-avatar>
+
+                              <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length == 1 && opened_levels.indexOf(x.snd_level) == -1 && x.snd_level != 'level0' && x.snd_level != 'level5' && x.unconnected == '0'">
+                              <img src="assets/img/m7.png" user-pic>
+                              </ion-avatar>
+
+                              <ion-avatar item-start (click)="openSmaildetailPage(x, index)" *ngIf="x.toArray.length == 1 &&  x.unconnected == '1'">
+                              <img src="assets/img/m7.png" user-pic>
+                              </ion-avatar>
+                              
+                              
+                              <ion-label (click)="openSmaildetailPage(x, index)">
+                                 <ng-container *ngIf="is_folder_sel == '0'">
+                                    <ng-container *ngIf="preState == 'Sent'">
+                                       <span *ngIf="1 <= (x.isGroupMsg == true ? x.level : x.senderLevel)" class="new-level1-small"></span>
+                                       <span *ngIf="2 <= (x.isGroupMsg == true ? x.level : x.senderLevel)" class="new-level2-small"></span>
+                                       <span *ngIf="3 <= (x.isGroupMsg == true ? x.level : x.senderLevel)" class="new-level3-small"></span>
+                                       <span *ngIf="4 <= (x.isGroupMsg == true ? x.level : x.senderLevel)" class="new-level4-small"></span>
+                                    </ng-container>
+                                    <ng-container *ngIf="preState == 'Inbox'">
+                                       <span *ngIf="1 <= (x.isGroupMsg == true ? x.level : x.receiverLevel)" class="new-level1-small"></span>
+                                       <span *ngIf="2 <= (x.isGroupMsg == true ? x.level : x.receiverLevel)" class="new-level2-small"></span>
+                                       <span *ngIf="3 <= (x.isGroupMsg == true ? x.level : x.receiverLevel)" class="new-level3-small"></span>
+                                       <span *ngIf="4 <= (x.isGroupMsg == true ? x.level : x.receiverLevel)" class="new-level4-small"></span>
+                                    </ng-container>
+                                 </ng-container>
+                                 <ng-container *ngIf="is_folder_sel == '1'">
+            							   <span *ngIf="1 <= which_level" class="new-level1-small"></span>
+                                    <span *ngIf="2 <= which_level" class="new-level2-small"></span>
+                                    <span *ngIf="3 <= which_level" class="new-level3-small"></span>
+                                    <span *ngIf="4 <= which_level" class="new-level4-small"></span>
+                                 </ng-container>
+                                 <div class="new-level" left>
+                                    <span class="level1"></span>  
+                                    <span class="level2"></span>  
+                                    <span class="level3"></span>  
+                                    <span class="level4"></span>    
+                                 </div>
+                                 <div float-left w-100 *ngIf="x.toArray[0].senderId == userId">
+                                    <h2 *ngIf="preState != 'Sent'" class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}} text-capital" left margin0 smail-name >
+                                    <ion-icon *ngIf="(x.snd_level == 'level5' && x.userId != userId) || x.unconnected == '1'" class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                    {{(opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') ? (x.unconnected == '1' ? 'Unconnected User' : x.name) : (x.unconnected == '1' ? 'Unconnected User' : x.snd_level+' contact update')}}</h2>
+
+                                    <h2 *ngIf="preState == 'Sent'" class="{{x.sent_read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}} text-capital" left margin0 smail-name >
+                                       <ion-icon *ngIf="(x.snd_level == 'level5' && x.userId != userId) || x.unconnected == '1'" class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                       {{(opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') ? (x.unconnected == '1' ? 'Unconnected User' : x.name) : (x.unconnected == '1' ? 'Unconnected User' : x.snd_level+' contact update')}}</h2>
+                                 </div>
+
+                                 <div float-left w-100 *ngIf=" x.toArray[0].senderId != userId">
+                                 <ng-container *ngIf="preState == 'Sent'">
+                                    <h2 class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}} text-capital" left margin0 smail-name *ngFor="let user of x.toArray">
+                                    <ion-icon *ngIf="user.snd_level == 'level5' && user.userId != userId" class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                       {{(opened_levels.indexOf(user.snd_level) >= 0 || user.snd_level == 'level0' || user.snd_level == 'level5') ? user.name : user.snd_level+' contact update'}}
+                                       <span smail-comma>,</span></h2>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="preState != 'Sent'">
+                                    <h2  class="{{x.sent_read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}} text-capital" left margin0 smail-name >
+                                       <ion-icon *ngIf="x.snd_level == 'level5' && x.userId != userId" class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                       {{(opened_levels.indexOf(x.snd_level) >= 0 || x.snd_level == 'level0' || x.snd_level == 'level5') ? x.name : x.snd_level+' contact update'}}
+                                    </h2>
+                                    </ng-container>
+                                 </div>
+
+
+                                 <!--p col-xl-12 left col-md-12 col-12>{{x.subject}} 
+                                    <a *ngIf="x.mails.length > 0" style="padding: 0px 5px;background: #1976d2;color: #fff;border-radius: 50%;position: absolute;left: 50%;">{{x.mails.length}}</a>
+                                    </p-->
+                                 <p  class="{{x.read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}}" left clearboth *ngIf="x.subject != 'Friend Request' && preState != 'Sent'">
+                                    {{x.subject}}     
+                                 </p>
+
+                                 <p  class="{{x.sent_read == false ? (x.isGroupMsg == true ? 'unread_color_level'+x.level : 'unread_color_level'+x.receiverLevel) : ''}}" left clearboth *ngIf="x.subject != 'Friend Request' && preState == 'Sent'">
+                                    {{x.subject}}     
+                                 </p>
+                              </ion-label>
+                              <ion-icon name="attach" item-end *ngIf="x.attacment?.length > 0" (click)="openSmaildetailPage(x, index)"></ion-icon>
+                              <ion-note item-end (click)="openSmaildetailPage(x, index)" style="">{{x.date | date: 'h:mm a dd MMM'}}</ion-note>
+                              </ion-item>
+
+                               <!-- <ion-item smail-list  [ngClass]="{unread: x.read == false}" *ngIf="selectedFolder == 'folder' && selectedLevel == 'level'+x.level" >
+                              <ion-checkbox color="blue"></ion-checkbox>
+                              <ion-avatar item-start (click)="openSmaildetailPage(x, index)">
+                                 <img src="assets/img/m7.png" user-pic *ngIf="x.image == ''">
+                                 <img src="{{baseUrl}}/images/{{x.image}}" user-pic *ngIf="x.image !== ''">
+                                 <span clearboth friend-request  left>  
+                                 <a *ngIf="x.mails.length > 1">{{x.mails.length}} </a>
+                                 </span>
+                              </ion-avatar>
+                              <ion-label (click)="openSmaildetailPage(x, index)">
+                                 <div class="new-level" left>
+                                    <span class="level1"></span>  
+                                    <span class="level2"></span>  
+                                    <span class="level3"></span>  
+                                    <span class="level4"></span>    
+                                 </div>
+                                 <div float-left w-100>
+                                    <h2 left margin0 smail-name  *ngFor="let user of x.toArray">{{user.name}}<span smail-comma>,</span></h2>
+                                 </div>
+                                 <p left >
+                                    {{x.subject}}
+                              </ion-label>
+                              <ion-icon name="attach" *ngIf="x.attacment?.length > 0"  item-end (click)="openSmaildetailPage(x, index)"></ion-icon>
+                              <ion-note item-end (click)="openSmaildetailPage(x, index)" style="">{{x.date | date: 'h:mm a dd MMM'}}</ion-note>
+                              </ion-item> -->
+                           </ion-item-sliding> 
+                           <div email-msg *ngIf="items?.length == 0 && has_loaded == '1'">
+                              No emails found!
+                           </div>
+                        </ion-scroll>
+                     </ion-list>
+                  </ion-col>
+               </ion-row>
+            </div>
+         </ion-col>
+         <ion-col col-12 col-xl-8 col-lg-7 right-smail>
+            <ion-scroll  #scroll scroll-smail scrollY="true" style="width: 100%;  height: 82vh" id="scroll_rep_forwd"> 
+               <ion-item advertise>
+                <p> I am <br> advertisement</p>
+               </ion-item>
+               <ion-grid class="white-box" margin0 padding0 paddingtop0 *ngIf="details != ''">
+                  <ion-list margin0 smail-detail *ngIf="replyMail.thread.length == 0">
+                     <ion-item br-grey-btm>
+                        Email has been deleted by sender.
+                     </ion-item>
+                  </ion-list>
+                  <ion-list margin0 smail-detail *ngIf="replyMail.thread.length > 0">
+                     <ion-item br-grey-btm>
+                        <!-- if logged in user sender -->
+                        <ng-container *ngIf="replyMail.thread[0]?.toArray.length == 1 && replyMail.thread[0]?.toArray[0]?.userId == userId">
+                           <!-- if user sender -->
+                           <ion-avatar  float-left  item-start *ngIf="(opened_levels.indexOf(replyMail.thread[0]?.snd_level) >= 0 || replyMail.thread[0]?.snd_level == 'level5' || replyMail.thread[0]?.snd_level == 'level0') && (replyMail.thread[0]?.image != '' && (replyMail.thread[0]?.toArray[0]?.senderId == userId && replyMail.thread[0]?.toArray[0]?.senderThumb == 'Show' || replyMail.thread[0]?.toArray[0]?.senderId != userId && replyMail.thread[0]?.toArray[0]?.receiverThumb == 'Show'))">
+                              <img src="{{baseUrl}}/images/{{replyMail.thread[0].image}}" user-pic>
+                           </ion-avatar>
+                           <ion-avatar  float-left item-start  *ngIf="(replyMail.thread[0]?.image == '') && (opened_levels.indexOf(replyMail.thread[0]?.snd_level) >= 0 || replyMail.thread[0]?.snd_level == 'level5' || replyMail.thread[0]?.snd_level == 'level0')">
+                              <img src="assets/img/m7.png" user-pic >
+                           </ion-avatar> 
+
+                           <ion-avatar  float-left item-start  *ngIf="opened_levels.indexOf(replyMail.thread[0]?.snd_level) == -1 && replyMail.thread[0]?.snd_level != 'level5' && replyMail.thread[0]?.snd_level != 'level0'">
+                              <img src="assets/img/m7.png" user-pic >
+                           </ion-avatar> 
+
+                           <ng-container *ngIf="userId != replyMail.thread[0]?.fromId[0].userId">
+                              <ng-container *ngIf="replyMail.thread[0]?.subject != 'Friend Request'">
+                                 <div mar-l-55 *ngIf="opened_levels.indexOf(replyMail.thread[0]?.snd_level) >= 0 && replyMail.thread[0]?.snd_level != 'level5'">
+                                    <h2 fnt-bold>{{replyMail.thread[0]?.name}}
+                                    <ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                    <p fnt-regular>{{replyMail.thread[0]?.email}}</p>
+                                 </div>
+                                 <div mar-l-55 *ngIf="opened_levels.indexOf(replyMail.thread[0]?.snd_level) == -1 && replyMail.thread[0]?.snd_level != 'level0' && replyMail.thread[0]?.snd_level != 'level5'">
+                                    <h2 fnt-bold class="text-capital">{{replyMail.thread[0]?.snd_level+' contact update'}}</h2>
+                                 </div>
+                                 <div mar-l-55 *ngIf="replyMail.thread[0]?.snd_level == 'level5'">
+                                    <ion-icon class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                    <h2 fnt-bold>{{replyMail.thread[0]?.name}}<ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                    <p fnt-regular>{{replyMail.thread[0]?.email}}</p>
+                                 </div>
+                              </ng-container>
+                              <ng-container *ngIf="replyMail.thread[0]?.subject == 'Friend Request'">
+                              <div mar-l-55>
+                                 <h2 fnt-bold>{{replyMail.thread[0]?.name}}<ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                 <p fnt-regular>{{replyMail.thread[0]?.email}}</p>
+                              </div>
+                              </ng-container>
+                           </ng-container>
+
+                           <ng-container *ngIf="userId == replyMail.thread[0]?.fromId[0].userId">
+                              <div mar-l-55>
+                                 <h2 fnt-bold>{{replyMail.thread[0]?.name}}<ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                 <p fnt-regular>{{replyMail.thread[0]?.email}}</p>
+                              </div>
+                           </ng-container>
+
+   							   <div mar-l-55>
+                              <span color-grey fnt-regular  float-left *ngIf="preState == 'Inbox' || preState == 'Folder'">To</span>
+                              <span  color-grey fnt-regular float-left *ngIf="preState != 'Inbox' && preState != 'Folder'">From</span>
+                              <ion-fab  float-left style="position:relative">
+                                 <button ion-fab mini color="light">
+                                    <ion-icon class="ion-md-arrow-dropdown"></ion-icon>
+                                 </button>
+                                 <ion-fab-list>
+                                    <ion-item smail-top>
+                                       <span fnt-bold  float-left  smail-username > {{replyMail.thread[0]?.toArray[0]?.name}}   </span>
+                                       <span fnt-bold float-left smail-email>  <{{replyMail.thread[0]?.toArray[0]?.email}}>   </span>           
+                                    </ion-item>
+                                 </ion-fab-list>
+                              </ion-fab>   
+                           </div>
+                        </ng-container>
+                        <!-- if logged in user not sender -->
+                        <ng-container *ngIf="replyMail.thread[0]?.toArray.length == 1 && replyMail.thread[0]?.anotherUserId == userId">
+                           <!-- if user sender -->
+
+                           <ion-avatar float-left item-start *ngIf="(replyMail.thread[0]?.toArray[0]?.image != '' && (replyMail.thread[0]?.toArray[0]?.senderId == userId && replyMail.thread[0]?.toArray[0]?.senderThumb == 'Show' || replyMail.thread[0]?.toArray[0]?.senderId != userId && replyMail.thread[0]?.toArray[0]?.receiverThumb == 'Show')) && (opened_levels.indexOf(replyMail.thread[0]?.toArray[0]?.on_level) >= 0 || replyMail.thread[0]?.toArray[0]?.on_level == 'level5' || replyMail.thread[0]?.toArray[0]?.on_level == 'level0') ">
+                              <img src="{{baseUrl}}/images/{{replyMail.thread[0].toArray[0]?.image}}" user-pic>
+                           </ion-avatar>
+                           <ion-avatar float-left item-start *ngIf="(replyMail.thread[0]?.toArray[0]?.image == '' && (replyMail.thread[0]?.toArray[0]?.senderId == userId && replyMail.thread[0]?.toArray[0]?.senderThumb == 'Hide' || replyMail.thread[0]?.toArray[0]?.senderId != userId && replyMail.thread[0]?.toArray[0]?.receiverThumb == 'Hide') ) && (opened_levels.indexOf(replyMail.thread[0]?.toArray[0]?.on_level) >= 0 || replyMail.thread[0]?.toArray[0]?.on_level == 'level5' || replyMail.thread[0]?.toArray[0]?.on_level == 'level0')">
+                              <img src="assets/img/m7.png" user-pic>
+                           </ion-avatar>
+                           <ion-avatar  float-left item-start  *ngIf="(replyMail.thread[0]?.toArray[0]?.image == '' && replyMail.thread[0]?.toArray.length == 1) && (opened_levels.indexOf(replyMail.thread[0]?.toArray[0]?.on_level) >= 0 || replyMail.thread[0]?.toArray[0]?.on_level == 'level5' || replyMail.thread[0]?.toArray[0]?.on_level == 'level0')">
+                              <img src="assets/img/m7.png" user-pic >
+                           </ion-avatar>
+
+                           <ion-avatar  float-left item-start  *ngIf="opened_levels.indexOf(replyMail.thread[0]?.toArray[0]?.on_level) == -1 && replyMail.thread[0]?.toArray[0]?.on_level != 'level5' && replyMail.thread[0]?.toArray[0]?.on_level != 'level0'">
+                              <img src="assets/img/m7.png" user-pic >
+                           </ion-avatar>
+
+                           <ng-container *ngIf="userId != replyMail.thread[0]?.toArray[0]?.userId">
+                              <div mar-l-55 *ngIf="opened_levels.indexOf(replyMail.thread[0]?.toArray[0]?.on_level) >= 0 && replyMail.thread[0]?.toArray[0]?.on_level != 'level5'">
+                                 <h2 fnt-bold>{{replyMail.thread[0]?.toArray[0]?.name}}<ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                 <p fnt-regular>{{replyMail.thread[0]?.toArray[0]?.email}}</p>
+                              </div>
+                              <div mar-l-55 *ngIf="opened_levels.indexOf(replyMail.thread[0]?.toArray[0]?.on_level) == -1 && replyMail.thread[0]?.toArray[0]?.on_level != 'level0' && replyMail.thread[0]?.toArray[0]?.on_level != 'level5'">
+                                 <h2 fnt-bold class="text-capital">{{replyMail.thread[0]?.toArray[0]?.on_level+' contact update'}}</h2>
+                              </div>
+                              <div mar-l-55 *ngIf="replyMail.thread[0]?.toArray[0]?.on_level == 'level5'">
+                                 <ion-icon class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                 <h2 fnt-bold>{{replyMail.thread[0]?.toArray[0]?.name}}<ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                 <p fnt-regular>{{replyMail.thread[0]?.toArray[0]?.email}}</p>
+                              </div>
+                           </ng-container>
+
+                           <ng-container *ngIf="userId == replyMail.thread[0]?.toArray[0]?.userId">
+                              <div mar-l-55>
+                                 <h2 fnt-bold>{{replyMail.thread[0]?.toArray[0]?.name}}<ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                 <p fnt-regular>{{replyMail.thread[0]?.toArray[0]?.email}}</p>
+                              </div>
+                           </ng-container>
+
+      						   <div mar-l-55 >
+                              <span color-grey fnt-regular float-left *ngIf="preState == 'Inbox' || preState == 'Folder'">From</span>
+                              <span  color-grey fnt-regular float-left *ngIf="preState != 'Inbox' && preState != 'Folder'">From</span>
+                              <ion-fab  float-left style="position:relative">
+                                 <button ion-fab mini color="light">
+                                    <ion-icon class="ion-md-arrow-dropdown"></ion-icon>
+                                 </button>
+                                 <ion-fab-list>
+                                    <ion-item smail-top>
+                                       <span fnt-bold  float-left  smail-username > {{replyMail.thread[0]?.name}}   </span>
+                                       <span fnt-bold float-left smail-email>  <{{replyMail.thread[0]?.email}}>   </span>           
+                                    </ion-item>
+                                 </ion-fab-list>
+                              </ion-fab>
+      						   </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="replyMail.thread[0]?.toArray.length > 1">
+                           <ion-avatar item-start float-left>
+                              <img src="assets/img/group.jpg" user-pic >
+                           </ion-avatar>
+
+                           <ng-container *ngIf="userId != replyMail.thread[0]?.fromId[0].userId">
+      						      <div mar-l-55 *ngIf="opened_levels.indexOf(replyMail.thread[0]?.snd_level) >= 0 && replyMail.thread[0]?.snd_level != 'level5'">
+                                 <h2 fnt-bold>{{replyMail.thread[0]?.name}}<ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                 <p fnt-regular>{{replyMail.thread[0]?.email}}</p>
+                              </div>
+                              <div mar-l-55 *ngIf="opened_levels.indexOf(replyMail.thread[0]?.snd_level) == -1 && replyMail.thread[0]?.snd_level != 'level0' && replyMail.thread[0]?.snd_level != 'level5'">
+                                 <h2 fnt-bold class="text-capital">{{replyMail.thread[0]?.snd_level+' contact update'}}</h2>
+                              </div>
+                              <div mar-l-55 *ngIf="replyMail.thread[0]?.snd_level == 'level5'">
+                                 <ion-icon class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                 <h2 fnt-bold>{{replyMail.thread[0]?.name}}<ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                 <p fnt-regular>{{replyMail.thread[0]?.email}}</p>
+         						   </div>
+                           </ng-container>
+
+                           <ng-container *ngIf="userId == replyMail.thread[0]?.fromId[0].userId">
+                              <div mar-l-55>
+                                 <h2 fnt-bold>{{replyMail.thread[0]?.name}}<ion-icon (click)="printAll(replyMail)" title="Print All" class="print_smail_icon" name="print"></ion-icon></h2>
+                                 <p fnt-regular>{{replyMail.thread[0]?.email}}</p>
+                              </div>
+                           </ng-container>
+
+      						      <div mar-l-55>
+                                 <span float-left color-grey fnt-regular>To</span>
+                                 <ng-container *ngIf="userId != replyMail.thread[0]?.toArray[0].userId">
+                                    <span float-left m-l-1-t-5 *ngIf="opened_levels.indexOf(replyMail.thread[0]?.toArray[0].on_level) >= 0 && replyMail.thread[0]?.toArray[0].on_level != 'level5'">
+                                    {{replyMail.thread[0]?.toArray[0].email}}
+                                    </span>
+
+                                    <span float-left m-l-1-t-5 *ngIf="replyMail.thread[0]?.toArray[0].on_level == 'level5'">
+                                    <ion-icon class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                    {{replyMail.thread[0]?.toArray[0].email}}
+                                    </span>
+
+                                    <span float-left m-l-1-t-5 class="text-capital" *ngIf="opened_levels.indexOf(replyMail.thread[0]?.toArray[0].on_level) == -1 && replyMail.thread[0]?.toArray[0].on_level != 'level5'">
+                                    {{replyMail.thread[0]?.toArray[0].on_level}} contact update
+                                    </span>
+                                 </ng-container>
+                                 <ng-container *ngIf="userId == replyMail.thread[0]?.toArray[0].userId">
+                                    <span float-left m-l-1-t-5>
+                                    {{replyMail.thread[0]?.toArray[0].email}}
+                                    </span>
+                                 </ng-container>
+                                 <ion-fab  float-left style="position:relative">
+                                    <button ion-fab mini color="light">
+                                       <ion-icon class="ion-md-arrow-dropdown"></ion-icon>
+                                    </button>
+                                    <ion-fab-list>
+                                       <ion-item smail-top *ngFor=" let cont of replyMail.thread[0]?.toArray">
+                                       <ng-container *ngIf="userId != cont?.userId">
+                                          <ng-container *ngIf="opened_levels.indexOf(cont?.on_level) >= 0 && cont?.on_level != 'level5'">
+                                             <span fnt-bold  float-left  smail-username > {{cont?.name}}   </span><br>
+                                             <span fnt-bold float-left smail-email>  <{{cont?.email}}>   </span> 
+                                          </ng-container>
+                                          <ng-container *ngIf="cont?.on_level == 'level5'">
+                                          <ion-icon class="warning_clr" name="warning" title="Unconnected user"></ion-icon> 
+                                             <span fnt-bold  float-left  smail-username > {{cont?.name}}   </span><br>
+                                             <span fnt-bold float-left smail-email>  <{{cont?.email}}>   </span> 
+                                          </ng-container>
+                                          <ng-container *ngIf="opened_levels.indexOf(cont?.on_level) == -1 && cont?.on_level != 'level5'">
+                                             <span fnt-bold  float-left  smail-username class="text-capital"> {{cont?.on_level}} contact update   </span> 
+                                          </ng-container>
+                                       </ng-container>
+                                       <ng-container *ngIf="userId == cont?.userId">
+                                          <span fnt-bold  float-left  smail-username > {{cont?.name}}   </span><br>
+                                          <span fnt-bold float-left smail-email>  <{{cont?.email}}>   </span>
+                                       </ng-container>           
+                                       </ion-item>
+                                    </ion-fab-list>
+                                 </ion-fab>
+      						   </div>
+                        </ng-container>
+
+                        <ion-note  item-end margin0 fnt-regular max-90 style="">
+                           {{replyMail.thread[0].date | date: 'h:mm a dd MMM' }} <br> 
+                           ({{(replyMail.thread[0].date | timeAgo)}})
+                        </ion-note>
+                     </ion-item>
+                  </ion-list>
+                  <div w-100 class="smail-view" *ngIf="replyMail.thread.length > 0">
+                     <h5 fnt-bold *ngIf="replyMail.thread[0].subject != 'Friend Request'">{{replyMail.thread[0].subject}}</h5>
+                     <h5 fnt-bold *ngIf="replyMail.thread[0].subject == 'Friend Request'">Friend Request</h5>
+
+                     <ng-container *ngIf="replyMail.thread[0]?.fromId[0].userId != userId">
+                        <ng-container *ngIf="opened_levels.indexOf(replyMail.thread[0]?.snd_level) >= 0 ">
+                           <p fnt-regular *ngIf="replyMail.thread[0].subject != 'Friend Request'" [innerHTML]="replyMail.thread[0].message"></p>
+                           <p *ngIf="replyMail.thread[0].subject == 'RFI Requested'">
+                              <a href="{{baseUrl}}/salvum/directory/pdfs/{{replyMail.thread[0].extra}}" target="_blank">see rfi pdf</a>
+                           </p>
+                        </ng-container>
+
+                        <ng-container *ngIf="opened_levels.indexOf(replyMail.thread[0]?.snd_level) == -1 && replyMail.thread[0]?.snd_level != 'level0' && replyMail.thread[0]?.snd_level != 'level5'">
+                           <p fnt-regular *ngIf="replyMail.thread[0].subject != 'Friend Request'" >{{replyMail.thread[0]?.snd_level}} content, please log onto {{replyMail.thread[0]?.snd_level}} to see contact and content.</p>
+                        </ng-container>
+                     </ng-container>
+
+                     <ng-container *ngIf="replyMail.thread[0]?.fromId[0].userId == userId">
+                        <p fnt-regular *ngIf="replyMail.thread[0].subject != 'Friend Request'" [innerHTML]="replyMail.thread[0].message"></p>
+                        <p *ngIf="replyMail.thread[0].subject == 'RFI Requested'">
+                           <a href="{{baseUrl}}/salvum/directory/pdfs/{{replyMail.thread[0].extra}}" target="_blank">see rfi pdf</a>
+                        </p>
+                     </ng-container>
+
+                     <div fnt-regular *ngIf="replyMail.thread[0].subject == 'Friend Request'">
+                        <div class="text-grey text-center click-btn" text-center>
+                           <h6>Invitation</h6>
+                           <img src="http://salvum.net//images/68x7.png" alt="68x7" width="68" height="7">
+                           <p message-div>
+                              {{replyMail.thread[0].name}} invited you to join Salvum.<br>
+                              To accept invitation, Please <a (click)="acceptInvite(replyMail.thread[0].message)">Click here</a><br>,
+                              To reject invitation, Please <a (click)="rejectContact(replyMail.thread[0].message)">Click here</a><br>
+                              <u>Why join Salvum:</u>  By joining Salvum you join a group of users that exchange information and data safely and securely.  There is no cost to you, just enjoy the safety of Salvum.
+                           </p>
+                        </div>
+                     </div>
+                     <ng-container *ngIf="opened_levels.indexOf(replyMail.thread[0]?.snd_level) >= 0 || replyMail.thread[0]?.fromId[0].userId == userId" >
+                        <div fnt-regular *ngIf="replyMail.thread[0].subject == 'Transmittal'">
+                           <div class="text-grey text-center click-btn" text-center>
+                              <img src="http://salvum.net/images/68x7.png" alt="----" width="68" height="7">
+                              <p message-div>
+                                 Click <a (click)="viewTransmittal(replyMail.thread[0].extra)"> here </a> to view the transmittal. 
+                              </p>
+                              <p message-div>
+                                 Click <a (click)="downloadTransmittal(replyMail.thread[0].others)"> here </a> to download the pdf of transmittal. 
+                              </p>
+                           </div>
+                        </div>
+                        <div fnt-regular *ngIf="replyMail.thread[0].subject == 'Invitation to join company on Salvum' && replyMail.thread[0].fromId[0].userId != userId">
+                           <div class="text-grey text-center click-btn" text-center>
+                              <img src="http://salvum.net/images/68x7.png" alt="----" width="68" height="7">
+                              <p message-div>
+                                 To accept invitation, Please <a (click)="ChangeShareJobStatus(replyMail.thread[0].others,'1')">Click here</a><br>
+                                 To reject invitation, Please <a (click)="ChangeShareJobStatus(replyMail.thread[0].others,'2')">Click here</a>
+                              </p>
+                           </div>
+                        </div>
+                     </ng-container>
+
+                     <ng-container *ngIf="opened_levels.indexOf(replyMail.thread[0]?.snd_level) >= 0 && replyMail.thread[0]?.snd_level != 'level5' && replyMail.thread[0]?.subject != 'RFI Requested'">
+                        <ion-item attach-item  *ngFor="let file of replyMail.thread[0]?.attacment">
+                           <a *ngIf="isBrowser ==  'true'"  href="{{baseUrl_main}}/download?file={{baseUrl}}/salvum/directory/smail_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}">{{file.split('____').pop(-1)}}</a>
+                           <a *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(baseUrl +'/salvum/directory/smail_data/'+file,file)" href="javascript:void(0)">{{file.split('____').pop(-1)}}</a>
+                        </ion-item >
+                     </ng-container>
+                  </div>
+                  <!-- threads -->
+                  <div w-100 style="border-bottom: 3px solid #000">
+                     <ng-container *ngFor="let item of replyMail.child , let indx = index; ">
+                        <ion-list margintop0 smail-detail>
+                           <ion-item>
+                              <ng-container *ngIf="item.toArray.length == 1 && item.fromId[0]?.userId == userId">
+                                 <ion-avatar float-left   item-start *ngIf="item?.image != '' && (replyMail.thread[0]?.toArray[0]?.senderId == userId && replyMail.thread[0]?.toArray[0]?.senderThumb == 'Show' || replyMail.thread[0]?.toArray[0]?.senderId != userId && replyMail.thread[0]?.toArray[0]?.receiverThumb == 'Show')">
+                                    <img src="{{baseUrl}}/images/{{item?.image}}" user-pic>
+                                 </ion-avatar>
+                                 <ion-avatar float-left  item-start *ngIf="item?.image != '' && (replyMail.thread[0]?.toArray[0]?.senderId == userId && replyMail.thread[0]?.toArray[0]?.senderThumb == 'Hide' || replyMail.thread[0]?.toArray[0]?.senderId != userId && replyMail.thread[0]?.toArray[0]?.receiverThumb == 'Hide')">
+                                    <img src="assets/img/m7.png" user-pic>
+                                 </ion-avatar>
+                                 <ion-avatar float-left  item-start *ngIf="item?.image == ''">
+                                    <img src="assets/img/m7.png" user-pic>
+                                 </ion-avatar>
+                                 <div mar-l-55>
+                                    <h2 fnt-bold>From: {{item.name}}<ion-icon (click)="printOne(item)" title="Print" class="print_smail_icon" name="print"></ion-icon></h2>
+                                    <p fnt-regular>{{item.email}}</p>
+                                 </div>
+                                   <div mar-l-55>
+                                    <span float-left color-grey fnt-regular>  To  </span>
+                                    <ion-fab  float-left  [style.z-index]="999-indx" style="position:relative">
+                                       <button ion-fab mini color="light">
+                                          <ion-icon class="ion-md-arrow-dropdown"></ion-icon>
+                                       </button>
+                                       <ion-fab-list>
+                                          <ion-item *ngFor="let contact of item.toArray">
+                                             <span fnt-bold float-left>{{contact.name}}</span> <br>  <span contact-email float-left>  <{{contact.email}}>  </span>
+                                          </ion-item>
+                                       </ion-fab-list>
+                                    </ion-fab>
+                                 </div>
+                              </ng-container>
+
+                              <ng-container *ngIf="item.toArray.length == 1 && item.fromId[0]?.userId != userId">
+                                 <ng-container *ngIf="opened_levels.indexOf(item.snd_level) >= 0 && item.snd_level != 'level5'">
+                                    <ion-avatar  float-left item-start *ngIf="item?.image != '' && (replyMail.thread[0]?.toArray[0]?.senderId == userId && replyMail.thread[0]?.toArray[0]?.senderThumb == 'Show' || replyMail.thread[0]?.toArray[0]?.senderId != userId && replyMail.thread[0]?.toArray[0]?.receiverThumb == 'Show')">
+                                       <img src="{{baseUrl}}/images/{{item?.image}}" user-pic>
+                                    </ion-avatar>
+                                    <ion-avatar float-left item-start *ngIf="item?.image != '' && (replyMail.thread[0]?.toArray[0]?.senderId == userId && replyMail.thread[0]?.toArray[0]?.senderThumb == 'Hide' || replyMail.thread[0]?.toArray[0]?.senderId != userId && replyMail.thread[0]?.toArray[0]?.receiverThumb == 'Hide')">
+                                       <img src="assets/img/m7.png" user-pic>
+                                    </ion-avatar>
+                                    <ion-avatar float-left item-start *ngIf="item?.image == ''">
+                                       <img src="assets/img/m7.png" user-pic>
+                                    </ion-avatar>
+                                 </ng-container>
+                                 <ng-container *ngIf="opened_levels.indexOf(item.snd_level) == -1 && item.snd_level != 'level0'">
+                                 <ion-avatar float-left item-start>
+                                    <img src="assets/img/m7.png" user-pic>
+                                 </ion-avatar>
+                                 </ng-container>
+
+                                 <div mar-l-55 *ngIf="opened_levels.indexOf(item.snd_level) >= 0 && item.snd_level != 'level5'">
+                                    <h2 fnt-bold>From: {{item.name}}<ion-icon (click)="printOne(item)" title="Print" class="print_smail_icon" name="print"></ion-icon></h2>
+                                    <p fnt-regular>{{item.email}}</p>
+                                 </div>
+                                 <div mar-l-55 *ngIf="opened_levels.indexOf(item.snd_level) == -1 && item.snd_level != 'level0' && item.snd_level != 'level5'">
+                                    <h2 fnt-bold class="text-capital">From: {{item.snd_level}} contact update</h2>
+                                 </div>
+                                 <div mar-l-55 *ngIf="item.snd_level == 'level5'">
+                                    <h2 fnt-bold>From: 
+                                       <ion-icon class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                    {{item.name}}<ion-icon (click)="printOne(item)" title="Print" class="print_smail_icon" name="print"></ion-icon></h2>
+                                    <p fnt-regular>{{item.email}}</p>
+                                 </div>
+
+                                   <div mar-l-55>
+                                    <span float-left color-grey fnt-regular>  To  </span>
+                                    <ion-fab  float-left  [style.z-index]="999-indx" style="position:relative">
+                                       <button ion-fab mini color="light">
+                                          <ion-icon class="ion-md-arrow-dropdown"></ion-icon>
+                                       </button>
+                                       <ion-fab-list>
+                                          <ion-item *ngFor="let contact of item.toArray">
+                                          <ng-container *ngIf="userId != contact?.userId">
+                                             <ng-container *ngIf="opened_levels.indexOf(contact?.on_level) >= 0 && contact?.on_level != 'level5'">
+                                                <span fnt-bold >{{contact.name}}</span> <br> <span contact-email>  <{{contact.email}}>  </span>
+                                             </ng-container>
+                                             <ng-container *ngIf="contact?.on_level == 'level5'">
+                                             <ion-icon class="warning_clr" name="warning" title="Unconnected user"></ion-icon> 
+                                                <span fnt-bold >{{contact.name}}</span> <br> <span contact-email>  <{{contact.email}}>  </span>
+                                             </ng-container>
+                                             <ng-container *ngIf="opened_levels.indexOf(contact?.on_level) == -1 && contact?.on_level != 'level5'">
+                                                <span fnt-bold  float-left  smail-username class="text-capital"> {{contact?.on_level}} contact update </span> 
+                                             </ng-container>
+                                             
+                                          </ng-container>
+                                          <ng-container *ngIf="userId == contact?.userId">
+                                             <span fnt-bold >{{contact.name}}</span> <br> <span contact-email>  <{{contact.email}}>  </span>
+                                          </ng-container>
+                                          </ion-item>
+                                       </ion-fab-list>
+                                    </ion-fab>
+                                 </div>
+                              </ng-container>
+
+                              <ng-container  *ngIf="item.toArray.length > 1 ">
+                                 <ng-container *ngIf="opened_levels.indexOf(item.snd_level) >= 0 || item.snd_level == 'level5'">
+                                    <ion-avatar  float-left item-start *ngIf="item?.image != '' && (replyMail.thread[0]?.toArray[0]?.senderId == userId && replyMail.thread[0]?.toArray[0]?.senderThumb == 'Show' || replyMail.thread[0]?.toArray[0]?.senderId != userId && replyMail.thread[0]?.toArray[0]?.receiverThumb == 'Show')">
+                                       <img src="{{baseUrl}}/images/{{item?.image}}" user-pic>
+                                    </ion-avatar>
+                                    <ion-avatar float-left item-start *ngIf="item?.image != '' && (replyMail.thread[0]?.toArray[0]?.senderId == userId && replyMail.thread[0]?.toArray[0]?.senderThumb == 'Hide' || replyMail.thread[0]?.toArray[0]?.senderId != userId && replyMail.thread[0]?.toArray[0]?.receiverThumb == 'Hide')">
+                                       <img src="assets/img/m7.png" user-pic>
+                                    </ion-avatar>
+                                    <ion-avatar float-left item-start *ngIf="item?.image == ''">
+                                       <img src="assets/img/m7.png" user-pic>
+                                    </ion-avatar>
+                                 </ng-container>
+                                 <ng-container *ngIf="opened_levels.indexOf(item.snd_level) == -1 && item.snd_level != 'level0' && item.snd_level != 'level5'">
+                                 <ion-avatar float-left item-start>
+                                    <img src="assets/img/m7.png" user-pic>
+                                 </ion-avatar>
+                                 </ng-container>
+
+                                 <ng-container *ngIf="item.fromId[0].userId == userId">
+                                    <div mar-l-55>
+                                       <h2 fnt-bold>From: {{item?.name}}<ion-icon (click)="printOne(item)" title="Print" class="print_smail_icon" name="print"></ion-icon></h2>
+                                       <p fnt-regular>{{item?.email}}</p>
+                                    </div>
+                                 </ng-container>
+
+                                 <ng-container *ngIf="item.fromId[0].userId != userId">
+                                    <div mar-l-55 *ngIf="opened_levels.indexOf(item.snd_level) >= 0 && item.snd_level != 'level5'">
+                                       <h2 fnt-bold>From: {{item?.name}}<ion-icon (click)="printOne(item)" title="Print" class="print_smail_icon" name="print"></ion-icon></h2>
+                                       <p fnt-regular>{{item?.email}}</p>
+                                    </div>
+                                    <div mar-l-55 *ngIf="opened_levels.indexOf(item.snd_level) == -1 && item.snd_level != 'level0' && item.snd_level != 'level5'">
+                                       <h2 fnt-bold>From: {{item.snd_level}} contact update</h2>
+                                    </div>
+                                    <div mar-l-55 *ngIf="item.snd_level == 'level5'">
+                                       <h2 fnt-bold>From: 
+                                       <ion-icon class="warning_clr" name="warning" title="Unconnected user"></ion-icon> 
+                                       {{item?.name}}<ion-icon (click)="printOne(item)" title="Print" class="print_smail_icon" name="print"></ion-icon></h2>
+                                       <p fnt-regular>{{item?.email}}</p>
+                                    </div>
+                                 </ng-container>
+
+                                 <div mar-l-55>
+                                    <span float-left color-grey fnt-regular>  To  </span>
+                                    <ion-fab  float-left [style.z-index]="999-indx" style="position:relative">
+                                       <button ion-fab mini color="light">
+                                          <ion-icon class="ion-md-arrow-dropdown"></ion-icon>
+                                       </button>
+                                       <ion-fab-list>
+                                          <ion-item *ngFor="let cont of item?.toArray">
+                                          <ng-container *ngIf="userId != cont?.userId">
+                                             <ng-container *ngIf="opened_levels.indexOf(cont?.on_level) >= 0 && cont?.on_level != 'level5'">
+                                                <span fnt-bold float-left>{{cont.name}}</span> <br> <span contact-email float-left> <{{cont.email}}>  </span>
+                                             </ng-container>
+                                             <ng-container *ngIf="cont?.on_level == 'level5'">
+                                                <ion-icon class="warning_clr" name="warning" title="Unconnected user"></ion-icon>
+                                                <span fnt-bold float-left>{{cont.name}}</span> <br> <span contact-email float-left> <{{cont.email}}>  </span>
+                                             </ng-container>
+                                             <ng-container *ngIf="opened_levels.indexOf(cont?.on_level) == -1 && cont?.on_level != 'level5'">
+                                                <span fnt-bold  float-left  smail-username class="text-capital"> {{cont?.on_level}} contact update </span> 
+                                             </ng-container>
+                                          </ng-container>
+                                          <ng-container *ngIf="userId == cont?.userId">
+                                             <span fnt-bold float-left>{{cont.name}}</span> <br> <span contact-email float-left> <{{cont.email}}>  </span>
+                                          </ng-container>
+                                             
+                                          </ion-item>
+                                       </ion-fab-list>
+                                    </ion-fab>
+                                 </div>
+                              </ng-container>
+
+                              <ion-note item-end margin0 fnt-regular style=""  max-90>
+                                 {{item.date | date: 'h:mm a dd MMM'}} <br>
+
+                                 ({{(item.date | timeAgo)}})
+
+                              </ion-note>
+                              <ng-container *ngIf="(opened_levels.indexOf(item.snd_level) >= 0 || item.fromId[0].userId == userId) && item.subject != 'RFI Requested'">
+                                 <ion-item *ngFor="let file of item.attacment" attach-item>
+                                    <a *ngIf="isBrowser ==  'true'" href="{{baseUrl_main}}/download?file={{baseUrl}}/salvum/directory/smail_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}">{{file.split('____').pop(-1)}}</a>
+                                    <a  *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(baseUrl +'/salvum/directory/smail_data/'+file,file)" href="javascript:void(0)">{{file.split('____').pop(-1)}}</a>
+                                 </ion-item>
+                              </ng-container>
+                           </ion-item>
+                        </ion-list>
+                        <ng-container *ngIf="item.fromId[0].userId != userId">
+                           <div class="smail-view" *ngIf="opened_levels.indexOf(item.snd_level) >= 0 || item.snd_level == 'level5'">
+                              <h5 fnt-bold>{{item.subject}}</h5>
+                              <p clearboth fnt-regular [innerHTML]="item.message">{{item.message}}</p>
+                           </div>
+                           <div class="smail-view" *ngIf="opened_levels.indexOf(item.snd_level) == -1 && item.snd_level != 'level0' && item.snd_level != 'level5'">
+                              <p fnt-regular> {{item.snd_level}} content, please log onto {{item.snd_level}} to see contact and content.</p>
+                           </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="item.fromId[0].userId == userId">
+                           <div class="smail-view">
+                              <h5 fnt-bold>{{item.subject}}</h5>
+                              <p clearboth fnt-regular [innerHTML]="item.message">{{item.message}}</p>
+                           </div>
+                        </ng-container>
+                        <ng-container *ngIf="item.subject == 'RFI Requested'">
+                           <ion-item *ngFor="let file of item.attacment" pdng_left>
+                              <a *ngIf="isBrowser ==  'true'" href="{{baseUrl_main}}/download?file={{baseUrl}}/salvum/directory/smail_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}">{{file.split('____').pop(-1)}}</a>
+
+                              <a *ngIf="isBrowser ==  'false'"  (click)="downloadAndroid(baseUrl +'/salvum/directory/smail_data/'+file,file)" href="javascript:void(0)">{{file.split('____').pop(-1)}}</a>
+                           </ion-item>
+                        </ng-container>
+                     </ng-container>
+
+                  </div>
+               </ion-grid>
+
+               <ion-row p-lr-0 *ngIf="details != '' && replyMail.thread[0].subject != 'Friend Request' && replyMail.thread[0].subject != 'Transmittal' && replyMail.thread[0].subject != 'Invitation to join company on Salvum' " id="scroll_down">
+               <!-- replyMail.thread[0].subject == 'RFI Requested' && replyMail.thread[0].fromId[0].userId != replyMail.thread[0].userId -->
+                  <!-- &&  thread == false -->
+                  <ion-col p-lr-0>
+                     <button btn-hide1 ion-button icon-left color="green" fnt-regular float-right  (click)="createThread('reply')" *ngIf="(replyMail.thread[0].subject == 'RFI Requested' && replyMail.thread[0].fromId[0].userId != replyMail.thread[0].userId && replyMail.child.length == 0) || replyMail.thread[0].subject != 'RFI Requested'">
+                        <ion-icon name="undo"></ion-icon>
+                        <span btn-text>  Reply  </span>
+                     </button>
+                     <button *ngIf="replyMail.thread[0].subject != 'RFI Requested'" btn-hide1 ion-button icon-left color="lightgrey" fnt-regular float-right (click)="createThread('fwd')">
+                        <ion-icon name="redo"></ion-icon>
+                        <span btn-text>  Forward </span>
+                     </button>
+                  </ion-col>
+               </ion-row>
+               <ion-list margin0 *ngIf="thread == true">
+                  <ion-item forward-list *ngIf="replyMail.thread[0].subject == 'RFI Requested'">
+                     <div fnt-grey style="white-space: initial;margin: 0px !important;">To : </div>
+                     <div>
+                        <span badge-custom>
+                           {{this.details.thread[0].name}}
+                        </span>
+                     </div>
+                  </ion-item>
+                  <ion-item forward-list *ngIf="replyMail.thread[0].subject != 'RFI Requested'">
+                     <div (click)="doCheckbox()"  fnt-grey style="white-space: initial;margin: 0px !important;">To : </div>
+                     <div *ngIf="testCheckboxResult?.length != 0">
+                        <span *ngFor="let contact of testCheckboxResult" badge-custom>
+                           {{contact.name}}
+                           <span *ngIf="contact.name != undefined">
+                              <ion-icon  style="margin-left: 5px;" name="close" (click)="removeContact(contact)"></ion-icon>
+                           </span>
+                        </span>
+                     </div>
+                  </ion-item>
+                  <ion-item forward-list *ngIf="replyMail.thread[0].subject != 'RFI Requested'">
+                     <div (click)="ccCheckbox()" floating fnt-grey style="white-space: initial;margin: 0px !important;">Cc : </div>
+                     <div *ngIf="ccCheckboxResult?.length != 0">
+                        <span *ngFor="let contact of ccCheckboxResult" badge-custom>
+                           {{contact.name}}
+                           <span>
+                              <ion-icon  style="margin-left: 5px;" name="close" (click)="removeCcContact(contact)"></ion-icon>
+                           </span>
+                        </span>
+                     </div>
+                  </ion-item>
+                  <ion-item forward-list *ngIf="replyMail.thread[0].subject != 'RFI Requested'">
+                     <div (click)="bccCheckbox()" floating fnt-grey>Bcc : </div>
+                     <div *ngIf="bccCheckboxResult?.length != 0">
+                        <span *ngFor="let contact of bccCheckboxResult" badge-custom >
+                           {{contact.name}}
+                           <span>
+                              <ion-icon  style="margin-left: 5px;" name="close" (click)="removeBccContact(contact)"></ion-icon>
+                           </span>
+                        </span>
+                     </div>
+                  </ion-item>
+                  <ion-item forward-list *ngIf="replyMail.thread[0].subject != 'RFI Requested'">
+                     <div floating fnt-grey (click)="groupListing()">Group : </div>
+                     <div *ngIf="selectedGroups?.length != 0">
+                        <span *ngFor="let contact of selectedGroups" badge-custom >
+                           {{contact.name}}
+                           <span>
+                              <ion-icon  style="margin-left: 5px;" name="close" (click)="removeGroupsContact(contact)"></ion-icon>
+                           </span>
+                        </span>
+                     </div>
+                  </ion-item>
+                  <ion-item border  *ngIf="action == 'fwd'">
+                     <ion-label floating>Subject :</ion-label>
+                     <ion-input type="text" [(ngModel)]="subject"></ion-input>
+                  </ion-item>
+                  <ion-item>
+                     <!-- <rich-text [formControlItem]="desc" placeholderText="A sample of placeholder text" id="texteditor"></rich-text> -->
+                     <!-- <ion-textarea type="text"  [(ngModel)]="desc"></ion-textarea> -->
+                     <!-- <input style="visibility: hidden;" type="text" id="hidden_txt"> -->
+                     <ion-col col-xl-12 col-lg-12>
+                        <div>
+                          <ion-segment [(ngModel)]="editor_tab" (ionChange)="editoToolbar()">
+                            <ion-segment-button value="format">
+                              Format
+                            </ion-segment-button>
+                            <ion-segment-button value="insert">
+                              Insert
+                            </ion-segment-button>
+                            <ion-segment-button value="styles">
+                              Styles
+                            </ion-segment-button>
+                          </ion-segment>
+                        </div>
+                     </ion-col> 
+                     <ckeditor
+                         [(ngModel)]="desc"
+                         [config]="{uiColor: '', height : '100px'}"
+                         (ready)="editorReady()"
+                         debounce="500">
+                       </ckeditor>
+                  </ion-item>
+                  <ion-row no-padding>
+                     <ion-item *ngFor="let file of attacments; let i = index ">
+                        {{file.split('____').pop(-1)}} 
+                        <ion-icon name="close" (click)="removeFile(i)"></ion-icon>
+                     </ion-item>
+                  </ion-row>
+                  <ion-row no-padding>
+                     <ion-col no-padding *ngIf="action != 'reply'">
+                        <ion-item col-6 left >
+                           <ion-label>Override</ion-label>
+                           <ion-checkbox color="blue" [(ngModel)]="override"></ion-checkbox>
+                        </ion-item>
+                        <ion-item col-6 left *ngIf="override == false && testCheckboxResult.length == 1" >
+                           <ion-select  [(ngModel)]="level" style="min-width: 100%;" disabled="true">
+                           <ion-option selected value="">Select Level</ion-option>
+                           <ion-option value="1">Level 1</ion-option>
+                           <ion-option value="2">Level 2</ion-option>
+                           <ion-option value="3">Level 3</ion-option>
+                           <ion-option value="4">Level 4</ion-option>
+                           </ion-select>
+                        </ion-item>
+                        <ion-item col-6 left *ngIf="override == false && testCheckboxResult.length > 1" >
+                           Select Level
+                        </ion-item>
+                        <ion-item col-6 left *ngIf="override == false && testCheckboxResult.length == 0">
+                           <ion-select  [(ngModel)]="level" style="min-width: 100%;" disabled="true">
+                           <ion-option selected value="">Select Level</ion-option>
+                           <ion-option value="1">Level 1</ion-option>
+                           <ion-option value="2">Level 2</ion-option>
+                           <ion-option value="3">Level 3</ion-option>
+                           <ion-option value="4">Level 4</ion-option>
+                           </ion-select>
+                        </ion-item>
+                        <ion-item col-6 left *ngIf="override == true">
+                           <ion-select  [(ngModel)]="level" style="min-width: 100%;" (ionChange)="getValueOpton(level)">
+                           <ion-option selected value="">Select Level</ion-option>
+                           <ion-option  *ngFor="let levels of levelArray; let i = index " value="{{i+1}}">Level {{i+1}}</ion-option>
+                           </ion-select>
+                        </ion-item>
+                     </ion-col>
+                  </ion-row>
+               </ion-list>
+               <ion-row btnmob p-lr-0 *ngIf="thread == true">
+                  <ion-col p-lr-0>
+                     <button btn-hide1 ion-button icon-left color="green" fnt-regular float-right  (click)="sendSmail(replyMail.thread[0].subject)" *ngIf="action == 'reply'">
+                     <!-- <ion-icon name="undo"></ion-icon> -->
+                     <ion-icon name="send"></ion-icon>
+                     <span btn-text>  Send  </span>
+                     </button>
+                     <button  btn-hide1 ion-button icon-left color="green" fnt-regular float-right *ngIf="action == 'fwd'" (click)="fwdmail()">
+                     <!-- <ion-icon name="redo"></ion-icon> -->
+                     <ion-icon name="send"></ion-icon>
+                     <span btn-text> Send </span>
+                     </button>
+                     <button btn-hide1 ion-button icon-left color="red" fnt-regular float-right (click)="attachfiles()">
+                        <ion-icon name="attach"></ion-icon>
+                        <span btn-text>   Attach A File  </span>
+                     </button>
+                     <button btn-hide1 ion-button icon-left color="danger" fnt-regular float-right (click)="discardSmail()">
+                        <ion-icon name="trash"></ion-icon>
+                        <span btn-text>      Discard  </span>
+                     </button>
+                     <ng-container *ngIf="action != 'reply'">
+                        <button  ion-button icon-left  fnt-regular float-right  (click)="presentPromptGroup()" *ngIf="testCheckboxResult?.length > 0 && ccCheckboxResult?.length > 0  || testCheckboxResult?.length > 0 && bccCheckboxResult?.length > 0 || ccCheckboxResult?.length > 0 && bccCheckboxResult?.length > 0 || testCheckboxResult?.length > 1 || ccCheckboxResult?.length > 1 || bccCheckboxResult?.length > 1 " >
+                        Create Group 
+                        </button>
+                     </ng-container>
+                  </ion-col>
+               </ion-row>
+               <!--   <ion-row>
+                  <ion-item *ngFor="let file of attacments; let i = index ">
+                     {{file}} 
+                     <ion-icon name="close" (click)="removeFile(i)"></ion-icon>
+                  </ion-item>
+                  </ion-row> --> 
+               <ion-list  height-100 *ngIf="details == '' && items?.length > 0" margin0 text-center style="height:100%">
+                  <div email-msg br-lt-grey padding white-bg>              
+                     Choose a message to read it.
+                  </div>
+               </ion-list>
+            </ion-scroll>
+         </ion-col>
+      </ion-row>
+   </ion-grid>
+<div footer-height></div>
+</ion-content>

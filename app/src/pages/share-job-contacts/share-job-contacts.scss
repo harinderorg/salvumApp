@@ -1,0 +1,29 @@
+page-share-job-contacts {
+[border-contact]
+{
+    border-bottom: 1px solid #dedede;
+	ion-item
+	{
+
+	    ion-checkbox
+		{
+		 margin-right:$value10!important;
+		 }
+
+	@include respond-to(handhelds2)
+	{
+	
+	border:none!important ;
+	
+	ion-checkbox
+	{
+	margin-right:$value10!important;
+	}
+	ion-label
+	{
+	font-size:$value10+2!important;
+	}
+	}
+	}
+}
+}

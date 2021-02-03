@@ -1,0 +1,76 @@
+<ion-content padding has-header>
+<ion-row main-breadcrumb ion-fixed> 
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="goToJobs()"><a>Jobs</a></li>
+      <li (click)="backToTradeDash()"><a>{{active_job_breadcrumb}}</a></li> 
+      <li (click)="dismiss()"><a>RFIs</a></li> 
+      <li class="active">Add RFI</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<!--ion-row>
+<ion-col col-12-->  
+  <ion-list br-lt-grey group-head head-profile>
+  <ion-list-header margin0 color="light" no-border br-btm >
+    Add Manual RFI
+  </ion-list-header> 
+  <ion-item>
+    <ion-label stacked fnt-light fnt-regular>Question*</ion-label>
+    <ion-input type="text" [(ngModel)] = "question"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="filterTradeId == '0'">
+   <ion-label stacked fnt-light fnt-regular>Select Trade*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "tradeId" (ionChange)="changeTrade(tradeId)">
+      <ion-option *ngFor="let trade of alltrades" value="{{trade._id}}">
+      {{trade.trade_name}} ({{trade.trade_task}})</ion-option>   
+    </ion-select>
+  </ion-item>
+
+  <ion-item >
+   <ion-label stacked fnt-light fnt-regular>Select User*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "user_id" >
+      <ion-option *ngFor="let user of allusers" value="{{user.inviteId}}">
+      {{user.email}}</ion-option>   
+    </ion-select>
+  </ion-item>
+
+  <ion-row padd-mob-lr15>
+    <ion-col col-12 col-sm-4 col-xl-4>
+      <ion-item filetype text-center left (click) = "uploadFiles()">
+      <ion-icon name="cloud-upload" color="blue"></ion-icon>
+      <h4 text-center>Drag & Drop Files To Upload From System</h4>
+      </ion-item> 
+    </ion-col>
+    <ion-col col-12 col-sm-4 col-xl-4 >
+      <ion-item filetype text-center left (click)="filemanagerFiles()">
+      <ion-icon name="cloud-upload" color="blue"></ion-icon>
+      <h4>Add Files From File Manager</h4>
+      </ion-item> 
+    </ion-col>
+    <ion-col col-12 col-sm-4 col-xl-4 >
+      <ion-item filetype text-center left (click)="jobFiles()">
+      <ion-icon name="cloud-upload" color="blue"></ion-icon>
+      <h4>Add Files From Jobs</h4>
+      </ion-item> 
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="files !=''">
+    <ion-item border-none *ngFor="let file of files; let indx = index ">
+    {{file.file_name.search('____') >= 0 ? file.file_name.split('____').pop(-1) : file.file_name.split('_--_').pop(-1)}}
+    <button (click) = "removeFile(indx)"><ion-icon name="close"></ion-icon></button>
+    </ion-item>
+  </ion-row>
+
+  <div padding >
+    <button ion-button color="darkblue" block  fnt-regular type="button" (click) = "addManualRfi(question,tradeId,user_id)">Save</button>
+  </div>
+  </ion-list>
+<!--/ion-col>
+</ion-row-->
+<div footer-height></div>
+</ion-content>

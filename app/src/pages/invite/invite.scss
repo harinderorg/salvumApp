@@ -1,0 +1,45 @@
+page-invite 
+{
+	[member_btn]{
+		float:right;
+	}
+	@include respond-to(handhelds2)
+	{ 
+	 [divider-fnt20] 
+	 {
+		 ion-label {
+		  font-size: $value20!important;
+		 }
+     }
+	 [width-invite] , [invite-list]
+	  {
+		  h1 {
+		   font-size: $value15+3!important;
+		  }
+      }
+	}
+}
+[invite-list]
+{
+
+&:hover
+{
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.04);
+}
+ion-card
+{
+	cursor:pointer;
+}
+}
+[import-list]
+{
+
+&:hover
+{
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.04);    opacity: 0.8;
+}
+[width-invite]
+{
+	cursor:pointer;
+}
+}

@@ -1,0 +1,45 @@
+<ion-header modal-white>
+
+  <ion-navbar>
+    <ion-title text-centers>{{main_page_title}}</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<ion-row>
+<ion-col col-12>  
+  <form (ngSubmit)="addFolderEvent(folder_name,tradeId,onLevel)">
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-light fnt-regular>Folder Name</ion-label>
+    <ion-input type="text" [(ngModel)] = "folder_name" name = "folder_name"></ion-input>
+  </ion-item>
+
+  <ion-item p-lr-0 *ngIf="filterTradeId == '0'">
+   <ion-label stacked fnt-light fnt-regular>Select Trade*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "tradeId" name = "tradeId">
+      <ion-option *ngFor="let trade of alltrades" value="{{trade._id}}">
+      {{trade.trade_name}} ({{trade.trade_task}})</ion-option>   
+    </ion-select>
+  </ion-item>
+
+  <ion-item p-lr-0 *ngIf="isShared == '1' && file_path == 'nopath'">
+   <ion-label stacked fnt-light fnt-regular>Select level*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "onLevel" name = "onLevel">
+      <ion-option *ngFor="let level of allowed_levels" value="{{level}}">
+      Level {{level}}</ion-option>   
+    </ion-select>
+  </ion-item>
+
+  <div padding p-b-0 p-lr-0>
+    <button ion-button color="darkblue" block  fnt-regular type="submit">Save</button>
+  </div>
+  </form>
+</ion-col>
+</ion-row>
+</ion-content>

@@ -1,0 +1,95 @@
+<ion-content padding lightgrey (window:resize)="caclHeight()" has-header>
+<div ion-fixed id="calc_height_bidjobs{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb > 
+	<ion-col>
+	  <ol class="breadcrumb">
+	    <li (click)="root()"><a>Home</a></li>
+	    <li class="active">Bidding</li>
+	  </ol>
+	</ion-col>
+</ion-row>
+<ion-grid no-padding bidjobtabs> 
+<ion-row>
+  <ion-col><ion-item (click)="getInvitations()"  border-none br-lt-grey  text-center class="tab1" [ngClass]="pageType == '1' ? 'bg-blue' : ''">
+  
+
+          <ion-icon fnt14 m-r-5 visible-xs><img class=" inviteicon " src="assets/img/bid_icon_white.png"></ion-icon>
+    <span hidden-xs>Invitations</span>
+  
+  
+  </ion-item></ion-col>
+  <ion-col><ion-item (click)="getAwared()" text-center  border-none br-lt-grey  class="tab2" [ngClass]="pageType == '2' ? 'bg-blue' : ''">
+        <ion-icon class="ion-ios-trophy-outline" fnt14 m-r-5 visible-xs></ion-icon>
+    <span hidden-xs>Awarded</span>
+  
+  </ion-item></ion-col>
+</ion-row>
+</ion-grid>
+<ion-searchbar searchmob *ngIf="pageType=='1'" [(ngModel)]="pre_search" (ionInput)="searchInvitations($event)" p-lr-0></ion-searchbar>
+<ion-searchbar searchmob *ngIf="pageType!='1'" [(ngModel)]="post_search" (ionInput)="searchAwarded($event)" p-lr-0></ion-searchbar>
+</div> 
+<div clearfix id="fixed_height_bidjobs{{timestamp}}"></div>
+<ng-container *ngIf="pageType=='1'">
+<ion-list  br-lt-grey margin0 bidjobs>
+<ion-item-group *ngFor="let job of all_invitations">
+    <ion-item-sliding>
+	    <ion-item> <h2 margintop0 fnt-bold>{{job.job_name}}</h2>
+		<p fnt-regular>
+		PO/Job No ({{job.job_number}}) - {{job.date_created | date : 'medium'}}
+		<!-- Invited {{job.date_created | timeAgo}} -->
+		</p>
+		 <button *ngIf="isBrowser == 'true'" ion-button clear item-end margin0 (click)="openBiddetailPage(job._id,job.bid_status)"><ion-icon name="eye" fnt20></ion-icon></button>
+		 <button *ngIf="isBrowser == 'true'" ion-button clear item-end margin0 (click)="deleteBids(job._id)"><ion-icon name="trash" fnt20></ion-icon></button>
+	     <!-- <button ion-button clear item-end margin0 ><ion-icon name="trash" fnt20></ion-icon></button> -->
+	    <h5 fnt-regular style="">{{job.trade_task}}</h5>
+		   <ion-badge color="light"><i class="{{job.trade_icon}}"></i> Trade  : {{job.trade_name}}</ion-badge> 
+		   <ion-badge color="light"><ion-icon name="time"></ion-icon> Posted By :  {{job.posted_by}}</ion-badge> 
+		</ion-item>
+		<ion-item-options side="right" *ngIf="isBrowser == 'false'">
+	      <!-- <button ion-button color="danger"><ion-icon name="trash"></ion-icon> Delete</button> -->
+	      <button ion-button color="secondary" (click)="openBiddetailPage(job._id,job.bid_status)"><ion-icon name="eye"></ion-icon> View</button>
+	      <button ion-button color="danger" (click)="deleteBids(job._id)"><ion-icon name="trash"></ion-icon> Delete</button>
+	    </ion-item-options>
+	</ion-item-sliding>	
+</ion-item-group> 
+
+<ion-item-group *ngIf="all_invitations == ''">
+<ion-item>No jobs found.</ion-item>
+</ion-item-group>
+
+</ion-list> 
+</ng-container>
+
+<ng-container *ngIf="pageType!='1'">
+
+<ion-list  br-lt-grey margin0 bidjobs>
+<ion-item-group *ngFor="let job of all_awarded">
+    <ion-item-sliding>
+	    <ion-item> <h2 margintop0 fnt-bold>{{job.job_name}}</h2>
+		<p fnt-regular>
+		PO/Job No ({{job.job_number}}) - {{job.date_created | date : 'medium'}}
+		<!-- Invited {{job.date_created | timeAgo}} -->
+		</p>
+		 <button *ngIf="isBrowser == 'true'" ion-button clear item-end margin0 (click)="openBiddetailPage(job._id,job.bid_status)"><ion-icon name="eye" fnt20></ion-icon></button>
+		 <button *ngIf="isBrowser == 'true'" ion-button clear item-end margin0 (click)="deleteBids(job._id)"><ion-icon name="trash" fnt20></ion-icon></button>
+	     <!-- <button ion-button clear item-end margin0 ><ion-icon name="trash" fnt20></ion-icon></button> -->
+	    <h5 fnt-regular style="">{{job.trade_task}}</h5>
+		   <ion-badge color="light"><i class="{{job.trade_icon}}"></i> Trade  : {{job.trade_name}}</ion-badge> 
+		   <ion-badge color="light"><ion-icon name="time"></ion-icon> Posted By :  {{job.posted_by}}</ion-badge> 
+		</ion-item>
+		<ion-item-options side="right" *ngIf="isBrowser == 'false'">
+	      <!-- <button ion-button color="danger"><ion-icon name="trash"></ion-icon> Delete</button> -->
+	      <button ion-button color="secondary" (click)="openBiddetailPage(job._id,job.bid_status)"><ion-icon name="eye"></ion-icon> View</button>
+	      <button ion-button color="danger" (click)="deleteBids(job._id)"><ion-icon name="trash"></ion-icon> Delete</button>
+	    </ion-item-options>
+	</ion-item-sliding>	
+</ion-item-group> 
+
+<ion-item-group *ngIf="all_awarded == ''">
+<ion-item>No jobs found.</ion-item>
+</ion-item-group>
+
+</ion-list> 
+</ng-container>
+<div footer-height></div>
+</ion-content>

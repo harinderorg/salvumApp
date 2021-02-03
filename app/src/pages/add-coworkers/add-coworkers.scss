@@ -1,0 +1,45 @@
+page-add-coworkers {
+ [br-b-btm]
+ {
+	 border-bottom:1px solid $br-lt-grey;
+ }[select-contact]
+	{
+		ion-item
+		{
+			ion-checkbox
+			{
+
+                 margin-right:-1+$value10!important;
+ 
+			}
+		}
+	}	ion-item
+	{  
+		.item-inner
+		{
+	  
+	ion-label
+	{
+		
+		@include respond-to(handhelds2)
+		{
+			font-size:$value10+2!important
+		}
+	}
+		}
+		ion-radio
+		{
+			margin-right:$value10!important;
+		}
+	}
+	@include respond-to(handhelds2)
+	{
+		ion-grid
+		{
+		   ion-select
+		   {
+		         min-width: 100%;
+		   }
+		}
+	}
+}

@@ -1,0 +1,163 @@
+<ion-content padding lightgrey has-header>
+<div ion-fixed style="width: 98%;background: #e6e6e6;">
+<ion-row main-breadcrumb>
+   <ion-col>
+      <ol class="breadcrumb">
+         <li (click)="root()"><a>Home</a></li>
+         <li class="active">License</li>
+      </ol>
+   </ion-col>
+</ion-row>
+<button ion-button item-end fnt-normal small color="" m-l-5  float-right  (click)="openAddmorelicensePage()">Buy License </button>
+<button ion-button item-end fnt-normal small (click)="updateLicense()" m-l-5 float-right>Add License Key</button>
+</div>
+<div breadcrumb-tabs-height></div>
+   <div clearboth></div>
+
+   <h5 m-t-10 fnt-bold m-l-5  m-t-0 m-b-0>My Licenses <button *ngIf="licenses != '' && showAssigned == '1'" mar-minust-5   ion-button item-end fnt-normal float-right small (click)="assignLicenseToUsers('1')" m-l-5 >Assign</button></h5>
+      <div clearboth></div>
+   <ion-list m-t-0 my-license>
+      <ion-row>  
+         <ion-col col-12 col-md-6 col-lg-6  col-xl-6 license *ngFor="let license of licenses; let i = index ">
+            <ion-item-sliding list-hover class="{{license.usedBy.indexOf(loginId) >= 0 ? 'active_license' : ''}}">
+               <ion-item   border-none wallet-main br-lt-grey>
+                  <ion-checkbox *ngIf="currentDate < license.status && license.usedBy.indexOf(loginId) == -1" m-r-15 color="blue" [(ngModel)]="license[bb]" (click)="listCheckbox(license[bb], license)"> 1</ion-checkbox> 
+                  <ion-thumbnail item-start icon-ionic >
+                     <ion-icon name="key" text-center></ion-icon>
+                  </ion-thumbnail>
+                  <ion-label>
+                  
+                  <h2  fnt-bold>License Key : {{license.license_number}}</h2>
+                  <p fnt-light m-t-5><span start-date>Start Date : {{license.start_date}}   ,   </span> <span end-date>End Date : {{license.expiry_date}}  {{parseDate(license, license.expiry_date)}}   </span></p>
+                  <h5 fnt-regular m-t-5 *ngIf="license.usedBy != ''">
+                     Used By : 
+                     <ion-fab class="center_one" [style.z-index]="999-i">
+                         <button ion-fab color="light" mini>
+                        <ion-icon name="people"></ion-icon>
+                        </button>
+                        <ion-fab-list group-dropdown side="bottom"> 
+                           <ion-item *ngFor="let activeUser of license.user_name; let indx = index ">
+                           <span>{{activeUser}}</span>
+                           <span close-drop (click)="removeAssignedLicense(license._id,license.active_ids[indx])"><ion-icon name="close"></ion-icon></span>
+                           </ion-item>   
+                         </ion-fab-list>  
+                     </ion-fab>
+                  </h5>
+                  <h5 fnt-regular m-t-5 *ngIf="license.company_name != ''">Company : {{license.company_name}} ({{license.corporate}})</h5>
+                  <ion-badge m-t-10 fnt-normal >{{currentDate < license.status ? 'Active' : 'Expired'}}</ion-badge>
+               
+                  <ion-fab class="side_one" right top *ngIf="license.groupUsers != ''" [style.z-index]="999-i">
+                      <button ion-fab color="light" mini>
+                     <ion-icon name="people"></ion-icon>
+                     </button>
+                     <ion-fab-list group-dropdown side="bottom" *ngIf="license.groupUsers != ''"> 
+                        <ion-item *ngFor="let sharedUser of license.groupUsers; let indx = index ">
+                        <span [innerHTML]="sharedUser"></span>
+                        <span close-drop (click)="removeUser(license._id,license.shared_ids[indx])"><ion-icon name="close"></ion-icon></span>
+
+                        </ion-item>  
+                        <ion-item *ngIf="license.groupUsers == ''" border-none br-lt-grey>
+                        Not Assigned Yet.
+                        </ion-item> 
+                      </ion-fab-list>  
+                  </ion-fab>
+                  </ion-label>
+				     <button *ngIf="isBrowser == 'true'" (click)="copyKey(license.license_number)" ion-button  btn-hides item-end fnt-normal  padding0 ion-button clear item-end margin0 button-none title="Copy Key"> 
+				                       <ion-icon class="ion-ios-copy-outline" fnt20></ion-icon>
+				<!--  Copy Key -->
+				 
+				  </button>
+                  <!-- <button *ngIf="license.usedBy != '' && license.usedBy.indexOf(loginId) >= 0 && isBrowser == 'true'"  btn-hides (click) = "removeAssignedLicense(license._id,license.usedBy)" ion-button clear item-end margin0 button-none title="Delete">
+                     <ion-icon name="trash" fnt20></ion-icon>
+                  </button>
+
+                  <button *ngIf="license.usedBy.indexOf(loginId) == -1 && license.usedBy != '' && isBrowser == 'true'"  btn-hides (click) = "deActivateLicense(license._id)" ion-button clear item-end margin0 button-none title="Unassign">
+                     <ion-icon name="trash" fnt20></ion-icon>
+                  </button> -->
+                  
+               </ion-item>
+               <ion-item-options side="right" *ngIf="isBrowser == 'false'">
+                  <button (click)="copyKey(license.license_number)" ion-button color="green"> Copy Key</button>
+                  <!-- <button *ngIf="license.usedBy != '' && license.usedBy != loginId" (click) = "removeAssignedLicense(license._id,license.usedBy)" ion-button color="blue"> Delete</button>
+
+                  <button *ngIf="license.usedBy.indexOf(loginId) >= 0" (click) = "deActivateLicense(license._id)" ion-button color="blue"> Unassign</button> -->
+               </ion-item-options>
+            </ion-item-sliding>
+         </ion-col>
+         <ion-col *ngIf="licenses == ''">
+            <ion-item  border-none br-lt-grey>No Licenses Found.</ion-item>
+         </ion-col>
+      </ion-row>
+   </ion-list>
+   <h5 fnt-bold m-l-5 m-t-0 m-b-0>Shared By Other <button *ngIf="shared_licenses != '' && showAssigned_shared == '1'" mar-minust-5 float-right  ion-button item-end fnt-normal small (click)="assignLicenseToUsers('0')" m-l-5 >Assign</button></h5>
+   <ion-list m-t-10  my-license>
+      <ion-row class="row ">
+         <ion-col col-12 col-md-6 col-lg-6  col-xl-6 license *ngFor="let license of shared_licenses; let i = index " >
+            <ion-item-sliding list-hover class="{{license.usedBy.indexOf(loginId) >= 0 ? 'active_license' : ''}}">
+               <ion-item   border-none wallet-main br-lt-grey>
+                  <ion-checkbox *ngIf="currentDate < license.status && license.privileges.indexOf(loginId) >= 0 && license.usedBy.indexOf(loginId) == -1" m-r-15 color="blue" [(ngModel)]="license[bb]" (click)="listCheckbox1(license[bb], license)"> 1</ion-checkbox> 
+                  <ion-thumbnail item-start icon-ionic >
+                     <ion-icon name="{{license.privileges.indexOf(loginId) >= 0 ? 'person' : 'share'}}" text-center></ion-icon>
+                  </ion-thumbnail>
+                  <ion-label>
+                  
+                  <h2 fnt-bold>License Key : {{license.license_number}}</h2>
+                  <p fnt-light m-t-5><span start-date>Start Date : {{license.start_date}}  ,  </span>  <span end-date>End Date : {{license.expiry_date}}  {{parseDate(license, license.expiry_date)}}   </span></p>
+                  <h5 fnt-regular m-t-5 *ngIf="license.usedBy != '' &&  license.privileges.indexOf(loginId) >= 0">
+                     Used by : 
+                     <ion-fab class="center_one" [style.z-index]="999-i">
+                         <button ion-fab color="light" mini>
+                        <ion-icon name="people"></ion-icon>
+                        </button>
+                        <ion-fab-list group-dropdown side="bottom"> 
+                           <ion-item *ngFor="let activeUser of license.user_name; let indx = index ">
+                           <span>{{activeUser}}</span>
+                           <span close-drop (click)="removeAssignedLicense(license._id,license.active_ids[indx])"><ion-icon name="close"></ion-icon></span>
+                           </ion-item>   
+                         </ion-fab-list>  
+                     </ion-fab>
+                  </h5>
+                  <h5 fnt-regular m-t-5>
+                     Shared By : 
+                     <ion-badge color="light" fnt-normal>{{license.by_user}}</ion-badge>
+                  </h5>
+                  <h5 fnt-regular m-t-5 *ngIf="license.company_name != ''">Company : {{license.company_name}} ({{license.corporate}})</h5>
+                  <ion-badge m-t-10 fnt-normal >{{currentDate < license.status ? 'Active' : 'Expired'}}</ion-badge>
+           
+                  <ion-fab class="side_one" right top *ngIf="license.privileges.indexOf(loginId) >= 0 && license.groupUsers != ''" [style.z-index]="999-i">
+                      <button ion-fab color="light" mini>
+                     <ion-icon name="people"></ion-icon>
+                     </button>
+                     <ion-fab-list   group-dropdown  side="bottom"> 
+                        <ion-item *ngFor="let sharedUser of license.groupUsers; let indx = index ">
+                        <span [innerHTML]="sharedUser"></span>
+                        <span close-drop title="Remove" (click)="removeUser(license._id,license.shared_ids[indx])"><ion-icon name="close"></ion-icon></span>
+                        </ion-item>  
+                        <ion-item *ngIf="license.groupUsers == ''" border-none br-lt-grey>
+                        Not Assigned Yet.
+                        </ion-item> 
+                      </ion-fab-list>  
+                  </ion-fab> 
+                  </ion-label> 
+				         <button *ngIf="isBrowser == 'true'" (click)="copyKey(license.license_number)"  ion-button  btn-hides item-end fnt-normal  padding0 ion-button clear item-end margin0 button-none> 
+				          <ion-icon class="ion-ios-copy-outline" fnt20></ion-icon>
+				  
+				  </button>
+              <!-- <button *ngIf="license.usedBy != '' && license.privileges.indexOf(loginId) >= 0 && license.usedBy != loginId && isBrowser == 'true'"  btn-hides (click) = "removeAssignedLicense(license._id,license.usedBy)" ion-button clear item-end margin0 button-none>
+                     <ion-icon name="trash" fnt20></ion-icon>
+                  </button> -->
+               </ion-item>
+               <ion-item-options side="right" *ngIf="isBrowser == 'false'">
+                  <button (click)="copyKey(license.license_number)" ion-button color="green"> Copy Key</button>
+                  <!-- <button *ngIf="license.usedBy != '' && license.privileges.indexOf(loginId) >= 0 && license.usedBy != loginId" (click) = "removeAssignedLicense(license._id,license.usedBy)" ion-button color="blue"> Delete</button> -->
+               </ion-item-options>
+            </ion-item-sliding>
+         </ion-col>
+         <ion-col *ngIf="shared_licenses == ''">
+            <ion-item border-none br-lt-grey>No Shared Licenses Found.</ion-item>
+         </ion-col>
+      </ion-row>
+   </ion-list>
+
+<div footer-height></div>
+</ion-content>

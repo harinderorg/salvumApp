@@ -1,0 +1,257 @@
+page-addtransmittal 
+{
+@include respond-to(handhelds2)
+	{   
+	   ion-select , ion-datetime , ion-textarea , ion-input
+	   {
+	   font-size:$value12;
+	   }
+	}
+[transdrop]
+{
+.item-inner
+{
+border:none!important;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 15px;
+	margin:10px 0px;
+	@include respond-to(handhelds2)
+	{    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.07);
+    border: 1px solid #f4f4f4;
+	   
+	}
+	ion-label
+	{font-size:18px!important;
+	font-weight:700;
+	color:#000;
+	position:relative;
+	z-index:1;
+	@include respond-to(handhelds2)
+	{   
+	    font-size: 14px !important;
+       margin: 0;
+	}
+	&:after {
+    left: 0;
+    content: '';
+    height: 4px;
+    background: $darkblue2;
+    width: 45px;
+    position: absolute;
+    bottom: 2px;
+    z-index: -1;
+}
+	
+	}
+	ion-select
+	{
+	   @include respond-to(handhelds2)
+		{
+			border-bottom: 1px solid #dedede;
+		}
+	}
+}
+}
+	[signature]
+	{   padding-bottom:$value5;
+		background: $whitecolor;
+		ion-item 
+		{
+		.item-inner {
+          border: none!important;
+		  ion-label{
+			  
+    color: #999;
+		  }
+         }
+       }
+	}
+	[actionitems]
+	{   background: $whitecolor;
+	 ion-item
+	   {
+	   ion-label
+	   {
+	     @include respond-to(handhelds2)
+		 {
+		   font-size:$value12!important;
+		 }
+	   }
+	   
+	   }
+		ion-checkbox
+				{
+					margin-right:10px!important;
+				}
+				[row-action]
+				{
+					margin: 0px 12px;
+                    border-bottom: 1px solid #dedede;
+					@include respond-to(handhelds2)
+					{   border:none;
+						ion-item
+						{ 
+						  margin-bottom:$value0;  
+						  ion-label
+						  {
+							font-size:$value12!important;
+						  }
+						}
+					}
+				}
+		  [headinner]
+			{
+				color: #999;
+				margin-left: 16px;
+				margin-bottom: 0px;
+				display: block;
+				margin-top: 0px;
+				padding-top: 16px;
+			}
+	}
+	ion-list
+	{
+		&[white-bg]
+		{
+		background:$whitecolor;	
+		}
+		ion-item 
+		{   
+			padding-right:16px!important;
+			&:last-child
+			{
+			margin-bottom: $value15;
+			.item-inner
+			{
+			     border-bottom: 1px solid #dedede!important;
+			}&[filetype]
+			   {  margin:$value0;
+				 .item-inner
+				 {
+				 border:none!important; 
+				 }
+			   }
+			}
+		}
+		&[radio-group]
+		{  background:$whitecolor;
+			[headinner]
+			{
+				color: #999;
+				margin-left: 16px;
+				margin-bottom: 0px;
+				display: block;
+				margin-top: 0px;
+				padding-top: 16px;
+			}
+		}
+		[radioinner] {
+    display: flex;
+	margin: 0px 16px;
+    border-bottom: 1px solid #dedede;
+	ion-item
+	{width:auto;
+	padding-left:0px!important;
+		.item-inner
+		{
+			border:none!important
+		}
+	}
+}
+	}
+	[zind]{
+        z-index: 9;
+    }
+    [mrgnall]{
+        margin:10px;
+    }
+    [act_itm_btn]{
+        right: 33px !important;
+    }
+    
+.submittal {
+    background: $whitecolor;
+    padding: $value10;
+	
+	.submittalinner {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.14);
+    border-radius: $value5;
+    padding: $value15;
+    text-align: center;
+	@include respond-to(handhelds2)
+	{ box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.03);
+	    border: 1px solid #f4f4f4;
+	}
+	button
+	{
+	position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    font-size: 16px;
+	}
+	.icondoc
+	{
+	    width: $value50;
+		height: $value50;
+		background: $darkblue2;
+		text-align: center;
+		line-height: $value50;
+		font-size: $value30;
+		color: $whitecolor;
+		border-radius: 50%;
+	}
+	h2 {
+    font-size: 16px;
+	text-transform: capitalize;
+    margin: 12px 0px 5px;
+}
+p
+{
+     font-size: 12px;
+    margin: $value0;
+	min-height: 38px;
+}
+}
+}
+}
+.alert-radio-label {
+    white-space: normal!important;
+}
+  signature-pad canvas {
+    border: none!important;
+    border-bottom: 1px solid #dedede!important;
+
+ 	@include  respond-to(handhelds2)
+		{
+         max-width: 300px; 
+		 min-width:300px
+		} 	
+		@include  respond-to(handhelds1)
+		{
+         max-width: 265px!important; 
+		 min-width:265px!important; 
+		}
+}
+   @include  respond-to(handhelds2)
+   {
+	   [mar-mob-b0]
+		{
+		 margin-bottom:$value0!important;
+		} 	
+		ion-list
+		{
+			&[mar-mob-t15]
+			{
+			 margin-top:$value15!important;
+			}
+		}
+		button
+		{
+		  &[ion-button]
+		  {
+		    box-shadow:none;
+		  }
+		}
+   }

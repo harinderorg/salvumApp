@@ -1,0 +1,42 @@
+<ion-item *ngFor="let n of nodes; let i = index " class="divitem">
+    <div ion-item detail-none no-lines  
+            [ngClass]="{active: isSelected(n)}" *ngIf="n.type == 'directory'" icon-left  id="0{{i}}">
+            <ion-row w-100 >
+              <ion-col col-9>
+      <ion-grid tree-view>
+        <ion-row  (click)="clickNode(n)">
+          <ion-col col-2>
+            <span item-left *ngIf="n.children" >
+              <ion-icon [color]="isSelected(n) ? 'primary' : 'gray'" [name]="isSelected(n) ? 'ios-arrow-down' : 'ios-arrow-forward'"></ion-icon>
+            </span> 
+          </ion-col>
+          <ion-col col-2>
+              <ion-icon name="folder" color="dark"></ion-icon>              
+          </ion-col>
+          <ion-col col-8 id="00{{i}}">
+              {{n.name}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-col >
+            <ion-col  (click)="editFolder(n.path, i)" col-3 edit-folder>  <ion-icon name="md-create" color="blue"></ion-icon> 
+          </ion-col>
+          </ion-row>                        
+    </div>
+    <div ion-item detail-none no-lines id="{{i}}" style="display:none;">
+       <ion-row  >
+          
+       <ion-col col-10 >
+            <input type="text" w-100 [(ngModel)]="folderName">
+          </ion-col>
+           <ion-col col-2 >
+            <ion-icon name="checkmark" color="green" (click)="renameFolder(i)"></ion-icon>  <ion-icon  color="danger" name="close" (click)="cancelFolder(i)"></ion-icon>
+
+          </ion-col>
+        </ion-row>
+    </div>
+    
+
+    <smail-static-node  [nodes]="static"  *ngIf="static" [hidden]="!isSelected(n)" ></smail-static-node>
+</ion-item>  
+

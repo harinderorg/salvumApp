@@ -1,0 +1,61 @@
+page-editgrp {
+[list-group]
+{
+	ion-list
+	{
+	
+	
+		.label {
+			@include respond-to(handhelds2)
+			{
+			 font-size: $value10+2!important;	
+				
+			}
+   
+    }
+		
+		
+		
+	}
+.white-box {
+    padding:$value0 $value15 $value15;
+}
+[contact-top]
+{
+	       @include respond-to(handhelds2)
+			{
+			  padding-left: 2px;	
+			}
+    margin-top: $value10;
+    padding-bottom: $value10;
+    display: inline-block;
+    width: 100%;
+    padding-left: $value15;
+    border-bottom: 1px solid #ddd;
+	.check
+	{
+	margin-left:$value5;
+	}
+
+
+} 
+
+    ion-list-header
+	{
+	    border-bottom: 1px solid #ddd;
+	}
+	ion-item-group
+	{
+	ion-item
+	{
+	    border-bottom: 1px solid #ddd;
+		cursor:pointer;
+		ion-label
+		{
+			font-family:$font-regular
+			
+		}
+	}
+	}
+}
+}

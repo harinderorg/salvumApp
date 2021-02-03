@@ -1,0 +1,26 @@
+
+<ion-content>
+ <ion-list margin0 *ngIf="notification?.length > 0">
+    <ion-list-header br-btm margin0>You have {{notification.length}} new messages</ion-list-header>
+	    <ion-item *ngFor="let notice of notification">
+	     	<ion-avatar item-start>
+	     	 	<img src="assets/img/m7.png" *ngIf="notice.image == ''">
+	     	 	<img src="{{notice.image}}" *ngIf="notice.image != ''">
+	    	</ion-avatar>
+		    <h4 fnt-bold>{{notice.receiverName}}</h4>
+			<h6 fnt-regular fnt12 *ngIf="notice.type == 0">You get smail from {{notice.senderName}}</h6>
+			<h6 fnt-regular fnt12 *ngIf="notice.type == 1">You get contact request from {{notice.senderName}}</h6>
+
+		    <p fnt-regular fnt12>{{notice.created_on|timeAgo}}</p>
+	  	</ion-item>
+	   
+	   <ion-list-header br-btm margin0 (click)="seeAllNotifications()">
+		   	<button bg-transparent>
+		   		See All Notifications 
+		   	</button>
+	   </ion-list-header>
+   </ion-list>
+   <ion-list *ngIf="notification?.length == 0 && notification != ''">
+   	No Notification Yet!
+   </ion-list>
+</ion-content>

@@ -1,0 +1,45 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Companies</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+<ion-row>
+<p *ngIf="companies != ''">Add/remove companies under selected email and set job alerts for that company email.</p>
+	<ion-col col-12>
+	  <ng-container *ngFor="let company of companies">
+	     <ion-grid no-padding>
+		   <ion-row br-b-btm>
+		    <ion-col col-xl-7 col-lg-7 col-md-6 col-6>
+		      <ion-item p-lr-0  border-none>
+		        <ion-label>{{company.company_name}}</ion-label>
+		        <ion-checkbox [checked]="selected_comps.indexOf(company._id) >= 0" (ionChange)="insertContactToArray($event,company._id,0)" ></ion-checkbox>
+		      </ion-item>
+		    </ion-col>
+		    <ion-col col-xl-5 col-lg-5 col-md-6 col-6 >
+		      <ion-list margin0  style="display: inline-flex;" white-bg radio-group >
+		      <ion-item p-lr-0 border-none>
+		           <ion-checkbox [checked]="selected_alerts.indexOf(company._id) >= 0" [disabled]="selected_comps.indexOf(company._id) == -1" (ionChange)="insertContactToArray($event,company._id,1)" item-left value="1" ></ion-checkbox>
+				   <ion-label>Job alerts</ion-label>
+		        </ion-item> 
+		     </ion-list>
+		   	</ion-col>
+		    </ion-row>
+		  </ion-grid>
+	  </ng-container>
+
+	  <ng-container *ngIf="companies == ''">
+	  <ion-item>No companies found.</ion-item>
+	  </ng-container>
+
+	  <div padding p-b-0 p-lr-0 *ngIf="companies != ''">
+	    <button (click)="save()" ion-button color="darkblue" block  fnt-regular type="button">Save</button>
+	  </div>
+	</ion-col>
+</ion-row>
+</ion-content>

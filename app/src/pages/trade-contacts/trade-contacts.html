@@ -1,0 +1,175 @@
+<div (click)="closeDropDown()" class="shadow" style="display: none;"></div>
+<ion-content padding lightgrey manage-job has-header (window:resize)="caclHeight()">
+<div ion-fixed id="calc_height_cont{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb> 
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="goToJobs()"><a>Jobs</a></li>
+      <li (click)="backToPage()"><a>{{active_job_breadcrumb}}</a></li> 
+      <li class="active">Contacts</li>
+    </ol>
+  </ion-col>
+ </ion-row>
+<ion-row class="breadcrumbs-row" *ngIf="all_contacts != ''">
+  <ion-col pos-right col-12 col-md-3 col-sm-3>
+    <ng2-dropdown (onShow)="onDropdownShow()">
+      <ng2-dropdown-button [showCaret]="true">
+          Filter <div class="filter_icons" (click)="$event.stopPropagation()">
+        <a [ngClass]="sort_icon == true ? 'active' : ''" (click)="sortTrades('a')">ABC</a><img *ngIf="sort_icon == true" width="12" height="12" src="assets/img/{{order_default_p == false ? 'down' : 'up'}}.png">&nbsp;&nbsp;&nbsp;
+        <a [ngClass]="sort_icon == false ? 'active' : ''" (click)="sortTrades('n')">123</a><img *ngIf="sort_icon == false" width="12" height="12" src="assets/img/{{order_advanced_p == false ? 'down' : 'up'}}.png">
+      </div>
+      </ng2-dropdown-button>
+      <ng2-dropdown-menu dropmenu> 
+      
+      <div padding>
+        <ion-segment [(ngModel)]="nav_filter" class="filter_list">
+          <ion-segment-button value="default">
+            Default <ion-icon cls (click)="cancelAllFilters('d')" name="close"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="advanced">
+            Advanced <ion-icon cls (click)="cancelAllFilters('a')" name="close"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <div [ngSwitch]="nav_filter" class="filter_list">
+        <ion-list *ngSwitchCase="'default'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of tradeTypes | orderBy: order_default : order_default_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trade_names.indexOf(trade.trade_name) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>All {{(trade.trade_name != undefined && trade.trade_name != '' && trade.trade_name != null) ? trade.trade_name : 'unassigned'}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'advanced'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of trades | orderBy: order_advanced : order_advanced_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trades.indexOf(trade.tradeId) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>{{(trade.trade_task != undefined && trade.trade_task != '' && trade.trade_task != null) ?  (trade.trade_task?.length > 13 ? trade.trade_task.substr(0,13)+'...' : trade.trade_task) : 'unassigned'}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+      </div>
+      </ng2-dropdown-menu>
+    </ng2-dropdown>
+    </ion-col>
+    <ion-col col-12 col-sm-9 col-md-9>
+    <div class="top-scorll-list">
+    <div class="self-control">
+      <ion-icon lefticon name="ios-arrow-dropleft-circle" (click)="scroll('left')"></ion-icon>
+      <ion-icon  righticon name="ios-arrow-dropright-circle" (click)="scroll('right')"></ion-icon>
+    </div>
+    <div class="drop-scroll">   
+        <button title="{{trade.trade_task}}" *ngFor="let trade of filter_list; let i = index" class="trade-btn">
+          <i class="{{trade.trade_icon}}"></i> {{trade.trade_task?.length > 25 ? trade.trade_task.substr(0,25)+'...' : trade.trade_task}}
+          <ion-icon (click)="cancelFilter(trade,i)" name="close"></ion-icon>
+        </button>    
+    </div>
+    </div>
+  </ion-col> 
+</ion-row> 
+    <!-- <trade-breadcrumbs (click) = "clickTrade()"></trade-breadcrumbs> -->
+      <!-- <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar> -->
+      <div col-12 button-hide margin-top-30>
+         <button ion-button color="blue" fnt-regular m-b-10 fnt-normal left (click)="addContactInvites($event)">
+            <ion-icon name="open" m-r-5></ion-icon>
+            <span class="hidden-xs">Import from Contacts</span>
+         </button>
+         <button ion-button color="blue" fnt-regular m-b-10 fnt-normal left (click)="addCoworkers()">
+            <ion-icon name="person" m-r-5></ion-icon>
+            <span class="hidden-xs">Add Coworkers</span>
+         </button>
+         <button ion-button color="blue" fnt-regular m-b-10 fnt-normal left (click)="addContactManually()">
+            <ion-icon name="add" m-r-5></ion-icon>
+            <span class="hidden-xs">Add Contact Manually</span>
+         </button>
+      </div>
+</div>
+<div clearfix id="fixed_height_cont{{timestamp}}"></div>
+   <ion-row > 
+   <ion-col>
+	  <div class="clearfix"></div>
+      <ion-col col-xl-12 col-sm-12 col-12 paddingtop0 p-lr-0 clearboth>
+         <ion-list margin0>
+		 <ion-row>
+           <ion-col col-12 col-md-6 col-lg-6 col-xl-4 *ngFor="let contact of sorted_contacts; let indx = index">
+           <!-- | orderBy: order_contacts : true  : true -->
+              <ion-item-sliding style="overflow: visible;" border-none #item br-lt-grey list-hover>
+                 <ion-item style="overflow: visible; contain:initial"  manage-job>
+                    <ion-avatar *ngIf="contact?.trades?.length > 1" item-start icon-ionic title="Multiple">
+                       
+                        <ion-fab float-left [style.z-index]="999-indx" >
+                          <ion-icon ion-fab name="menu" text-center></ion-icon>
+                        <ion-fab-list>
+                        <div question *ngFor="let trade of contact?.trades">
+                         <span float-left>
+                         <i class="{{trade.trade_icon}}"></i>
+                           <span trade_name_span>{{trade.trade_name}} </span>
+                         </span>
+                        </div>
+                        </ion-fab-list>
+                       </ion-fab>
+                    </ion-avatar>
+                    <ion-avatar *ngIf="contact?.trades?.length == 1" item-start icon-ionic title="{{contact?.trades[0].trade_name}}">
+                      <i class="{{contact?.trades[0].trade_icon}}"></i>
+                    </ion-avatar>
+                    <h2 fnt-bold fnt14>
+                       {{contact.invite_name}}
+                       <ion-icon title="Updated" class="alert_indicator" *ngIf="contact.isUpdated.indexOf('name') >= 0" name="alert"></ion-icon>
+                       <ion-badge *ngIf="contact.isCoworker != 1" color="blue" m-t-5 font-12 fnt-normal text-left > 
+                       <!-- {{contact.status == '0' ? 'Pending' : 'Invited'}} -->
+                       {{contact.privilege == '0' ? 'Engineer' : (contact.privilege == '1' ? 'Architect' : (contact.privilege == '3' ? 'Project Manager' : 'Other'))}}
+                       </ion-badge>
+                       <ion-badge *ngIf="contact.isCoworker == 1" color="blue" m-t-5 font-12 fnt-normal text-left > 
+                       {{contact.privilege == '1' ? 'Admin' : (contact.privilege == '2' ? 'Manager' : (contact.privilege == '3' ? 'Project Manager' : (contact.privilege == '4' ? 'Secretary' : 'Linked')))}}
+                       </ion-badge>
+                    </h2>
+                    <h3 fnt-regular m-t-5>
+                       <ion-badge color="light"  font-12  fnt-regular text-left> {{contact.invite_email}}</ion-badge>     
+                       <ion-icon title="Updated" class="alert_indicator" *ngIf="contact.isUpdated.indexOf('email') >= 0" name="alert"></ion-icon>             
+                    </h3>
+					             <p fnt-regular font-12 m-t-5>{{contact.invite_company}}</p>
+                       <p fnt-regular font-12>{{contact.invite_phone}}
+                       <ion-icon title="Updated" class="alert_indicator" *ngIf="contact.isUpdated.indexOf('phone') >= 0" name="alert"></ion-icon>
+                       </p>
+                       <p fnt-regular font-12>{{contact.invite_title}}</p>
+                    <ion-note font-12 fnt-light m-t-5 item-end  fnt-regular>{{contact.date_created | date:'short'}}</ion-note>
+                    <button btn-hides *ngIf="isBrowser == 'true'" ion-button clear item-end margin0 button-none (click) = "sendSmail(contact)">
+                       <ion-icon name="mail" fnt20></ion-icon>
+                    </button>
+                    <button btn-hides *ngIf="isBrowser == 'true'" ion-button clear item-end margin0 button-none (click) = "editContact(contact)">
+                       <ion-icon name="create" fnt20></ion-icon>
+                    </button>
+                    <button btn-hides *ngIf="isBrowser == 'true'" ion-button clear item-end margin0 button-none (click) = "deleteContact(contact._id,contact.isCoworker,contact.jobId,contact.inviteId,contact.unique_id)">
+                       <ion-icon name="trash" fnt20></ion-icon>
+                    </button>
+                 </ion-item>
+                 <ion-item-options side="right" *ngIf="isBrowser == 'false'">
+                    <button ion-button color="secondary" (click) = "sendSmail(contact)">
+                       <ion-icon name="mail"></ion-icon>
+                       Send 
+                    </button>
+                    <button ion-button color="primary" (click) = "editContact(contact)">
+                       <ion-icon name="create"></ion-icon>
+                       Edit 
+                    </button>
+                    <button ion-button color="danger" (click) = "deleteContact(contact._id,contact.isCoworker,contact.jobId,contact.inviteId,contact.unique_id)">
+                       <ion-icon name="trash"></ion-icon>
+                       Delete
+                    </button>
+                 </ion-item-options>
+              </ion-item-sliding>
+           </ion-col>
+           <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="sorted_contacts == ''">
+           <ion-item border-none br-lt-grey>No Contacts Found.</ion-item>
+           </ion-col>
+		    </ion-row>
+         </ion-list>
+      </ion-col>
+      </ion-col>
+   </ion-row>
+<div footer-height></div>
+</ion-content>

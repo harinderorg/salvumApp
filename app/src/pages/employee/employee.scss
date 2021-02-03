@@ -1,0 +1,18 @@
+page-employee 
+{
+[search-bar]
+{	
+    padding-left: 3px;
+    padding-bottom: $value5;
+}
+@include respond-to(handhelds2)
+{
+  img
+  {
+   &[circle-pic]
+   {
+     object-fit:cover;    
+   }
+  }
+}
+}

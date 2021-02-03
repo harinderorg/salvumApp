@@ -1,0 +1,32 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Select Contacts</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+
+<ion-list>
+
+  <ng-container *ngFor="let single_contact of all_contacts">
+    <ion-item contact-paid>
+      <ion-label>{{single_contact.email}}</ion-label>
+      <ion-checkbox [(ngModel)]="single_contact._id" (ionChange)="insertContactToArray($event,single_contact)" ></ion-checkbox>
+    </ion-item>
+  </ng-container>
+
+  <ion-item *ngIf="all_contacts == ''">
+    No Contacts Found On This Levels.
+  </ion-item>
+
+</ion-list>
+
+
+<div padding p-b-0 p-lr-0 *ngIf="selected_contacts.length > 0">
+	<button ion-button color="darkblue" block  fnt-regular type="button" (click) = "addContacts()">Submit</button>
+</div>
+
+</ion-content>

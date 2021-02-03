@@ -1,0 +1,62 @@
+<ion-content padding lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="wallet()"><a>Wallet</a></li>
+      <li (click)="site()"><a>Site</a></li>
+      <li class="active">View Site</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+   <ion-row class="row ">
+      <ion-col col-12 col-md-6 col-lg-4  offset-lg-4>
+         <ion-list box-shadow *ngFor="let siteDetail of newSiteArr;">
+            <ion-item fnt14>
+               <div text-center  *ngIf="siteDetail.logo">
+                  <!--ion-avatar item-start *ngIf="siteDetail.logo"-->
+                   <img width="100px" height="100px"  class="rounded-circle" src="{{APIURL}}/images/{{siteDetail.logo}}" >
+                   <!-- <img src="{{notice.image}}" *ngIf="notice.imag"> -->
+                  <!--/ion-avatar-->
+                  <ion-icon circle-pic name="key" text-center *ngIf="!siteDetail.logo"></ion-icon>
+               </div>
+            </ion-item>
+            <ion-item fnt14>
+               Company Name:
+               <ion-note  item-end fnt14>{{siteDetail.weblink}}</ion-note>
+            </ion-item>
+            <ion-item fnt14>
+               Username:
+               <ion-note  item-end fnt14 [hidden]= "toggoleShowHide">{{siteDetail.username}}</ion-note>
+               <ion-note  item-end fnt14 [hidden]= "!toggoleShowHide">Hidden</ion-note>
+            </ion-item>
+            <ion-item fnt14>
+               Password
+               <ion-note  item-end fnt14 [hidden]= "toggoleShowHide">{{siteDetail.password}}</ion-note>
+               <ion-note  item-end fnt14 [hidden]= "!toggoleShowHide">Hidden</ion-note>
+            </ion-item>
+            <ion-item fnt14>
+               Orders
+               <ion-note item-end rec-note (click)="recipts(siteDetail._id)">Receipts</ion-note>
+            </ion-item>
+            <ion-item fnt14>
+               Action
+               <ion-note margin0 item-end fnt14>
+                  <button ion-button clear padding0 (click) = "showConfirm(siteDetail)">
+                     <ion-icon name="trash"></ion-icon>
+                  </button>
+                  <button ion-button clear  padding0 (click) = "edit(siteDetail)">
+                     <ion-icon name="create"></ion-icon>
+                  </button>
+               </ion-note>
+            </ion-item>
+            <ion-item fnt14>
+               <ion-label>  Show/Hide</ion-label>
+               <ion-toggle [(ngModel)]="itemCompleted"  (ionChange)="itemClicked(itemCompleted)"  checked="true"></ion-toggle>
+            </ion-item>
+         </ion-list>
+      </ion-col>
+   </ion-row>
+<div footer-height></div>
+</ion-content>

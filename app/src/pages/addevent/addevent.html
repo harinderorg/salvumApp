@@ -1,0 +1,68 @@
+<ion-header modal-white>
+
+  <ion-navbar>
+    <ion-title text-centers>{{main_page_title}}</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<ion-row>
+<ion-col col-12>  
+<form [formGroup]="form" (ngSubmit)="addCalendarEvent()">
+  <ion-item p-lr-0>
+    <ion-label  fnt-regular stacked>Date<span error>*</span></ion-label>
+   <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)] = "start_date" name="start_date" formControlName="start_date" min="{{min_date}}" max="{{max_date}}"></ion-datetime>
+  </ion-item>
+  <ion-item *ngIf="form.get('start_date').touched && form.get('start_date').errors && form.get('start_date').hasError('required')" class="error-text-danger">Please enter a valid start date</ion-item>
+
+  <ng-container *ngIf="isTrade == '1'">
+	<ion-item p-lr-0>
+     <ion-label floating fnt-light fnt-regular>Select Trade<span error>*</span></ion-label>
+    <ion-select (ionChange)="get_events_names()" cancelText="Cancel" okText="Okay!" [(ngModel)] = "tradeId" name="tradeId" formControlName="tradeId">
+      <ion-option *ngFor="let trade of trades" value="{{trade._id}}">{{trade.trade_name}}</ion-option> 
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="form.get('tradeId').touched && form.get('tradeId').errors && form.get('tradeId').hasError('required')" class="error-text-danger">Please select a valid trade</ion-item>
+  </ng-container>
+
+  <ion-item p-lr-0>
+     <ion-label floating fnt-light fnt-regular>Select Title<span error>*</span></ion-label>
+    <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)] = "event_tagline" name="event_tagline" formControlName="event_tagline">
+      <ion-option value="Bid Deadline">Bid Deadline</ion-option>
+      <ion-option value="Complete Date">Complete Date</ion-option>
+      <ion-option value="Meeting Date">Meeting Date</ion-option> 
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="form.get('event_tagline').touched && form.get('event_tagline').errors && form.get('event_tagline').hasError('required')" class="error-text-danger">Please select a valid option</ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-regular>Time<span error>*</span></ion-label>
+    <ion-input type="time" [(ngModel)] = "event_time" name="event_time" formControlName="event_time"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="form.get('event_time').touched && form.get('event_time').errors && form.get('event_time').hasError('required')" class="error-text-danger">Please enter a valid time</ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label floating fnt-light fnt-regular>Heading<span error>*</span></ion-label>
+    <ion-input type="text" [(ngModel)] = "event_title" name="event_title" formControlName="event_title"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="form.get('event_title').touched && form.get('event_title').errors && form.get('event_title').hasError('required')" class="error-text-danger">Please enter a valid title</ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label floating fnt-light fnt-regular>Description<span error>*</span></ion-label>
+    <ion-textarea [(ngModel)] = "event_description" name="event_description" formControlName="event_description"></ion-textarea>
+  </ion-item>
+  <ion-item *ngIf="form.get('event_description').touched && form.get('event_description').errors && form.get('event_description').hasError('required')" class="error-text-danger">Please enter a valid description</ion-item>
+
+  <div padding p-b-0 p-lr-0>
+    <button ion-button color="darkblue" block  fnt-regular type="submit">Save</button>
+  </div>
+</form>
+</ion-col>
+</ion-row>
+</ion-content>

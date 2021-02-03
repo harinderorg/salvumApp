@@ -1,0 +1,58 @@
+<ion-content padding lightgrey company has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="goToJobs()"><a>Jobs</a></li>
+      <li (click)="goToComps()"><a>Companies</a></li> 
+      <li class="active">Employees</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-grid no-padding>
+<ion-row no-padding>
+  <ion-col col-12 *ngIf="all_employees != ''"> 
+    <ion-searchbar search-bar (ionInput)="getItems($event)" p-lr-0></ion-searchbar>
+  </ion-col>
+  <ion-col col-12 button-hide>
+    <button ion-button fnt-regular m-b-10 fnt-normal left color="blue" (click)="addEmploy()"><ion-icon name="add"></ion-icon> ADD EMPLOYEE</button>
+  </ion-col>
+</ion-row>
+</ion-grid>
+<ion-list margin0>
+  <ion-row class="row ">
+    <ion-col col-12 col-md-6 col-lg-6 col-xl-4 *ngFor="let employee of employees">
+      <ion-item-sliding #item br-lt-grey list-hover>
+      <ion-item border-none wallet-main>
+       <ion-thumbnail item-start icon-ionic >
+        <ion-icon *ngIf="employee.employee_image == '' || employee.employee_image == null" name="people" text-center></ion-icon>
+        <img circle-pic *ngIf="employee.employee_image != '' && employee.employee_image != null" src="{{APIURL}}/images/{{employee.employee_image}}">
+        </ion-thumbnail>
+        <h2 fnt-bold>{{employee.employee_name}}</h2>
+        <h3 fnt-regular>{{employee.employee_email}}</h3>
+		     <ion-badge  fnt14 color="blue" fnt-normal  m-t-5>{{employee.status == '1' ? 'Accept' : (employee.status == '0' ? 'Pending' : 'Declined')}}</ion-badge>  
+			 
+        <button *ngIf="isBrowser == 'true'" (click)="viewEmployees(employee)" ion-button clear item-end margin0><ion-icon name="eye" fnt20></ion-icon></button>
+
+  	 	  <button *ngIf="isBrowser == 'true'" (click)="setTiming(employee._id,employee.timing)" ion-button clear item-end margin0><ion-icon name="clock" fnt20></ion-icon></button>
+  	    <!-- <button (click)="deleteEmployees(employee._id)" ion-button clear item-end margin0><ion-icon name="trash" fnt20></ion-icon></button> -->
+      </ion-item>
+      <ion-item-options side="left" *ngIf="isBrowser == 'false'">
+        <button ion-button color="primary" (click)="viewEmployees(employee)"><ion-icon name="eye"></ion-icon> View</button>
+  	    <button ion-button color="primary" (click)="setTiming(employee._id,employee.timing)"><ion-icon name="clock"></ion-icon> Timing</button>
+      </ion-item-options>
+      <!-- <ion-item-options side="right">
+        <button (click)="deleteEmployees(employee._id)" ion-button color="danger"><ion-icon name="trash"></ion-icon> Delete</button>
+      </ion-item-options> -->
+    </ion-item-sliding>
+    </ion-col>
+
+    <ion-col col-12 *ngIf="employees == ''">
+      <ion-item>No Employees Found.</ion-item>
+   </ion-col>
+
+  </ion-row>
+</ion-list>
+<div footer-height></div>
+</ion-content>

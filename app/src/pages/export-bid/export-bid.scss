@@ -1,0 +1,19 @@
+page-export-bid {
+	[no_pdg]{
+		padding-left : 2px;
+	}
+	@include respond-to(handhelds2)
+	{
+		ion-item
+		{
+			 .item-inner
+			 {
+			   padding:$value0;
+			 }
+		}
+		[ion-button]
+		{
+		  margin-top:$value20;
+		}
+	}
+}

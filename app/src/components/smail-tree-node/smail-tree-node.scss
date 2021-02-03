@@ -1,0 +1,39 @@
+tree-node {
+    ion-grid{
+        padding: 0;
+        margin: 0;
+        align-items: left;
+    }
+    .divitem {
+        padding: 0 0 0 15px;
+        margin: 0;
+    }
+   .divitem       ion-label {
+        margin:0!important;
+        display: flex;
+    }
+}
+button.active{
+	background:#DE8;
+}
+    [tree-view]  ion-label
+    {
+margin:$value0;
+
+    }
+ .divitem       ion-label {
+        margin:0!important;
+        display: flex;
+    }
+    [w-100]
+    {
+
+    width:100%
+    }
+    [edit-folder]
+    {
+        text-align: right;
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    }

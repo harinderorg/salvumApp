@@ -1,0 +1,61 @@
+<ion-content padding lightgrey company has-header>
+<ion-row main-breadcrumb ion-fixed>
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="goToJobs()"><a>Jobs</a></li>
+        <li class="active">Companies</li>
+      </ol>
+    </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-grid no-padding>
+  <ion-row no-padding>
+    <ion-col col-12 *ngIf="all_companies != '' && is_access == '1'"> 
+      <ion-searchbar search-bar (ionInput)="getItems($event)" p-lr-0></ion-searchbar>
+    </ion-col>
+    <!-- <ion-col col-12 button-hide *ngIf="is_access == '1'">
+      <button ion-button fnt-regular m-b-10 fnt-normal left  color="blue" (click)="presentModal5($event)"><ion-icon name="add"></ion-icon> ADD COMPANY</button>
+    </ion-col> -->
+  </ion-row>
+    </ion-grid>
+<ion-list margin0>
+    <ion-row no-padding>
+    <ng-container *ngIf="is_access == '1'">
+  <ion-col col-12 col-md-6 col-lg-6 col-xl-6 *ngFor="let company of companies">
+     <ion-item-sliding #item br-lt-grey list-hover>
+  <ion-item  border-none  wallet-main>
+   <ion-thumbnail item-start icon-ionic >
+    <ion-icon name="briefcase-outline" text-center></ion-icon>
+    </ion-thumbnail>
+    <h2 fnt-bold>{{company.company_name}}</h2>  
+    <h3 fnt-regular m-t-5>{{company.address}}</h3>
+	 <p fnt-regular m-t-5>Corporate No - <ion-badge color="light"> {{company.corporate}}</ion-badge> </p>
+	 <ion-note fnt12 item-end margin0  my-date class="note note-md">{{company.date_created | date:'mediumDate'}}</ion-note>
+	 	  <button *ngIf="isBrowser == 'true'"  btn-hides  ion-button clear item-end margin0 (click)="openEmployeePage(company._id)"><ion-icon name="people" fnt20></ion-icon></button>
+	  <button *ngIf="isBrowser == 'true'"  btn-hides ion-button clear item-end margin0 (click)="editCompanyModal($event,company._id,company.company_name,company.address)"><ion-icon name="create" fnt20></ion-icon></button>
+	    <button *ngIf="isBrowser == 'true'"  btn-hides ion-button clear item-end margin0 (click) = "deleteCompany(company._id)"><ion-icon name="trash" fnt20></ion-icon></button>
+  </ion-item>
+  <ion-item-options side="left" *ngIf="isBrowser == 'false'">
+	    <button ion-button color="primary" (click)="openEmployeePage(company._id)" ><ion-icon name="people"></ion-icon> Employees</button>
+    </ion-item-options>
+    <ion-item-options side="right" *ngIf="isBrowser == 'false'">
+      <button ion-button color="danger" (click) = "deleteCompany(company._id)"><ion-icon name="trash"></ion-icon> Delete</button>
+      <button ion-button color="secondary" (click)="editCompanyModal($event,company._id,company.company_name,company.address)"><ion-icon name="create"></ion-icon> Edit</button>
+    </ion-item-options>
+  </ion-item-sliding>
+   </ion-col>
+   </ng-container>
+
+   <ion-col col-12 *ngIf="companies == '' && is_access == '1'">
+      <ion-item  br-lt-grey border-none>No Companies Found.</ion-item>
+   </ion-col>
+
+   <ion-col col-12 *ngIf="is_access == '0'">
+      <ion-item  br-lt-grey border-none>Please buy/activate your own license to access this page.</ion-item>
+   </ion-col>
+
+      </ion-row>
+  </ion-list>
+<div footer-height></div> 
+</ion-content>

@@ -1,0 +1,31 @@
+page-action-items {
+	[actitms-main]
+	{
+		@include respond-to(handhelds2)
+		{
+			&[margin-top]
+			{
+			  margin:$value0;
+			}
+		}
+		[actitms]{
+			ion-icon{
+				top: 2px;
+				position: relative;
+				color:map-get($colors,primary);
+			}
+			@include respond-to(handhelds2)
+		{
+			[margin0]
+			{
+			  margin:$value0;
+			}
+			padding:$value10;
+			border: 1px solid #eee;
+            border-radius: 6px;
+            background: #fcfcfd;
+			margin-bottom:$value10!important;
+		}
+		}
+	}
+}

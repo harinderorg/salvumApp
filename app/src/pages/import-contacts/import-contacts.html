@@ -1,0 +1,30 @@
+<ion-header modal-white >
+  <ion-navbar>
+    <ion-title text-centers>Import contacts from {{APITYPE}}</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button> 
+  </ion-buttons>
+  </ion-navbar> 
+</ion-header>
+<ion-content padding>
+<ion-grid no-padding>
+<ion-row>
+<ion-col col-12>  
+<ion-list margin0>
+<ion-item p-lr-0  border-none *ngFor="let single_contact of all_contacts">
+	<ion-label>{{single_contact.email}}</ion-label>
+	<ion-checkbox [(ngModel)]="single_contact.email" ></ion-checkbox>
+</ion-item>
+<ion-item p-lr-0 *ngIf="all_contacts == ''">
+	No Contacts Found.
+</ion-item>
+</ion-list>
+</ion-col>
+<div padding p-b-0 p-lr-0 *ngIf="all_contacts != ''">
+	<button ion-button color="darkblue" block  fnt-regular type="button" (click) = "addContacts()">Submit</button>
+</div>
+</ion-row>
+</ion-grid>
+
+</ion-content>

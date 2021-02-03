@@ -1,0 +1,151 @@
+page-companies {
+@include respond-to(handhelds2)
+{
+ [icon-ionic]
+ {
+   min-height:$value50;
+   min-width:$value50;
+   ion-icon
+   {
+	   width:$value50;
+	   height:$value50;
+	   line-height:$value50;
+	   font-size:$value25;
+   }
+ }	 
+}
+ion-note
+
+ {
+	&[my-date]
+	 {
+		 
+		 	@include respond-to(handhelds)
+	{
+    position: absolute;
+    right: 16px;
+    top: $value10;
+}
+	 }
+ }
+[search-bar]
+{
+	
+    padding-left: 3px;
+    padding-bottom: $value5;
+}
+}
+
+	[wallet-main]
+	{
+	    ion-label
+		   {
+		      h3
+			  {
+                font-size:$value12;
+			  }
+			  p
+			  {
+			    font-size:$value12;
+			  }
+			  ion-badge
+			  {
+			   font-size:$value12!important;
+			  }
+		  }
+	}
+ion-list
+{
+ion-item
+{
+h2
+{
+font-weight:400 !important
+}
+p
+{
+color:#afafaf!important
+}
+}
+}
+[company]
+{
+@include respond-to(handhelds2)
+{
+padding:$value5!important;
+.scroll-content
+{
+	padding:$value5!important;
+}
+}
+ion-list
+{
+ion-item
+{
+h2 , p  , h3
+{
+white-space:initial;
+}
+}
+}
+}
+
+[button-hide]
+{
+button[ion-button]
+{
+span.hidden-xs
+{
+@include respond-to(handhelds2)
+{
+display:none;
+}
+}
+}
+}
+[mrgn-t-15]{
+	margin-top:10px !important;
+}
+ion-avatar[icon-ionic]
+{
+ion-icon
+{
+@include wh50;
+line-height:$value50;
+font-size:$value30;
+}
+
+}
+[fnt12]
+{
+	font-size:$value10+2!important;
+}
+
+ion-label
+{
+	@include respond-to(handhelds2)
+	{
+		white-space:initial; 
+	}
+}
+.searchbar-ios
+{
+	 @include respond-to(handhelds2)
+	 {
+border:$none;
+     }	
+}	
+	
+
+.toolbar-ios
+{
+
+ion-item-sliding
+{
+	cursor:pointer;
+	&:hover
+	{
+		box-shadow:0px 0px 2px 1px rgba(0 , 0 ,  0 , 0.07);
+	}
+}
+}

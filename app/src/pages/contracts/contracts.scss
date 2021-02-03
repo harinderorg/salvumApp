@@ -1,0 +1,36 @@
+page-contracts {
+	ion-content
+	{
+		
+		    margin-top: $value10;
+		     @include respond-to(handhelds2)
+	    {  
+	
+		.breadcrumbs-row {
+   
+			margin-bottom: $value0!important;
+		}
+		.top-scorll-list
+		{
+			min-height:30px
+		}
+	    }
+	}
+	[fixed-top-div]
+	{
+	    width: 100%;
+	    background: #e6e6e6;
+	   
+	    @include respond-to(handhelds2)
+	    {
+	      padding: $value0;
+	      ion-list
+	      {
+	      margin: $value0;
+	      }
+	    }
+	}
+	.breadcrumbs-row [class^="flaticon-"]:before, .breadcrumbs-row [class*=" flaticon-"]:before, .breadcrumbs-row [class^="flaticon-"]:after, .breadcrumbs-row [class*=" flaticon-"]:after{
+    font-size: 1.2em;
+}
+}

@@ -1,0 +1,46 @@
+<ion-header modal-white >
+
+  <ion-navbar>
+    <ion-title text-centers>Invitation Mails</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button> 
+  </ion-buttons>
+  </ion-navbar> 
+ 
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list margin0>
+	  <ion-item p-lr-0 brdr-none>
+	  <ion-label stacked tags-main>
+
+	  <span tags-text *ngFor="let email of sendArray; let i = index ">
+          {{email}} 
+          <a tags-icon (click)="removeEmailAddress(i)">
+		
+			  <ion-icon class="ion-ios-close-outline" ></ion-icon>
+		  </a>
+    </span>
+
+	  </ion-label>
+	   <!-- <ion-input fnt-12 type="text" placeholder="Add Emails"></ion-input> -->
+	  </ion-item>
+  </ion-list>
+<!-- <ion-tags-input [(ngModel)]="tags" [placeholder]="'Add Emails'" ></ion-tags-input> -->
+<form (submit)="validateEmail(tags)">
+<ion-item p-lr-0> 
+   <ion-label stacked>Add Emails</ion-label>
+   <ion-input (input)="onInput()" type="text" name="tags" [(ngModel)] = "tags" (ionBlur)="validateEmail(tags)" fnt14></ion-input>
+
+</ion-item>
+ <p validation-msg *ngIf="isEmailValid == false">Invalid email address.</p>
+ <p validation-msg *ngIf="isEmailAlreadyExist == true"> Email already added.</p>
+
+</form>
+<div padding p-b-0 p-lr-0>
+    <button ion-button color="darkblue" block  fnt-regular (click) = "submit(tags)">Submit</button>
+  </div>
+
+</ion-content>

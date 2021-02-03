@@ -1,0 +1,38 @@
+page-trade-breadcrumbs {
+
+}
+
+.breadcrumbs-row{
+	background: #807E7F;
+    margin-bottom: 35px;
+    ion-icon{
+        font-size: 1.8em;
+    }
+}
+[pos-right]{
+	text-align: right;
+    min-height:28px;
+}
+.hideall {
+    position: absolute;
+    background: #1875d2;
+    color:  $fnt-white;
+    padding: $value5;
+    left:  $value0;
+    margin-top: 1px;
+}
+.bg-active{
+	background: #1875d2;
+    color: #fff;
+}
+.trade-btn{
+    position: relative;
+    margin-right:5px;
+}
+.trade-btn.all-lft{
+	left: 10px;
+    position: absolute; 
+}
+.breadcrumbs-row [class^="flaticon-"]:before, .breadcrumbs-row [class*=" flaticon-"]:before, .breadcrumbs-row [class^="flaticon-"]:after, .breadcrumbs-row [class*=" flaticon-"]:after{
+    font-size: 1.8em;
+}

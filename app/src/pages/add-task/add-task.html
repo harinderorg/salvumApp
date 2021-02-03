@@ -1,0 +1,41 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>{{isAdd == '1' ? 'Add' : 'Edit'}} task</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+<ion-row>
+<ion-col col-12>
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-regular>Task</ion-label>
+    <ion-input type="text" [(ngModel)] = "task"></ion-input>
+  </ion-item>
+  <div class="append_dollar_n">
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-light fnt-regular>Cost</ion-label>
+    <ion-input type="text" onkeydown="javascript: return ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8  || event.keyCode == 46 || event.keyCode == 9 || event.keyCode == 188 || event.keyCode == 190) ? true : false" (blur)="changeFormat(cost)" [(ngModel)] = "cost"></ion-input>
+  </ion-item>
+  <ion-icon name="logo-usd"></ion-icon>
+  </div>
+
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-regular>Percent</ion-label>
+    <ion-input [disabled]="true" type="text" [(ngModel)] = "percent"></ion-input>
+  </ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label stacked fnt-light fnt-regular>Days</ion-label>
+    <ion-input type="number" [(ngModel)] = "days"></ion-input>
+  </ion-item>
+
+  <div padding p-b-0 p-lr-0>
+    <button (click)="addTask(task,cost,percent,days)" ion-button color="darkblue" block  fnt-regular type="button">{{isAdd == '1' ? 'Add' : 'Edit'}} Task</button>
+  </div>
+ </ion-col>
+  </ion-row>
+</ion-content>

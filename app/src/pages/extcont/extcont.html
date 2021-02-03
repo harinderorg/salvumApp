@@ -1,0 +1,38 @@
+<ion-content lightgrey padding has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li (click)="contacts()"><a>Contacts</a></li>
+      <li class="active">External Contacts</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<button ion-button (click)= "Add()">Add</button>
+<button ion-button (click) = "Import()">Import</button>
+<button ion-button (click) = "Invitation()">Invite</button>
+ 
+<ion-list box-shdw list-external m-t-10 p-b-10>
+<ion-grid no-padding>
+<ion-row no-padding>
+    <ion-col col-xl-4 col-md-4 col-12 *ngFor="let item of data; let i = index ">
+    <ion-item external-contact> 
+              
+     <input type="checkbox" (change)="sendmail(item)"  [(ngModel)] = "item.checked" />   {{item.externalContacts}}  <button  margin0 ion-button item-end color="blue" (click)="deleteContact(item, i)">
+	<!-- Delete-->
+	 <ion-icon name="close"></ion-icon>
+	 </button>
+
+    </ion-item>    
+    </ion-col>
+    <ion-col *ngIf="data?.length == 0">
+<div white-bg padding br-lt-grey>   
+   No External Contact Added Yet!
+   </div>
+    </ion-col>
+   </ion-row>
+     </ion-grid>
+  </ion-list>
+<div footer-height></div>
+</ion-content>

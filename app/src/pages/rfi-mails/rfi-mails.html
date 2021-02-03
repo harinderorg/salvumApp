@@ -1,0 +1,123 @@
+<div (click)="closeDropDown()" class="shadow" style="display: none;"></div>
+<ion-content padding (window:resize)="caclHeight()" has-header>
+
+<div ion-fixed id="calc_height_em{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb> 
+	<ion-col>
+	  <ol class="breadcrumb">
+	    <li (click)="root()"><a>Home</a></li>
+	    <li (click)="goToJobs()"><a>Jobs</a></li>
+	    <li (click)="backToTradeDash()"><a>{{active_job_breadcrumb}}</a></li> 
+	    <li class="active">{{page_type == '1' ? 'Email' : 'Smail'}}</li>
+	  </ol>
+	</ion-col>
+</ion-row>
+<!-- <trade-breadcrumbs (click) = "clickTrade()"></trade-breadcrumbs> -->
+<ion-row class="breadcrumbs-row" *ngIf="all_contacts != ''">
+  <ion-col pos-right col-12 col-md-3 col-sm-3>
+    <ng2-dropdown (onShow)="onDropdownShow()">
+      <ng2-dropdown-button [showCaret]="true">
+          Filter <div class="filter_icons" (click)="$event.stopPropagation()">
+        <a [ngClass]="sort_icon == true ? 'active' : ''" (click)="sortTrades('a')">ABC</a><img *ngIf="sort_icon == true" width="12" height="12" src="assets/img/{{order_default_p == false ? 'down' : 'up'}}.png">&nbsp;&nbsp;&nbsp;
+        <a [ngClass]="sort_icon == false ? 'active' : ''" (click)="sortTrades('n')">123</a><img *ngIf="sort_icon == false" width="12" height="12" src="assets/img/{{order_advanced_p == false ? 'down' : 'up'}}.png">
+      </div>
+      </ng2-dropdown-button>
+      <ng2-dropdown-menu dropmenu>
+      
+      <div padding>
+        <ion-segment [(ngModel)]="nav_filter" class="filter_list">
+          <ion-segment-button value="default">
+            Default <ion-icon cls (click)="cancelAllFilters('d')" name="close"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="advanced">
+            Advanced <ion-icon cls (click)="cancelAllFilters('a')" name="close"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <div [ngSwitch]="nav_filter" class="filter_list">
+        <ion-list *ngSwitchCase="'default'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of tradeTypes | orderBy: order_default : order_default_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trade_names.indexOf(trade.trade_name) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>All {{trade.trade_name}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'advanced'">
+          <ng2-menu-item [preventClose]="true" *ngFor="let trade of trades | orderBy: order_advanced : order_advanced_p  : true">
+            <ion-row trade-inner (click)="addFilter(trade)" [ngClass]="filter_trades.indexOf(trade.tradeId) >= 0 ? 'filter_opacity' : ''">
+              <ion-col col-3><i class="{{trade.trade_icon}}"></i></ion-col>
+              <ion-col title-trade>{{trade.trade_task?.length > 13 ? trade.trade_task.substr(0,13)+'...' : trade.trade_task}} ({{trade.total}})</ion-col>
+              <ion-col col-2 icon-trade><ion-icon name="apps"></ion-icon></ion-col>
+            </ion-row>
+          </ng2-menu-item>
+        </ion-list>
+      </div>
+      </ng2-dropdown-menu>
+    </ng2-dropdown> 
+  </ion-col>
+  <ion-col col-12 col-sm-9 col-md-9>
+  <div class="top-scorll-list">
+  <div class="self-control">
+    <ion-icon lefticon name="ios-arrow-dropleft-circle" (click)="scroll('left')"></ion-icon>
+    <ion-icon  righticon name="ios-arrow-dropright-circle" (click)="scroll('right')"></ion-icon>
+  </div>
+  <div class="drop-scroll">   
+      <button title="{{trade.trade_task}}" *ngFor="let trade of filter_list; let i = index" class="trade-btn">
+        <i class="{{trade.trade_icon}}"></i> {{trade.trade_task?.length > 25 ? trade.trade_task.substr(0,25)+'...' : trade.trade_task}}
+        <ion-icon (click)="cancelFilter(trade,i)" name="close"></ion-icon>
+      </button>    
+  </div>
+  </div>
+  </ion-col>
+</ion-row>
+</div>
+<div clearfix id="fixed_height_em{{timestamp}}"></div>
+<ion-list  margin0 clearboth>
+	<ion-row  p-lr-0 > 
+	 <ion-item-sliding #item br-lt-grey col-12 col-md-12 col-lg-12 col-xl-12 *ngFor="let rfi of sorted_mails , let indx = index  "  p-lr-0 list-hover>
+	    <ion-item border-none  manage-job>
+	       <ion-avatar item-start icon-ionic title="{{(rfi.trade_name != undefined && rfi.trade_name != '') ? rfi.trade_name : 'Multiple Trades'}}">
+	          <i *ngIf="rfi.tradeIds?.length == 1" class="{{rfi.trade_icon}}" text-center></i>
+	          <span custom_number *ngIf="rfi.tradeIds?.length > 1">{{rfi.tradeIds?.length}}</span>
+	       </ion-avatar>
+	       <h2 fnt-bold fnt14>
+	          {{rfi.email}}  
+	          <!-- <ion-badge color="{{rfi.reply == '' ? 'danger' : 'blue'}}" m-t-5 fnt-normal> {{rfi.reply == '' ? 'Pending' : 'Answered'}}</ion-badge> -->
+	       </h2>
+
+	       <p>{{rfi.reply == '' ? 'not answered yet.' : 'answered '+ (rfi.reply_date[rfi.reply_date.length - 1] | timeAgo)}}</p>
+
+	       <ion-note fnt-light m-t-5 fnt12>{{rfi.ask_date | date:'short'}}</ion-note>
+
+	       <p><a href="{{APIURL}}/salvum/directory/pdfs/{{rfi.pdf_link}}" target="_blank">see pdf</a></p>
+	       
+	       <button *ngIf="rfi.reply != '' && isBrowser == 'true'" (click)="viewRFIEmail(rfi)" ion-button clear item-end margin0 button-none title="View">
+	          <ion-icon name="eye" fnt20></ion-icon>
+	       </button>
+
+	       <button *ngIf="isBrowser == 'true'" (click)="deleteRFIEmail(rfi._id)" ion-button clear item-end margin0 button-none title="Delete">
+	          <ion-icon name="trash" fnt20></ion-icon>
+	       </button>
+	    </ion-item>
+	    <ion-item-options side="right" *ngIf="isBrowser == 'false'">
+	       <button *ngIf="rfi.reply != ''" (click)="viewRFIEmail(rfi)" ion-button color="secondary" >
+	          <ion-icon name="eye"></ion-icon>
+	          View
+	       </button>
+
+	       <button (click)="deleteRFIEmail(rfi._id)" ion-button color="primary" >
+	          <ion-icon name="trash"></ion-icon>
+	          Delete
+	       </button>
+	    </ion-item-options>
+	 </ion-item-sliding>
+   <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="sorted_mails == ''" p-lr-0>
+         <ion-item br-lt-grey border-none>No RFI {{page_type == '1' ? 'Emails' : 'Smails'}} Found.</ion-item>
+   </ion-col>
+</ion-row>
+</ion-list>
+<div footer-height></div>
+</ion-content>

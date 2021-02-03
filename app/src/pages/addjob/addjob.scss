@@ -1,0 +1,115 @@
+page-addjob {
+			[stepwizard-form]
+			{
+					background: $whitecolor;
+					padding:$value20;		
+				   [step-main]
+				   {
+					    min-height:100px;
+						[coworkers-inner]
+						{   
+                          display: flex;
+                           align-items: center;
+						border-bottom: 1px solid $br-lt-grey;
+							 ion-select
+							 {
+								    width: 100%;
+									border: 1px solid $br-lt-grey;
+									padding: 8px 8px 5px;
+									margin-left: 16px;
+							 }
+						}
+				   }
+					[stepwizard]
+					{         display: table;
+								width: $width100;
+								position: relative;
+							[stepwizard-row] {
+								&:before
+								{
+										top: $value22;
+										bottom:$value0;
+										position: absolute;
+							content: " ";
+							width:$width100;
+							height: $value1;
+							background-color: #8d98a0;
+					}
+					display: table-row;	
+					[stepwizard-step]{
+					display: table-cell;
+					text-align: center;
+					position: relative;
+				}
+				}
+				[stepwizard-step]
+				{ 
+				&.active
+						{
+						[btn-default]
+						{ 
+						background: $darkblue2!important;
+						}
+							p
+							{
+						 color: $darkblue2!important;
+							}					
+						}
+				[btn]
+				{
+					  &[btn-circle] {
+							width: $value45;
+							height: $value45;
+							display: inline-block;
+							color: $whitecolor;
+							text-decoration: none;
+							line-height: $value45+3;
+							font-size: $value18;
+							border-radius:$br-ra50;
+						}
+						
+						&[btn-default]
+						{    opacity: 1;
+							background:#8e98a0;
+						}
+				  }		
+			}
+		}
+	}	
+}
+[fixed-top-div]
+{
+width:100%;
+}
+ion-modal
+{
+@include respond-to(handhelds2)
+{
+[modal-white]
+{
+	
+	ion-title
+	{
+	 .toolbar-title
+	 {
+	 font-size:$value15;
+	 font-weight:700;
+	 text-transform:Capitalize;
+	 }
+	}
+	
+}
+ion-item
+	{
+	
+	.text-input
+	{
+	 font-size:$value10+2!important;
+	}
+	ion-select
+	{
+	font-size:$value10+2!important;
+	}
+	}
+}
+}

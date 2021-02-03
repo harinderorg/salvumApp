@@ -1,0 +1,270 @@
+page-managejob 
+
+{
+
+ion-content
+{
+	
+	    margin-top: $value10;
+	     @include respond-to(handhelds2)
+    {
+	[list-contact]
+	{ padding:$value0  $value5!important;
+	
+	}
+	ion-item
+	{
+	  .item-inner
+	  {
+		  border:none!important;
+		  @include respond-to(handhelds2)
+		  {
+			  ion-select
+			  {
+			   font-size:-1+$value15;
+			  }
+		  }
+	  }
+	}
+      margin-top: $value0;
+    }
+	ion-searchbar
+	{
+		@include respond-to(handhelds2)
+		{
+		 padding:$value5  $value10!important;
+		}
+	}
+	[button-hide]
+	{
+	@include respond-to(handhelds2)
+		{
+		 padding:$value0  $value10!important;
+		 button
+		 {
+		  box-shadow:none;
+		 }
+		}
+	}
+}
+[fixed-top-div]
+{
+    width: 98%;
+    background: #e6e6e6;
+    /*padding: $value0 $value0 $value0  12px;*/
+   
+    @include respond-to(handhelds2)
+    {  width: 100%;
+      padding: $value0;
+      ion-list
+      {
+      margin: $value0;
+      }
+    }
+}
+	[icon-ionic]
+	{
+		 
+		 
+			  @include respond-to(handhelds2)
+			  {
+				min-width:$value50;
+                min-height:$value50;				
+				  ion-icon
+		 {
+				   @include wh50;
+				       line-height: $value50;
+               font-size: $value20;
+			  }
+			  
+			  }
+	
+		 }
+
+	[p-5]
+	{
+			padding:$value5;
+	}
+	[p-0-3]
+	{
+		padding:$value0 3px;
+	}
+ion-label
+{
+white-space:initial
+}
+[btn-hides]
+{
+@include respond-to(handhelds2)
+{
+display:$none
+}
+}
+}
+[manage-job]
+{
+@include respond-to(handhelds2)
+{
+ion-label
+{
+h2
+{
+margin-top:$value0!important;	
+}
+}
+.scroll-content
+{
+padding:$value0!important;
+}
+[button-none]
+{
+display:none
+}
+h2 , ion-badge , ion-note , p , h3
+{
+font-size:$value10+2
+}
+}
+[my-date] {
+	@include respond-to(handhelds)
+	{
+    position: absolute;
+    right: 16px;
+    top: $value10;
+}
+}
+}
+
+[m-r-5]
+{
+margin-right:$value5
+}
+[manage-job]
+{
+ion-avatar[icon-ionic]
+{
+ion-icon
+{
+@include wh50;
+line-height:$value50;
+font-size:$value30;
+}
+
+}
+}
+[button-hide]
+{
+button[ion-button]
+{
+@include respond-to(handhelds2)
+{
+  
+    height: 2.4em;
+    font-size: 1.4rem;
+  
+}
+span.hidden-xs
+{
+@include respond-to(handhelds2)
+{
+visibility:hidden;
+}
+}
+}
+}
+.clear-list
+{
+	clear:both;
+}
+.mar-top-35
+{
+	margin-top:35px;
+}
+
+.form-custom-check
+{
+	&[checkbox-responsive]
+	{
+			 margin-top: -6px;
+			 margin-right: $value25;
+		        float: left;
+	
+		@include respond-to(handhelds2)
+		{
+				position: absolute;
+				right: $value15;
+				top: $value5;			display: inline-block;
+                margin-top: $value0;
+			margin-right: $value5;
+		}
+		
+label
+ {
+	 &.form-check-label
+	 {
+		 		position:relative;
+				cursor:pointer; 
+					        float: left;
+			
+				&::before
+				{
+						content: '';
+						border-radius: 2px;
+						position: absolute;
+						width: $value10+2;
+						height: $value10+2;
+						border-width: 2px;
+						border-style: solid;
+						border-color: #787878;
+						background-color: $fnt-white;
+
+				}
+
+  }
+}
+
+.form-check-input
+{
+	&:checked + .form-check-label
+	{ 
+	
+			&:after 
+			{			
+				position: absolute;
+				background: #1f75d2;
+				width: $value15+1;
+				height: $value15+1;
+				content: "\f3ff";
+				font-family: "Ionicons";
+				text-align: $center;
+				font-size: $value20;
+				line-height: $value15+2;
+				border-radius: 3px;
+				font-weight: 700;
+				color:$fnt-white;
+	   }
+	}
+}
+
+		input[type="checkbox"]
+		{
+		&.form-check-input
+		{
+			position: absolute;
+			opacity: 0;
+			z-index: -1;
+					}
+				}
+	}
+}
+
+.alert-button-group
+{
+	  .alert-button
+	  {
+		      color: #ffffff;
+               background-color: #1c75d2;
+			   padding: $value5;
+	  }
+	
+}

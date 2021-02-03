@@ -1,0 +1,53 @@
+
+<ion-menu side="right" [content]="mycontent" id="authenticated">
+  <ion-header class="right-top" (click)="setProfile($event)">
+    <ion-toolbar class="right-side" style=" ">
+      <ion-icon name="close" close-icon menuToggle></ion-icon>
+        <img *ngIf="userImage == '' || userImage == null || userImage == undefined"  alt="image" class="rounded-circle" src="assets/img/m7.png">
+        <img *ngIf="userImage != '' && userImage != null && userImage != undefined" alt="image" class="rounded-circle" src="{{APIURL}}/images/{{userImage}}">
+    </ion-toolbar>
+      <h5 text-center fnt-bold fnt-white>{{userName}}</h5 >
+ <!--  <p text-center fnt-regular margin0 fnt-white>
+Lorem Porem
+  </p> --> 
+  </ion-header>
+
+  <ion-content class="right-content" darkgrey scroll-css>
+  
+
+    <ion-list margin0>
+      <button border-color menuClose darkgrey ion-item fnt-white *ngFor="let p of pages" (click)="openPage(p)">
+        <ion-icon [name]="p.icon" item-left></ion-icon>   
+        {{p.title}}
+      </button>
+
+      <button border-color menuClose darkgrey ion-item  fnt-white (click)="Logout()"> <ion-icon name="ios-log-out-outline" item-left></ion-icon> 
+        Logout
+      </button>
+
+      <button border-color menuClose darkgrey ion-item fnt-white (click)="removeAccount()">
+       <ion-icon name="ios-trash-outline" item-left></ion-icon> 
+        Remove Account
+      </button>
+     
+
+      
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+<ion-header *ngIf="loginId != undefined && loginId != '' && loginId != null">  
+  <app-header (openLevel)="locksClicked($event)"></app-header>
+</ion-header>
+
+
+<ion-nav id="nav" [root]="rootPage" [rootParams]="rootPageParams" #mycontent swipeBackEnabled="false" main>
+  
+  
+</ion-nav>
+
+
+
+<ion-footer darkblue2 *ngIf="loginId != undefined && loginId != '' && loginId != null">
+ <app-footer></app-footer> 
+</ion-footer>

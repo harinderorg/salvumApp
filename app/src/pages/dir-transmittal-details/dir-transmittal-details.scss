@@ -1,0 +1,164 @@
+page-dir-transmittal-details {
+[print-trans]{
+	padding: 6px 32px;
+    background: #1975d2;
+    color: #fff;
+    cursor: pointer;
+}
+	  .no-header{
+        margin-top: 0px !important;
+    }.trans_cover_letter
+{
+ @include respond-to(handhelds2)
+	{
+	 font-size:12px;
+	 h5
+	 {
+	 font-size:14px;
+	 font-weight:700;
+	 }
+	}
+}
+[trans-desc]
+{
+border: 1px solid #ddd;
+    padding: 15px;
+    background: #fdfbfb;
+	ion-icon
+	{
+	color: $darkblue2;
+	}
+ 	h5
+	{
+	font-weight: 700;
+    text-transform: capitalize;
+    position: relative;
+    z-index: 1;
+	@include respond-to(handhelds2)
+	{
+	 font-size:14px;
+	 margin-bottom:$value5!important; 
+	  
+	}
+	&:after {
+    left: 0;
+    content: '';
+    height: 4px;
+    background: $darkblue2;
+    width: 45px;
+    position: absolute;
+    bottom: 2px;
+    z-index: -1;
+}
+	}
+}
+[wearesending]
+{
+    max-width: 240px;
+    background: #fdfbfb;
+    padding: 15px;
+    border: 1px solid #ddd;
+	@include respond-to(handhelds2)
+	{
+		max-width: 100%; 
+		margin-top:$value0!important; 
+	}
+	ion-icon
+	{
+	color: $darkblue2;
+	}
+	h5
+	{
+	font-weight: 700;
+    text-transform: capitalize;
+    position: relative;
+    z-index: 1;
+	@include respond-to(handhelds2)
+	{
+	 font-size:14px;
+	}
+	&:after {
+    left: 0;
+    content: '';
+    height: 4px;
+    background: $darkblue2;
+    width: 45px;
+    position: absolute;
+    bottom: 2px;
+    z-index: -1;
+}
+	}
+}
+	[fcap]{
+		text-transform: capitalize;
+	}
+	[actitms]{
+		ion-icon{
+			top: 2px;
+    		position: relative;
+		}
+	}
+.td_icons_cursor ion-icon{
+	cursor : pointer;
+	font-size: 20px;
+    color: #000 !important;
+}
+[fl-icon] i::before{
+	font-size: 18px;
+}
+	.table-responsive
+	{
+		  
+				 overflow-x:auto;
+				 min-height:0.01%;
+		
+	}
+ion-grid 
+{
+tr
+{
+&[top-head]
+{
+    /* background: #f0f0f0; */    border-bottom: 1px solid $br-lt-grey;
+}
+td
+{
+				color:#000;
+				    padding: $value5;
+}
+}
+
+tr
+ {
+&[top-body]
+{
+	td
+	{
+		    word-break: break-all; padding: $value5;
+			/*display:flex;
+			align-items:center;*/
+			color:#000;
+			@include respond-to(handhelds2)
+			{
+				white-space: nowrap;
+			}
+	}
+ion-badge
+{
+font-weight: 400!important;
+}
+ion-icon
+{
+color: $darkblue2;
+margin-right:$value5
+}
+
+    border-bottom: 1px solid $br-lt-grey;;
+}
+
+}
+}
+[mr_bot_20]{
+	margin-bottom: 20px;
+}
+}

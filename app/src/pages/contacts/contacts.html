@@ -1,0 +1,800 @@
+<ion-content padding lightgrey (window:resize)="caclHeight()" has-header contact-mob>
+<div ion-fixed id="calc_height_conts{{timestamp}}" fixed-top-div>
+<ion-row main-breadcrumb >
+   <ion-col>
+      <ol class="breadcrumb">
+         <li (click)="root()"><a>Home</a></li>
+         <li class="active">Contacts</li>
+      </ol>
+   </ion-col>
+</ion-row>
+   <ion-row>
+   <ion-col>
+      <ion-searchbar [hidden]="top_tab != 'contacts'" (ionInput)="getItems($event)" p-lr-5></ion-searchbar>
+      <ion-searchbar [hidden]="top_tab != 'groups'" (ionInput)="getItemsGroup($event)" p-lr-5></ion-searchbar>
+   </ion-col>
+   <ion-col>
+      <div check-level *ngIf="selectedFirst1 == 1  " class="check" float-left style="">
+         <ion-checkbox [(ngModel)]="selectedFirst" (ionChange)="updateCbValue('1', $event)" [checked]="selectedFirst"></ion-checkbox>1
+      </div>
+      <div  check-level *ngIf="selectedSecond1 == 2" class="check" float-left style="">
+         <ion-checkbox [(ngModel)]="selectedSecond" (ionChange)="updateCbValue('2', $event)" [checked]="selectedSecond"></ion-checkbox>2
+      </div>
+      <div check-level *ngIf="level3 == 'false' " class="check"  float-left style="">
+         <ion-checkbox [(ngModel)]="selectedthird" (ionChange)="updateCbValue('3', $event)" [checked]="selectedthird"></ion-checkbox>3
+      </div>
+      <div check-level *ngIf="level4 == 'false'" class="check" float-left style="">
+         <ion-checkbox [(ngModel)]="selectedForth" (ionChange)="updateCbValue('4', $event)" [checked]="selectedForth"></ion-checkbox>4
+      </div>
+   </ion-col>
+   </ion-row>
+   
+<div clearboth visibile-xs style="display:none"></div>
+   <div padding no_tp padd-mob-tb-0>
+      <button m-t-0 btn-hide ion-button (click) = "getExternalContacts()">
+         <ion-icon name="contacts"></ion-icon>
+         <span btn-text> External Contacts </span>
+      </button>
+      <button flt_rght m-t-0  btn-hide ion-button (click) = "goToManageGroup()">
+         <ion-icon name="people"></ion-icon>
+         <span btn-text>  Create Group </span>
+      </button>
+     <!--  <button m-t-0 btn-hide ion-button (click) = "goToeditGroup()" >
+         <ion-icon name="create"></ion-icon>
+         <span btn-text>   Edit Group </span>
+      </button> -->
+      <button flt_lft m-t-0 btn-hide ion-button (click) = "goToSmail()">
+         <ion-icon name="checkbox"></ion-icon>
+         <span btn-text> {{selected_Ids.length == 0 && selectedContacts.length == 0 ? 'Return' : 'Select'}}</span>
+      </button>
+     <!--  <button m-t-0 btn-hide ion-button  (click) = "groupListing()">
+         <ion-icon name="person"></ion-icon>
+         <span btn-text>   Select Group </span>
+      </button> -->
+   </div>
+   <div padding no_tp padd-mob-tb-0>
+     <ion-segment [(ngModel)]="top_tab">
+       <ion-segment-button value="contacts">
+         Contacts
+       </ion-segment-button>
+       <ion-segment-button value="groups">
+         Groups
+       </ion-segment-button>
+     </ion-segment>
+   </div>
+</div>
+<div clearfix id="fixed_height_conts{{timestamp}}"></div>
+   <!--span style="    float: left;
+      margin-left: 3%;">
+      
+      </span-->
+   <!-- <ion-list> -->
+   <!-- <ion-item *ngFor="let item of items"> -->
+   <!-- {{ item }}  -->
+   <!-- </ion-item> -->
+   <!-- </ion-list> -->
+   <div class="clearfix"></div>
+
+   <div [ngSwitch]="top_tab">
+   <ion-list *ngSwitchCase="'contacts'">
+      <div class="clearfix"></div>
+      <ion-row class="contact-main"   style=" ">
+         <ng-container *ngFor="let item of data; let i = index  ">
+            <ion-col padd-mob-lr-0 col-12 col-sm-6 col-xl-4 col-md-6  *ngIf="item.memberstatus == 2" >
+               <ion-card  list-hover br-lt-grey class="card card-md" padding="" text-right="" margin0  *ngIf="item.senderId == userId" [ngClass]="selectedConIds.indexOf(item.member_id) >= 0 ? 'active_border' : ''">
+                  <!--ion-row no-padding>
+                     < ion-col  col-4  col-sm-4 col-md-3 col-lg-3 col-xl-3 text-center> -->
+                        <div class="width-imgs">
+                        <ion-avatar  class="card-img" left style="">
+                           <img alt="image" class="" src="assets/img/user-dummy.png" style="" *ngIf="!item.image || (item.senderThumb == 'Hide' || item.senderThumb == 'null' || !item.senderThumb)">
+                           <img alt="image" class="" src="{{API_ENDPOINT_URL}}images/{{item.image}}" style="  " *ngIf="item.image && item.senderThumb == 'Show'">
+                        </ion-avatar>
+                        <div float-left m-t-5 select-check  *ngIf="item.senderSetLevelStatus == 1 && item.recevierSetLevelStatus == 1 "> 
+                           <ion-item>
+                            <ion-label>Select</ion-label>
+                            <ion-checkbox mr_nw [checked]="selectedConIds.indexOf(item.member_id) >= 0"  (ionChange)="checkBoxClicked($event, item)" ></ion-checkbox>
+                          </ion-item>
+						           
+                        </div>
+                        </div>
+                     <!--/ion-col>
+                     <ion-col  col-8  col-sm-8 col-md-9 col-lg-9 col-xl-9  p-lr-0-->
+                        <ion-card-content class="card-content card-content-md card-rigt-s">
+                           <button pending float-left small ion-button *ngIf="item.memberstatus == 2 && (item.senderSetLevelStatus == 1 && item.recevierSetLevelStatus == 0 )" >Pending</button>
+
+                           <button pending float-left small ion-button *ngIf="item.memberstatus == 2 && (item.senderSetLevelStatus == 0 && item.recevierSetLevelStatus == 0 )" >Pending</button>
+
+                           <div social >
+						     <button title="Delete"  btn-dropdown  ion-button  small (click)="showConfirm(item, i)">
+                              <ion-icon role="img" name="trash"  >
+                              </ion-icon>
+							  </button>
+							  	     <button title="Edit" btn-dropdown ion-button  small  (click)="onButtonClick(item._id, item )" [hidden]="done[item._id]">
+                              <ion-icon role="img" name="create">
+                              </ion-icon>
+							  	  </button>
+                              <!-- <button title="Done"  btn-dropdown  ion-button   small (click)="update(item, senderSetLevel, i)"  *ngIf = "done[item._id]">
+                              <ion-icon class="ion-ios-checkmark-outline"></ion-icon>
+                              </button> -->
+                              <button   title="Info"  btn-dropdown [hidden]="done[item._id]" ion-button  small (click)="showdata(item._id)" *ngIf="hidebutton == false"  >
+                              <ion-icon class="ion-md-arrow-dropdown"></ion-icon>
+                              </button>
+                           </div>
+                           <ion-card-title no-padding class="card-title card-title-md">
+                              <!--div  fnt-16 *ngIf="item.senderSetLevelStatus == 1 && item.recevierSetLevelStatus == 1 "> 
+                                 select
+                                 <ion-checkbox [(ngModel)]="item.isChecked" (ionChange)="checkBoxClicked(item.isChecked, item)"></ion-checkbox>
+                                 </div-->
+                              <h2 card-title fnt-bold contact-mail text-left>
+							  	   <ion-grid no-padding>
+							  <ion-row>
+							<ion-col col-md-4 col-6 contact-head  text-right p-r-10>  <span > Name : </span>  </ion-col>
+
+					     	<ion-col col-md-8 col-12 contact-detal>	  {{item.name}} </ion-col>
+							  
+							 	  </ion-row> 
+								  </ion-grid>
+							  </h2>
+                           </ion-card-title>
+                           <h3 card-subtitle fnt-regular contact-mail text-left>
+						   <ion-grid no-padding>
+						   	  <ion-row>
+							<ion-col col-md-4 col-6 text-right p-r-10 contact-head>
+						   <span > Email : </span>
+                           </ion-col>
+                             	<ion-col col-md-8 col-12 contact-detal>
+						   {{item.email}}
+						   </ion-col>
+						   	  </ion-row>
+							     </ion-grid>
+						   </h3>
+                           <div [hidden]="done[item._id]">
+                              <!--button ion-button  round (click)="showdata(item._id)" *ngIf="hidebutton == false"  >Click</button-->
+                              <div   *ngIf="showDtata[item._id]">
+                                 <h2 card-title fnt-bold contact-mail text-left>
+								  <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>
+								 Info : 
+								 </ion-col>
+								 <ion-col col-md-8 col-6>
+								 {{item.senderSetLevel}}
+								</ion-col> 
+								</ion-row>
+								</ion-grid>
+								 </h2>
+                                 <h2 card-title fnt-bold contact-mail text-left>
+								 <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>
+								 Inbox : 
+								 </ion-col>
+								 <ion-col col-md-8 col-6>
+								 {{item.senderSetLevel}}
+								 </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                                 <h2 card-title fnt-bold contact-mail text-left> 
+								   <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>
+								 Send :
+								 </ion-col>
+								 <ion-col col-md-8 col-6>
+								 {{item.senderSetLevel}}
+								 </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                                 <h2 card-title fnt-bold contact-mail text-left> 
+								  <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>
+								 Share :
+								 </ion-col>
+								 <ion-col col-md-8  col-6>
+								 {{item.senderSetLevel}}
+								 </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                                 <h2 card-title fnt-bold contact-mail text-left>
+								   <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>
+								 Smail Thumb :
+								 </ion-col>
+								 <ion-col col-md-8 col-6>
+								 {{item.senderThumb}}
+								 </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                              </div>
+                           </div>
+                           <div *ngIf="buttonClicked[item._id]">
+                              <div class="clearfix"></div>
+                              <ion-card select-dropdown margin0 none-border>
+                                    <ion-item border-none p-lr-0> 
+								
+							  
+                                      <ion-label col-md-4 col-6 text-right p-r-7 m-r-0>Info :</ion-label>
+								
+								
+                                    <ion-select  [(ngModel)]="senderSetLevel" (ionChange)="levelChanged(senderSetLevel,isActive,item.senderSetLevel,'sender')" col-md-8 col-6 p-lr-0>
+                                    <ion-option value="1" selected="item.senderSetLevel == 1" *ngIf="selectedFirst1 == 1">Level 1</ion-option>
+                                    <ion-option value="2" selected="item.senderSetLevel == 2" *ngIf="selectedSecond1 == 2">Level 2</ion-option>
+                                    <ion-option value="3" selected="item.senderSetLevel == 3" *ngIf="selectedthird1 == 3">Level 3</ion-option>
+                                    <ion-option value="4" selected="item.senderSetLevel == 4" *ngIf="selectedForth1 == 4">Level 4</ion-option>
+                                    </ion-select>
+						
+							
+                                 </ion-item>
+                              </ion-card>
+                              <div class="clearfix"></div>
+                              <h2 card-title fnt-regular contact-mail text-left checkbox-center>
+							     <ion-grid no-padding>
+						   	  <ion-row>
+							<ion-col col-md-4 col-6 text-right p-r-10>
+							  Force : 
+							  </ion-col>
+							  	<ion-col col-md-8 col-6>
+
+								
+								<ion-checkbox  checked="true"  [(ngModel)]="isActive" (click)="onClick(isActive, senderSetLevel)"></ion-checkbox>
+								
+							  <!--input type="checkbox" [(ngModel)]="isActive" (click)="onClick(isActive, item.senderSetLevel)"/-->
+
+                                </ion-col>
+	                       </ion-row>
+						   </ion-grid>
+							  </h2>
+                              <div class="clearfix"></div>
+                              <ion-card select-dropdown *ngIf="isActive == true" margin0 none-border>
+                                 <ion-item border-none pl-r-0> 
+                                    <ion-label col-md-4 col-6  text-right p-r-7 m-r-0>Folder :</ion-label>
+                                    <ion-select  [(ngModel)]="item.folder" col-md-8 col-6  p-lr-0>
+                                    <ion-option value="{{f._id}}" *ngFor="let f of folders">{{f.name}}</ion-option>
+                                    <!--   <ion-option value="2">Level 2</ion-option>
+                                       <ion-option value="3">Level 3</ion-option>
+                                       <ion-option value="4">Level 4</ion-option> -->
+                                    </ion-select>
+                                 </ion-item>
+                              </ion-card>
+                              <div class="clearfix"></div>
+                              <h2 card-title fnt-bold contact-mail text-left>
+							  <ion-grid no-padding>
+						   	  <ion-row>
+							<ion-col col-md-4 col-6 text-right p-r-10> 
+							  Inbox : 
+							  </ion-col>
+							    	<ion-col col-md-8 col-6>
+							  {{senderSetLevel}}
+							  </ion-col>
+							  </ion-row>
+							  </ion-grid>
+							  </h2>
+                              <h2 card-title fnt-bold contact-mail text-left>MESSAGE CAN COME AT LEVEL
+                                 <span  *ngIf="senderSetLevel == 1 && isActive == false "> 1,2,3,4</span>
+                                 <span  *ngIf="senderSetLevel == 2 && isActive == false "> 2,3,4</span>
+                                 <span  *ngIf="senderSetLevel == 3 && isActive == false "> 3,4</span>
+                                 <span  *ngIf="senderSetLevel == 4 && isActive == false "> 4</span>
+                                 <span  *ngIf="senderSetLevel == 1 && isActive == true "> 1</span>
+                                 <span  *ngIf="senderSetLevel == 2 && isActive == true "> 2</span>
+                                 <span  *ngIf="senderSetLevel == 3 && isActive == true "> 3</span>
+                                 <span  *ngIf="senderSetLevel == 4 && isActive == true "> 4</span>
+                              </h2>
+                              <!--
+                                 <h2  *ngIf="senderSetLevel == 1 && isActive == false "> 1,2,3,4</h2>
+                                 <h2  *ngIf="senderSetLevel == 2 && isActive == false "> 2,3,4</h2>
+                                 <h2  *ngIf="senderSetLevel == 3 && isActive == false "> 3,4</h2>
+                                 <h2  *ngIf="senderSetLevel == 4 && isActive == false "> 4</h2>
+                                 <h2  *ngIf="senderSetLevel == 1 && isActive == true "> 1</h2>
+                                 <h2  *ngIf="senderSetLevel == 2 && isActive == true "> 2</h2>
+                                 <h2  *ngIf="senderSetLevel == 3 && isActive == true "> 3</h2>
+                                 <h2  *ngIf="senderSetLevel == 4 && isActive == true "> 4</h2>
+                                 -->
+                              <h2 card-title fnt-bold contact-mail text-left>
+							  	  <ion-grid no-padding>
+						   	  <ion-row>
+							<ion-col col-md-4 col-6 text-right p-r-10> 
+							  Send :
+                              </ion-col>
+							  <ion-col col-md-8 col-6>
+							  {{senderSetLevel}}
+							  </ion-col>
+							  </ion-row>
+							  </ion-grid>
+							  </h2>
+                              <h2 card-title fnt-bold contact-mail text-left>MESSAGE CAN SEND AT LEVEL 
+                                 <span  *ngIf="senderSetLevel == 1 && isActive == false "> 1,2,3,4</span>
+                                 <span  *ngIf="senderSetLevel == 2 && isActive == false "> 2,3,4</span>
+                                 <span  *ngIf="senderSetLevel == 3 && isActive == false"> 3,4</span>
+                                 <span  *ngIf="senderSetLevel == 4 && isActive == false"> 4</span>
+                                 <span  *ngIf="senderSetLevel == 1 && isActive == true"> 1</span>
+                                 <span  *ngIf="senderSetLevel == 2 && isActive == true "> 2</span>
+                                 <span  *ngIf="senderSetLevel == 3
+                                    && isActive == 'true'"> 3</span>
+                                 <span  *ngIf="senderSetLevel == 4 && isActive == true"> 4</span>
+                              </h2>
+                              <!--
+                                 <h2  *ngIf="senderSetLevel == 1 && isActive == false "> 1,2,3,4</h2>
+                                 <h2  *ngIf="senderSetLevel == 2 && isActive == false "> 2,3,4</h2>
+                                 <h2  *ngIf="senderSetLevel == 3 && isActive == false"> 3,4</h2>
+                                 <h2  *ngIf="senderSetLevel == 4 && isActive == false"> 4</h2>
+                                 <h2  *ngIf="senderSetLevel == 1 && isActive == true"> 1</h2>
+                                 <h2  *ngIf="senderSetLevel == 2 && isActive == true "> 2</h2>
+                                 <h2  *ngIf="senderSetLevel == 3
+                                    && isActive == 'true'"> 3</h2>
+                                 <h2  *ngIf="senderSetLevel == 4 && isActive == true"> 4</h2>
+                                 -->
+                              <h2 card-title fnt-bold contact-mail text-left>
+							  	  <ion-grid no-padding>
+						   	  <ion-row>
+							<ion-col col-md-4 col-6 text-right p-r-10> 
+							  Share :
+                            </ion-col>
+							<ion-col col-md-8 col-6>
+							  {{senderSetLevel}}
+							  </ion-col>
+							  </ion-row>
+							  </ion-grid>
+							  </h2>
+                              <h2 card-title fnt-bold contact-mail text-left>DOCUMENT CAN SHARE AT LEVEL 
+                                 <span  *ngIf="senderSetLevel == 1 "> 1</span>
+                                 <span  *ngIf="senderSetLevel == 2 "> 2</span>
+                                 <span  *ngIf="senderSetLevel == 3 "> 3</span>
+                                 <span  *ngIf="senderSetLevel == 4 "> 4</span>           
+                              </h2>
+                              <!--
+                                 <h2  *ngIf="senderSetLevel == 1 "> 1</h2>
+                                 <h2  *ngIf="senderSetLevel == 2 "> 2</h2>
+                                 <h2  *ngIf="senderSetLevel == 3 "> 3</h2>
+                                 <h2  *ngIf="senderSetLevel == 4 "> 4</h2>
+                                 -->
+                              <h2 card-title fnt-regular contact-mail text-left checkbox-center>
+							  	  <ion-grid no-padding>
+						   	  <ion-row>
+							<ion-col col-md-4 col-6  text-right p-r-10> 
+ 							  Smail Thumb :
+                             </ion-col>
+							 <ion-col col-md-8 col-6>
+							 		<ion-checkbox  [(ngModel)]="isThumbActive" ></ion-checkbox>
+							  <!--input type="checkbox" [(ngModel)]="isThumbActive" /-->
+							  </ion-col>
+							  </ion-row>
+							  </ion-grid>
+							  </h2>
+                           </div>
+                           <!--   <ion-list>
+                              <ion-item (click)="toggleGroup(i)" [ngClass]="{active: isGroupShown(i)}">
+                                <h3>
+                                  Detail
+                                  <ion-icon color="success" item-right [name]="isGroupShown(i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+                                </h3>
+                                <div *ngIf="isGroupShown(i)">
+                              Info<ion-select [(ngModel)]="item.level" >
+                                <ion-option selected="true">Level 1</ion-option>
+                                <ion-option>Level 2</ion-option>
+                                <ion-option>Level 3</ion-option>
+                                <ion-option>Level 4</ion-option>
+                              </ion-select>
+                              
+                              <h2 card-title fnt-bold>{{item.level}}</h2>
+                                        
+                                  
+                                </div>
+                              </ion-item>
+                              </ion-list> -->
+                           <div *ngIf="item.senderId == userId">
+                              <p card-body-text fnt-light *ngIf="item.senderSetLevelStatus == 0">*You can't communicate with this person until they set your profile levels up on their side</p>
+                              <p card-body-text fnt-light *ngIf="item.senderSetLevelStatus == 1 && item.recevierSetLevelStatus == 0 ">*You can't communicate with this person until he will set your level.</p>
+                           </div>
+                           <a href="{{item.facebook.search('http') >= 0 ? item.facebook : 'http://'+item.facebook}}" target="_blank" *ngIf="item.facebook && item.facebook != ''" a_deco_none>
+                           <button  title="Facebook" small btn-social color="blue" >
+                              <ion-icon name="logo-facebook"></ion-icon>
+                           </button>
+                           </a>
+                           <a   title="Twitter" href="{{item.twitter.search('http') >= 0 ? item.twitter : 'http://'+item.twitter}}" target="_blank" *ngIf="item.twitter && item.twitter != ''" a_deco_none>
+                           <button small btn-social color="blue"  >
+                              <ion-icon color="white" name="logo-twitter"></ion-icon>
+                           </button>
+                           </a>
+                           <a title="Google Plus"  href="{{item.gplus.search('http') >= 0 ? item.gplus : 'http://'+item.gplus}}" target="_blank" *ngIf="item.gplus && item.gplus != ''" a_deco_none>
+                           <button small  btn-social color="blue" >
+                              <ion-icon  color="white" name="logo-googleplus"></ion-icon>
+                           </button>
+                           </a>
+                           <a  title="Linkedin" href="{{item.linkdin.search('http') >= 0 ? item.linkdin : 'http://'+item.linkdin}}" target="_blank" *ngIf="item.linkdin && item.linkdin != ''" a_deco_none>
+                           <button small btn-social color="blue" > 
+                              <ion-icon color="white" name="logo-linkedin"></ion-icon>
+                           </button>
+                           </a>
+                           <div *ngIf = "done[item._id]" >
+                              <button  title="Done"  ion-button  small (click)="update(item, senderSetLevel, i)" >  
+                               Update
+                              </button>
+                           </div>
+                        </ion-card-content>
+                     <!-- </ion-col>
+                  </ion-row> -->
+               </ion-card>
+               <ion-card list-hover  br-lt-grey class="card card-md " padding="" text-right="" margin0  *ngIf="item.reciverId == userId" [ngClass]="selectedConIds.indexOf(item.member_id) >= 0 ? 'active_border' : ''">
+                  <!-- <ion-row no-padding>
+                     <ion-col  col-4  col-sm-4 col-md-3 col-lg-3 col-xl-3   text-center> -->
+                     <div class="width-imgs">
+                        <ion-avatar class="card-img"   left style="">
+                           <img alt="image" class="" src="assets/img/user-dummy.png" style=" " *ngIf="!item.image || (item.receiverThumb == 'Hide' || item.receiverThumb == 'null' || !item.receiverThumb)">
+                           <img alt="image" class="" src="{{API_ENDPOINT_URL}}images/{{item.image}}" style="  " *ngIf="item.image && item.receiverThumb == 'Show'">
+                        </ion-avatar>
+                        <div  float-left m-t-5   select-check  *ngIf="item.senderSetLevelStatus == 1 && item.recevierSetLevelStatus == 1 ">
+                     
+                           <ion-item>
+                            <ion-label>Select</ion-label>
+                            <ion-checkbox mr_nw [checked]="selectedConIds.indexOf(item.member_id) >= 0" (ionChange)="checkBoxClicked($event, item)" ></ion-checkbox>
+                          </ion-item>
+                        </div>
+                     </div>
+                     <!-- </ion-col>
+                     <ion-col  col-8  col-sm-8 col-md-9 col-lg-9 col-xl-9   p-lr-0> -->
+                        <ion-card-content class="card-rigt-s card-content card-content-md">
+                           <div social>
+						         <button title="Delete" ion-button btn-dropdown   small (click)="showConfirm(item, i)">
+                              <ion-icon role="img" name="trash" >
+                              </ion-icon>
+							  </button>
+							    <button title="Edit"  ion-button btn-dropdown   small (click)="onButtonClick(item._id, item)" [hidden]="done[item._id]">
+                              <ion-icon role="img" name="create" >
+                              </ion-icon>
+							    </button>
+                              <!-- <button  title="Done"  ion-button btn-dropdown   small (click)="update(item, reciverSetLevel, i)" *ngIf = "done[item._id]"  style="">  
+                              <ion-icon class="ion-ios-checkmark-outline"></ion-icon>
+                              </button> -->
+                              <button title="Info"   btn-dropdown [hidden]="done[item._id]" ion-button  small (click)="showdata(item._id)" *ngIf="hidebutton == false"  >
+                              <ion-icon class="ion-md-arrow-dropdown"></ion-icon>
+                              </button>
+                           </div>
+                           <ion-card-title no-padding="" class="card-title card-title-md">
+                              <!--div fnt-16  *ngIf="item.senderSetLevelStatus == 1 && item.recevierSetLevelStatus == 1 ">
+                                 select
+                                 <ion-checkbox [(ngModel)]="item.isChecked" (ionChange)="checkBoxClicked(item.isChecked, item)"></ion-checkbox>
+                                 </div-->
+                              <button  pending float-left small  ion-button *ngIf="item.memberstatus == 2 && (item.senderSetLevelStatus == 0 && item.recevierSetLevelStatus == 1 )" >Pending</button>
+                              <h2 card-title fnt-regular contact-mail text-left>
+							 <ion-grid no-padding>
+						   	  <ion-row>
+							  <ion-col col-md-4 col-6  text-right p-r-10 contact-head> 
+							  <span > Name : </span>
+							  </ion-col>
+							  <ion-col col-md-8 col-12 contact-detal >
+							  {{item.name}}
+							  </ion-col>
+							  </ion-row>
+							  </ion-grid>
+							  </h2>
+                              <h3 card-subtitle fnt-regular contact-mail text-left>
+                              <ion-grid no-padding>
+						   	  <ion-row>
+							  <ion-col col-md-4  col-6 text-right p-r-10 contact-head> 
+							  <span > Email : </span>
+							  </ion-col>
+							  <ion-col col-md-8 col-12  contact-detal>
+							  {{item.email}}
+							  </ion-col>
+							  </ion-row>
+							  </ion-grid>
+							  </h3>
+                           </ion-card-title>
+                           <div [hidden]="done[item._id]">
+                              <!--button ion-button  round (click)="showdata(item._id)" [hidden]="done[item._id]">Click</button-->
+                              <div   *ngIf="showDtata[item._id]">
+                                 <h2 card-title fnt-regular contact-mail text-left>
+								  <ion-grid no-padding>
+						   	  <ion-row>
+							  <ion-col col-md-4 col-6 text-right p-r-10> 
+								 Info : 
+								 </ion-col>
+								 <ion-col col-8 col-6>
+								 {{item.reciverSetLevel}}
+								 </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                                 <h2 card-title fnt-regular contact-mail text-left>
+								<ion-grid no-padding>
+						   	  <ion-row>
+							  <ion-col col-md-4 col-6  text-right p-r-10> 
+								 Inbox : 
+								 </ion-col>
+								 <ion-col col-8 col-6>
+								 {{item.reciverSetLevel}}
+								 </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                                 <h2 card-title fnt-regular contact-mail text-left> 
+								 	<ion-grid no-padding>
+						   	  <ion-row>
+							  <ion-col col-md-4 col-6 text-right p-r-10> 
+								 Send : 
+								 </ion-col>
+								  <ion-col col-md-8 col-6>
+								 {{item.reciverSetLevel}}
+								   </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                                 <h2 card-title fnt-regular contact-mail text-left> 
+								 	<ion-grid no-padding>
+						   	  <ion-row>
+							  <ion-col col-md-4 col-6 text-right p-r-10> 
+								 Share : 
+								 		 </ion-col>
+								  <ion-col col-md-8 col-6 >
+								 {{item.reciverSetLevel}}
+								  </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                                 <h2 card-title fnt-regular contact-mail text-left> 
+							<ion-grid no-padding>
+						   	  <ion-row>
+							  <ion-col col-md-4 col-6 text-right p-r-10> 
+								 Smail Thumb : 
+								 </ion-col>
+								  <ion-col col-md-8 col-6>
+								 {{item.receiverThumb}}
+								  </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                              </div>
+                           </div>
+                           <div class="clearfix"></div>
+                           <div *ngIf="buttonClicked[item._id]">
+                              <ion-card select-dropdown margin0 none-border>
+                                  <ion-item border-none p-lr-0> 
+                                    <ion-label col-md-4 col-6 text-right p-r-7 m-r-0>Info :</ion-label>
+                                    <ion-select  (ionChange)="levelChanged(reciverSetLevel,isActive,item.reciverSetLevel,'rec')" [(ngModel)]="reciverSetLevel" col-md-8 col-6 p-lr-0>
+                                    <ion-option value="1" *ngIf="selectedFirst1 == 1">Level 1</ion-option>
+                                    <ion-option value="2" *ngIf="selectedSecond1 == 2">Level 2</ion-option>
+                                    <ion-option value="3" *ngIf="selectedthird1 == 3">Level 3</ion-option>
+                                    <ion-option value="4" *ngIf="selectedForth1 == 4">Level 4</ion-option>
+                                    </ion-select>
+                                 </ion-item>
+                              </ion-card> 
+                              <div class="clearfix"></div>
+                            <h2 card-title fnt-regular contact-mail text-left checkbox-center>  
+							  <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>
+							Force :
+							</ion-col>
+							<ion-col col-md-8 col-6>
+									<ion-checkbox checked="true"  [(ngModel)]="isActive"  (click)="onClick(isActive, reciverSetLevel)"></ion-checkbox>
+							<!---input type="checkbox" [(ngModel)]="isActive"  (click)="onClick(isActive, item.reciverSetLevel)"/-->
+							</ion-col>
+							</ion-row>
+							</ion-grid>
+							</h2>
+                              <div class="clearfix"></div>
+                              <ion-card select-dropdown *ngIf="isActive == true" margin0 none-border>
+                                 <ion-item border-none p-lr-0> 
+                                    <ion-label col-md-4 col-6 text-right p-r-7 m-r-0>Folder :</ion-label>
+                                    <ion-select  [(ngModel)]="item.folder" col-md-8 col-6 p-lr-0>
+                                    <ion-option value="{{foldr._id}}" *ngFor="let foldr of folders">{{foldr.name}}</ion-option>
+                                    <!--   <ion-option value="2">Level 2</ion-option>
+                                       <ion-option value="3">Level 3</ion-option>
+                                       <ion-option value="4">Level 4</ion-option> -->
+                                    </ion-select>
+                                 </ion-item>
+                              </ion-card>
+							         <div class="clearfix"></div>
+                              <h2 card-title fnt-bold contact-mail text-left>
+							    <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>
+							  Inbox :
+							  </ion-col>
+							  <ion-col col-md-8 col-6>
+							  {{reciverSetLevel}}
+							  </ion-col>
+							  </ion-row>
+							  </ion-grid>
+							  </h2>
+                              <div class="clearfix"></div>
+                             
+							         <div class="clearfix"></div>
+                              <h2 card-title fnt-regular contact-mail text-left>MESSAGE CAN COME AT LEVEL
+                                 <span  *ngIf="reciverSetLevel == 1 && isActive == false "> 1,2,3,4</span>
+                                 <span  *ngIf="reciverSetLevel == 2 && isActive == false "> 2,3,4</span>
+                                 <span  *ngIf="reciverSetLevel == 3 && isActive == false "> 3,4</span>
+                                 <span  *ngIf="reciverSetLevel == 4 && isActive == false "> 4</span>
+                                 <span  *ngIf="reciverSetLevel == 1 && isActive == true "> 1</span>
+                                 <span  *ngIf="reciverSetLevel == 2 && isActive == true "> 2</span>
+                                 <span  *ngIf="reciverSetLevel == 3 && isActive == true "> 3</span>
+                                 <span  *ngIf="reciverSetLevel == 4 && isActive == true "> 4</span>
+                              </h2>
+                              <!--
+                                 <h2  *ngIf="reciverSetLevel == 1 && isActive == false "> 1,2,3,4</h2>
+                                 <h2  *ngIf="reciverSetLevel == 2 && isActive == false "> 2,3,4</h2>
+                                 <h2  *ngIf="reciverSetLevel == 3 && isActive == false "> 3,4</h2>
+                                 <h2  *ngIf="reciverSetLevel == 4 && isActive == false "> 4</h2>
+                                 <h2  *ngIf="reciverSetLevel == 1 && isActive == true "> 1</h2>
+                                 <h2  *ngIf="reciverSetLevel == 2 && isActive == true "> 2</h2>
+                                 <h2  *ngIf="reciverSetLevel == 3 && isActive == true "> 3</h2>
+                                 <h2  *ngIf="reciverSetLevel == 4 && isActive == true "> 4</h2>
+                                 -->
+                              <h2 card-title fnt-regular contact-mail text-left>
+							    <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>
+							  Send :
+							  </ion-col>
+							  <ion-col col-md-8 col-6>
+							  {{reciverSetLevel}}
+							  </ion-col>
+							  </ion-row>							  
+							  </ion-grid>
+							  </h2>
+                              <h2 card-title fnt-regular contact-mail text-left>MESSAGE CAN SEND AT LEVEL 
+                                 <span  *ngIf="reciverSetLevel == 1 && isActive == false "> 1,2,3,4</span>
+                                 <span  *ngIf="reciverSetLevel == 2 && isActive == false "> 2,3,4</span>
+                                 <span  *ngIf="reciverSetLevel == 3 && isActive == false"> 3,4</span>
+                                 <span  *ngIf="reciverSetLevel == 4 && isActive == false"> 4</span>
+                                 <span  *ngIf="reciverSetLevel == 1 && isActive == true "> 1</span>
+                                 <span  *ngIf="reciverSetLevel == 2 && isActive == true "> 2</span>
+                                 <span  *ngIf="reciverSetLevel == 3
+                                    && isActive == true "> 3</span>
+                                 <span  *ngIf="reciverSetLevel == 4 && isActive == true"> 4</span>
+                              </h2>
+                              <!--
+                                 <h2  *ngIf="reciverSetLevel == 1 && isActive == false "> 1,2,3,4</h2>
+                                                <h2  *ngIf="reciverSetLevel == 2 && isActive == false "> 2,3,4</h2>
+                                                <h2  *ngIf="reciverSetLevel == 3 && isActive == false"> 3,4</h2>
+                                                <h2  *ngIf="reciverSetLevel == 4 && isActive == false"> 4</h2>
+                                                <h2  *ngIf="reciverSetLevel == 1 && isActive == true "> 1</h2>
+                                                <h2  *ngIf="reciverSetLevel == 2 && isActive == true "> 2</h2>
+                                                <h2  *ngIf="reciverSetLevel == 3
+                                                   && isActive == true "> 3</h2>
+                                                <h2  *ngIf="reciverSetLevel == 4 && isActive == true"> 4</h2>
+                                 -->
+                              <h2 card-title fnt-regular contact-mail text-left>
+							  <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>
+								 Share :
+                                    </ion-col>
+									<ion-col col-md-8 col-6>
+								 {{reciverSetLevel}}
+								 </ion-col>
+								 </ion-row>
+								 </ion-grid>
+								 </h2>
+                              <h2 card-title fnt-regular contact-mail text-left>DOCUMENT CAN SHARE AT LEVEL
+                                 <span  *ngIf="reciverSetLevel == 1 "> 1</span>
+                                 <span  *ngIf="reciverSetLevel == 2 "> 2</span>
+                                 <span  *ngIf="reciverSetLevel == 3 "> 3</span>
+                                 <span  *ngIf="reciverSetLevel == 4 "> 4</span>
+                              </h2>
+                              <!--
+                                 <h2  *ngIf="reciverSetLevel == 1 "> 1</h2>
+                                 <h2  *ngIf="reciverSetLevel == 2 "> 2</h2>
+                                 <h2  *ngIf="reciverSetLevel == 3 "> 3</h2>
+                                 <h2  *ngIf="reciverSetLevel == 4 "> 4</h2>
+                                 -->
+                              <h2 card-title fnt-regular contact-mail text-left checkbox-center> 
+							    <ion-grid no-padding>
+						   	     <ion-row>
+							     <ion-col col-md-4 col-6 text-right p-r-10>							  
+							  Smail Thumb : 
+							  </ion-col>
+							  <ion-col col-md-8 col-6>
+                        <ion-checkbox  [(ngModel)]="isThumbActive" ></ion-checkbox>
+							 <!-- <input type="checkbox" [(ngModel)]="isThumbActive" />-->
+							  </ion-col>
+							  </ion-row>
+							  </ion-grid>
+							  </h2>
+                           </div>
+                           <!--   <ion-list>
+                              <ion-item (click)="toggleGroup(i)" [ngClass]="{active: isGroupShown(i)}">
+                                <h3>
+                                  Detail
+                                  <ion-icon color="success" item-right [name]="isGroupShown(i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+                                </h3>
+                                <div *ngIf="isGroupShown(i)">
+                              Info<ion-select [(ngModel)]="item.level" >
+                                <ion-option selected="true">Level 1</ion-option>
+                                <ion-option>Level 2</ion-option>
+                                <ion-option>Level 3</ion-option>
+                                <ion-option>Level 4</ion-option>
+                              </ion-select>
+                              
+                              <h2 card-title fnt-bold>{{item.level}}</h2>
+                                        
+                                  
+                                </div>
+                              </ion-item>
+                              </ion-list> -->
+                           <div *ngIf="item.reciverId == userId">
+                              <p card-body-text fnt-light *ngIf="item.recevierSetLevelStatus == 0">*You can't communicate with this person until they set your profile levels up on their side</p>
+                              <p card-body-text fnt-light *ngIf="item.recevierSetLevelStatus == 1 && item.senderSetLevelStatus == 0">*You can't communicate with this person until he will set your level.</p>
+                           </div>
+                           <div *ngIf = "done[item._id]" >
+                              <button ion-button small (click)="update(item, reciverSetLevel, i)" *ngIf = "done[item._id]">  
+                               Update
+                              </button>
+                           </div>
+                        </ion-card-content>
+                     <!-- </ion-col>
+                  </ion-row> -->
+               </ion-card>
+            </ion-col>
+            <div *ngIf = "item.length == 0"></div>
+         </ng-container>
+      </ion-row>
+      <ion-row *ngIf="data?.length == 0" w-100>
+         <div white-bg padding br-lt-grey w-100 m-t-10>No contacts found.
+         </div>
+	   </ion-row>
+
+      <!-- <ion-row *ngIf="items?.length == 0 && selectedFirst != 1 && selectedSecond != 2 && selectedthird != 3 && selectedForth != 4 && data?.length > 0" w-100>
+         <div white-bg padding br-lt-grey w-100 m-t-10>No contacts found.
+         </div>
+      </ion-row> -->
+
+      
+      <!-- <ion-row *ngIf="allContacts?.length > 0 && selectedFirst == 0 && selectedSecond == 0"> Open level to see contacts! </ion-row> -->
+   </ion-list>
+
+   <ion-list *ngSwitchCase="'groups'">
+      <ion-grid>
+         <ion-row>
+           <ng-container *ngFor="let x of all_groups; let i = index ">
+            <ion-col col-12 col-md-6 col-lg-4 >
+               <ion-item-sliding #item br-lt-grey  >
+                  <ion-item border-none  wallet-main [ngClass]="selected_Ids.indexOf(x._id) >= 0 ? 'active_border' : ''">
+                     <ion-thumbnail item-start icon-ionic >
+                        <ion-icon name="people" text-center></ion-icon>
+                     </ion-thumbnail>
+                     
+                     <h2 fnt-bold>{{x.name}}</h2>
+                     <p fnt-light>{{x.created_on | date : 'short'}}</p>
+                     <p fnt-light>
+                        <ion-badge fnt-light color="light">Level {{x.userLevel}}</ion-badge>
+                     </p>
+
+                     <span class="form-custom-check one" item-end checkbox-responsive>
+                        <input [checked]="selected_Ids.indexOf(x._id) >= 0" (change)="insertToArray($event,x)" type="checkbox" id="checkbox{{i}}{{timestamp}}"  name="checkbox{{i}}{{timestamp}}" class="form-check-input">
+                        <label class="form-check-label"  for="checkbox{{i}}{{timestamp}}"></label>
+                     </span>
+
+                     <button ion-button clear item-end margin0 (click)="editgroup(x)" *ngIf="isBrowser ==  'true' ">
+                        <ion-icon name="create" fnt20></ion-icon>
+                     </button>
+                     <button ion-button clear item-end margin0 (click)="showConfirmGroup(x, i)" *ngIf="isBrowser ==  'true' ">
+                        <ion-icon name="trash" fnt20></ion-icon>
+                     </button>
+                  </ion-item>
+                  <ion-item-options side="right" *ngIf="isBrowser ==  'false' ">
+                     <button ion-button color="danger" (click)="showConfirmGroup(x, i)">
+                        <ion-icon name="trash"></ion-icon>
+                        Delete
+                     </button>
+                     <button ion-button color="secondary"  (click)="editgroup(x)">
+                        <ion-icon name="create"></ion-icon>
+                        Edit
+                     </button>
+                  </ion-item-options>
+               </ion-item-sliding>
+            </ion-col>
+            </ng-container>
+            <div *ngIf="all_groups == ''" white-bg br-lt-grey padding> No Group Found.</div>
+         </ion-row>
+      </ion-grid>
+   </ion-list>
+   </div>
+<div footer-height></div> 
+</ion-content>

@@ -1,0 +1,56 @@
+<ion-content padding has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col>
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li class="active">Notification</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+  <ion-list>
+    <ion-row class="row ">
+      <ion-col col-12 col-md-6 col-lg-4  *ngFor="let notice of messageArr; let i = index ">
+        <ion-item>
+          <ion-avatar item-start>
+            <img src="assets/img/m7.png" *ngIf="notice.image == ''">
+            <img src="{{notice.image}}" *ngIf="notice.image != ''">
+          </ion-avatar>
+          <h4 fnt-bold>{{notice.receiverName}}</h4>
+          <h6 fnt-regular fnt12 *ngIf="notice.type == 0">You get smail from {{notice.senderName}}</h6>
+          <h6 fnt-regular fnt12 *ngIf="notice.type == 1">You get contact request from {{notice.senderName}}</h6>
+
+          <p fnt-regular fnt12>{{notice.created_on|timeAgo}}</p>
+        </ion-item>
+        <!--  <ion-item-sliding>
+          <ion-item box-shadow  wallet-main [ngClass]="(item.memberstatus == 1) ? '' : 'bgGreen'">
+           <ion-thumbnail item-start icon-ionic >
+             <img alt="image" class="rounded-circle" src="assets/img/demo.png" style="   border-radius: 50%; "  user-pic *ngIf="!item.image">
+
+             <img alt="image" class="rounded-circle" src="{{API_ENDPOINT_URL}}images/{{item.image}}" style="   border-radius: 50%; " *ngIf="item.image">
+            </ion-thumbnail>
+
+            <h2 fnt-bold>{{item.senderName}} </h2>  
+        	 <ion-badge fnt-light>Friend Request</ion-badge>
+            <h3 fnt-regular>{{item.senderName}} invite you to  join salvum</h3>
+            
+        	 <ion-note fnt-light margin0>{{item.expiryDate}}</ion-note>
+        	 
+          </ion-item>
+          
+
+            <ion-item-options side="right" *ngIf="item.memberstatus == 1 ">
+              <button ion-button color="danger" (click)="accept(item)"> Accept</button>
+              <button ion-button color="secondary" (click)="decline(item)"> Decline</button>
+            </ion-item-options>
+
+            <ion-item-options side="right" *ngIf="item.memberstatus == 2 ">
+              <button ion-button color="danger" (click)="accept(item)"> Delete</button>
+            </ion-item-options>
+
+        </ion-item-sliding> -->
+     </ion-col>
+ 	  </ion-row>
+  </ion-list>
+<div footer-height></div>
+</ion-content>

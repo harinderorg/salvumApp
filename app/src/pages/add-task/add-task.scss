@@ -1,0 +1,14 @@
+page-add-task {
+	.append_dollar_n{
+		position: relative;
+		ion-icon{
+		    position: absolute;
+		    bottom: 11px;
+    		color: #001643;
+		}
+		input {
+		    padding-left: 12px;
+		    font-size: 16px !important;
+		}
+	}
+}

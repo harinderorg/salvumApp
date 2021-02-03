@@ -1,0 +1,277 @@
+page-rfis {
+ 	.breadcrumbs-row [class^="flaticon-"]:before, .breadcrumbs-row [class*=" flaticon-"]:before, .breadcrumbs-row [class^="flaticon-"]:after, .breadcrumbs-row [class*=" flaticon-"]:after{
+    font-size: 1.2em;
+} @include respond-to(handhelds2)
+	 {
+	 .drop-scroll
+	 {
+	 min-height:$value30;
+	 }
+	 button
+	 {
+	  &[ion-button]
+	  {
+	   margin-top:$value0;
+	  }
+	 }
+	 [right-adendum]
+	 {
+	 padding-left:$value5!important;
+	 padding-right:$value5!important;
+	 }
+	 .breadcrumbs-row
+	 {
+		 margin-bottom:$value0;
+	 }
+	 [searchmob]
+	 {
+	  padding:$value0!important;
+	 }
+	 [mar-mob-t30]
+	 {
+	  margin-top:$value30; 
+	 }
+	 [fixheightmob]
+	 {
+		 display:inline-block;
+		 width:100%;
+	 }
+	
+ }
+ion-avatar{
+	[fnt20]{
+		font-size:21px;
+		display:block;
+	}
+}
+
+ion-content
+{
+	
+	    margin-top: $value10;
+	     @include respond-to(handhelds2)
+    {
+      margin-top: $value0;
+    }
+}
+[fixed-top-div]
+{
+    width: 100%;
+    background: #e6e6e6;
+    /*padding: $value0 $value0 $value0  12px;*/
+   
+    @include respond-to(handhelds2)
+    {
+      padding: $value0;
+      ion-list
+      {
+      margin: $value0;
+      }
+    }
+}
+
+ [right-adendum]  ion-item-sliding , [right-adendum] ion-item ,  [right-adendum] ion-list , [right-adendum]  ion-label ,  [right-adendum].item-md , [right-adendum] .item-block , [right-adendum] .item , [right-adendum] .item-inner , [right-adendum] .input-wrapper , [right-adendum] .rel-container , [right-adendum] .button-effect
+{
+  overflow: visible!important;	
+}	
+span
+{
+&.form-custom-check.one{
+	right: 95px
+} 
+}
+.form-custom-check
+{
+	&[checkbox-responsive]
+	{
+			 margin-top: -6px;
+			 margin-right: $value25;
+		        float: left;
+	
+		@include respond-to(handhelds2)
+		{
+				position: absolute;
+				right: $value15;
+				top: $value5;			display: inline-block;
+                margin-top: $value0;
+			margin-right: $value5;
+		}
+		
+label
+ {
+	 &.form-check-label
+	 {
+		 		position:relative;
+				cursor:pointer; 
+				float: left;
+			    font-size: $value10+2;
+				&::before
+				{
+						content: '';
+						border-radius: 2px;
+						position: absolute;
+						width: $value10;
+						height: $value10;
+						border-width: 2px;
+						border-style: solid;
+						border-color: #787878;
+						background-color: $fnt-white;
+                            margin-left: -2px;
+				}
+
+  }
+}
+
+
+
+.form-check-input
+{  
+
+
+
+	&:checked + .form-check-label
+	{ 
+	
+			&:after 
+			{		    margin-left: -2px;	
+				position: absolute;
+				background: #1f75d2;
+				width: -1+$value15;
+				height: -1+$value15;
+				content: "\f3ff";
+				left:0;
+				font-family: "Ionicons";
+				text-align: $center;
+				font-size: $value20;
+				line-height: $value15+2;
+				border-radius: 3px;
+				font-weight: 700;
+				color:$fnt-white;
+	   }
+	}
+}
+
+		input[type="checkbox"]
+		{
+		&.form-check-input
+		{
+			position: absolute;
+			opacity: 0;
+			z-index: -1;
+					}
+				}
+	}
+}
+ ion-item-sliding
+ {
+ margin-bottom:-1px;
+ }
+ion-searchbar
+{
+	
+	input
+	{
+			 font-size:$value14!important;  
+	}
+}
+[right-adendum]
+{
+	
+ .item 
+ {
+ 	   contain:none!important;
+
+ }
+ ion-fab
+ {
+ position: relative;
+ z-index: 9999 ;
+ 
+	button
+	{
+	&.fab
+	{
+    width: $value20;
+    height:  $value20;
+    line-height:  $value20;
+	    border-radius: 0;
+    margin-top: $value0;
+	ion-icon
+	{
+	 font-size:$value14;  
+	 line-height:  $value20!important;	
+	}
+	}	
+		
+	}	
+	ion-fab-list
+	{
+   margin-top:$value30;
+   -webkit-box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2);
+	background: $fnt-white;
+	min-height:auto;
+	   width: $value100*2;
+	[question]
+	{
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid $br-lt-grey;
+    background: $fnt-white;
+	align-items:$center;
+	justify-content:space-between;
+    padding: $value10 $value15+1;
+	 position: relative;
+		span
+		{
+		display: flex;
+		    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
+		ion-icon
+		{
+		margin-right:$value10;
+		}
+		}
+		
+	[download]
+	{
+		margin-left:$value10;
+		 margin-top:$value5;
+	}
+	}
+	}	
+	.item
+	{
+			       border-bottom: 1px solid #ddd;
+	}
+ }
+}
+[manage-job]
+{
+[min-h-42]
+	{
+	min-height: $value40+2;
+	ion-label
+	{
+		 margin-top: $value10+1.5;
+			margin-bottom:$value10+1.5
+	}
+	ion-select
+	{
+		    padding-top: $value10+1.5;
+			padding-bottom:$value10+1.5
+	}
+	}
+	h2
+	{
+
+	font-size:$value10+2!important;
+	    margin-top: $value5 !important;
+white-space:normal;
+	}
+}
+}
+.button-fab {
+  z-index: 100 !important;
+}

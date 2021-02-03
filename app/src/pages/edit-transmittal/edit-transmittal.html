@@ -1,0 +1,361 @@
+<ion-content padding lightgrey has-header>
+<div ion-fixed style="width: 100%">
+<ion-row main-breadcrumb> 
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="goToJobs()"><a>Jobs</a></li>
+        <li (click)="backToTradeDash()"><a>{{active_job_breadcrumb}}</a></li> 
+        <li (click)="backPage()"><a>Transmittals</a></li> 
+        <li class="active">Edit Transmittal</li>
+      </ol>
+    </ion-col>
+</ion-row>
+<ion-toolbar no-border-top add-trade>
+    <ion-segment [(ngModel)]="tabs" (click)="tabschanged()">
+      <ion-segment-button value="basicdetail">
+	  <ion-icon name="send" fnt14 m-r-5 visible-xs></ion-icon>
+        <span hidden-xs>Basic Tansmittal details</span>
+      </ion-segment-button>
+     
+      <ion-segment-button value="submittals_tab">
+	    <ion-icon name="list" fnt14 m-r-5 visible-xs></ion-icon>
+        <span hidden-xs>Attach Submittals</span>
+      </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>
+</div>
+<div breadcrumb-tabs-height></div>
+<div [ngSwitch]="tabs">
+<ion-list mar-mob-t15  *ngSwitchCase="'basicdetail'" m-t-10 m-b-0>
+
+<ion-list br-lt-grey white-bg  m-t-0>
+<ion-list-header margin0 no-border br-btm color="light">
+Basic Transmittal Details
+</ion-list-header>
+
+  <ion-item>
+    <ion-label stacked fnt-light fnt-regular>Subject*</ion-label>
+    <ion-input type="text" [disabled]="sender_id != userId ? true : false" [(ngModel)] = "subject"></ion-input>
+  </ion-item>
+
+  <ion-item>
+   <ion-label stacked fnt-light fnt-regular>We are Sending</ion-label>
+    <ion-select [disabled]="sender_id != userId ? true : false" multiple cancelText="Cancel" okText="Ok" [(ngModel)] = "sending_items">
+      <ion-option value="plans">Plans</ion-option>   
+      <ion-option value="drawings">Drawings</ion-option>   
+      <ion-option value="specifications">Specifications</ion-option>   
+      <ion-option value="copy of letter">Copy of Letter</ion-option>   
+      <ion-option value="prints">Prints</ion-option>   
+      <ion-option value="shop drawings">Shop Drawings</ion-option>   
+      <ion-option value="letter">Letter</ion-option>   
+      <ion-option value="samples">Samples</ion-option>   
+      <ion-option value="rfi">RFI</ion-option>   
+      <ion-option value="contract">Contract</ion-option>   
+      <ion-option value="change order">Change Order</ion-option>   
+      <ion-option value="reproducible">Reproducible</ion-option> 
+      <!-- <ion-option value="other">Other</ion-option>    -->
+    </ion-select>
+    <!-- <ion-input zind *ngIf="sending_items.indexOf('other') >= 0" type="text" placeholder="Enter other type" [(ngModel)]="other_type"></ion-input> -->
+  </ion-item>
+
+  <ion-item>
+      <ion-label stacked fnt-light fnt-regular>Sent From</ion-label>
+      <ion-input [disabled]="true" type="text" [(ngModel)]="send_from"></ion-input>
+  </ion-item>
+  <ion-item>
+      <ion-label stacked fnt-light fnt-regular>Company</ion-label>
+      <ion-input [disabled]="true" type="text" [(ngModel)]="curr_comp_name"></ion-input>
+  </ion-item>
+
+  <!-- <ion-item *ngIf="filterTradeId == '0'">
+   <ion-label stacked fnt-light fnt-regular>Select Trade*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Ok" [(ngModel)] = "tradeId">
+      <ion-option *ngFor="let trade of alltrades" value="{{trade._id}}">
+      {{trade.trade_name}} ({{trade.trade_task}})</ion-option>   
+    </ion-select>
+  </ion-item> -->
+
+  <ng-container *ngIf="all_contracts != '' && sender_id == userId">
+  <ion-item>
+   <ion-label stacked fnt-light fnt-regular>Send To*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Ok" [(ngModel)] = "rec_id" (ionChange)="sendToSelected()">
+      <ion-option *ngFor="let contract of all_contracts" value="{{contract.inviteId}}">
+      {{contract.user_email}}</ion-option>
+      <ion-option [disabled] = "true" *ngIf="all_contracts == ''">No Contract Found.</ion-option>   
+    </ion-select>
+  </ion-item>
+  </ng-container>
+
+  <ng-container *ngIf="all_contracts == '' && sender_id == userId">
+      <ion-item>
+      <p>Send To*</p>
+      <p>No contract ,owner, engineer, architect added.</p>
+      </ion-item>
+  </ng-container>
+
+  <ion-item>
+    <ion-label stacked fnt-light fnt-regular>Description</ion-label>
+    <ion-textarea [disabled]="sender_id != userId ? true : false" type="" [(ngModel)] = "desc"></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked fnt-light fnt-regular>Comments</ion-label>
+    <ion-textarea [disabled]="sender_id != userId ? true : false" type="" [(ngModel)] = "comments"></ion-textarea>
+  </ion-item>
+
+<!--   <ion-item>
+    <ion-label stacked fnt-light fnt-regular>Signature &nbsp;
+    <a *ngIf="sender_sign != ''" (click)="clearSign()">Clear</a>
+    <a *ngIf="errors.indexOf(uploaded_sender_sign) == -1" (click)="changeSign()">Change</a>
+    </ion-label>
+  </ion-item>
+  <signature-pad *ngIf="errors.indexOf(uploaded_sender_sign) >= 0" [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad>
+  <img *ngIf="errors.indexOf(uploaded_sender_sign) == -1" src="{{APIURL}}/salvum/directory/transmittal_files/{{uploaded_sender_sign}}"> -->
+
+  <ng-container *ngIf="sender_id == userId">
+  <div signature>
+  <ion-item *ngIf="errors.indexOf(uploaded_rec_sign) == -1">
+    <ion-label stacked fnt-light fnt-regular>Receiver Signature </ion-label>
+  </ion-item>
+  <img *ngIf="errors.indexOf(uploaded_rec_sign) == -1" src="{{APIURL}}/salvum/directory/transmittal_files/{{uploaded_rec_sign}}">
+
+  <ion-item>
+    <ion-label stacked fnt-light fnt-regular>Sender Signature &nbsp;
+    <a *ngIf="sender_sign != ''" (click)="clearSign()">Change</a>
+    <a *ngIf="errors.indexOf(uploaded_sender_sign) == -1" (click)="changeSign()">Change</a>
+    </ion-label>
+  </ion-item>
+  <signature-pad  *ngIf="errors.indexOf(uploaded_sender_sign) >= 0 && show_duplicate == '0'" [options]="signaturePadOptions" (onEndEvent)="drawComplete()"></signature-pad>
+  <img *ngIf="errors.indexOf(uploaded_sender_sign) == -1 && show_duplicate == '0'" src="{{APIURL}}/salvum/directory/transmittal_files/{{uploaded_sender_sign}}">
+  <img *ngIf="sender_sign != '' && show_duplicate == '1'" src="{{sender_sign}}">
+  </div>
+  </ng-container>
+
+  <ng-container *ngIf="sender_id != userId">
+    <div signature>
+  <ion-item *ngIf="errors.indexOf(uploaded_sender_sign) == -1"> 
+    <ion-label stacked fnt-light fnt-regular>Sender Signature </ion-label>
+  </ion-item>
+  <img *ngIf="errors.indexOf(uploaded_sender_sign) == -1" src="{{APIURL}}/salvum/directory/transmittal_files/{{uploaded_sender_sign}}">
+
+  <ion-item>
+    <ion-label stacked fnt-light fnt-regular>Receiver Signature &nbsp;
+    <a *ngIf="sender_sign != ''" (click)="clearSign()">Change</a>
+    <a *ngIf="errors.indexOf(uploaded_rec_sign) == -1" (click)="changeSignR()">Change</a>
+    </ion-label>
+  </ion-item>
+  <signature-pad *ngIf="errors.indexOf(uploaded_rec_sign) >= 0 && show_duplicate == '0'" [options]="signaturePadOptions" (onEndEvent)="drawComplete()"></signature-pad>
+  <img *ngIf="errors.indexOf(uploaded_rec_sign) == -1  && show_duplicate == '0'" src="{{APIURL}}/salvum/directory/transmittal_files/{{uploaded_rec_sign}}">
+  <img *ngIf="sender_sign != '' && show_duplicate == '1'" src="{{sender_sign}}">
+  </div>
+  </ng-container>
+
+</ion-list>
+
+</ion-list>
+
+<ion-list mar-mob-t15  *ngSwitchCase="'submittals_tab'" m-t-10 m-b-0>
+
+
+<ion-list br-lt-grey  margin0 white-bg >
+<ion-list-header margin0 no-border br-btm color="light">
+Add Submittals
+</ion-list-header>
+<ion-item>
+  <ion-label stacked fnt-light fnt-regular>Type*</ion-label>
+  <ion-select (ionChange)="addSubmittalReq(submittal_type)" cancelText="Cancel" okText="Ok" [(ngModel)] = "submittal_type">
+    <ion-option value="contract">Contract</ion-option>
+    <ion-option value="rfi">RFI</ion-option>
+    <ion-option value="change order">Change Order</ion-option>
+    <ion-option value="plans">Plans</ion-option>
+    <ion-option value="shop drawings">Shop Drawings</ion-option>
+    <ion-option value="prints">Prints</ion-option>
+    <ion-option value="samples">Samples</ion-option>
+    <ion-option value="specifications">Specifications</ion-option>
+    <ion-option value="copy of letter">Copy of Letter</ion-option>
+    <ion-option value="reproducible">Reproducible</ion-option>
+    <ion-option value="request">Request</ion-option>
+    <ion-option value="other">Other</ion-option>
+  </ion-select>
+  <ion-input zind *ngIf="submittal_type == 'other'" type="text" placeholder="Enter other type" [(ngModel)]="sub_other_type"></ion-input>
+</ion-item>
+
+<ion-item>
+   <ion-label stacked fnt-light fnt-regular>Select Trade*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Ok" [(ngModel)] = "tradeId">
+      <ion-option *ngFor="let trade of alltrades" value="{{trade._id}}">
+      {{trade.trade_name}} ({{trade.trade_task}})</ion-option>   
+    </ion-select>
+</ion-item>
+
+<ng-container *ngIf="tradeId != ''">
+
+<ion-item>
+  <ion-label stacked fnt-light fnt-regular>Issue date</ion-label>
+  <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="issue_date"></ion-datetime>
+</ion-item>
+
+<ion-item>
+  <ion-label stacked fnt-light fnt-regular>Due date</ion-label>
+  <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="due_date"></ion-datetime>
+</ion-item>
+
+<ng-container *ngIf="submittal_type == 'contract'">
+  <ion-item transdrop>
+    <ion-label stacked fnt-light fnt-regular>Select Contract*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Ok" [(ngModel)] = "item" >
+    <!-- (ionChange)="addSubmittal(submittal_type,item)" -->
+      <ion-option *ngFor="let contract of all_contracts_list" value="{{contract._id}}">
+      {{contract._id}}({{contract.trade_name}} - {{contract.trade_task}})</ion-option>
+    </ion-select>
+  </ion-item>
+</ng-container>
+
+<ng-container *ngIf="submittal_type == 'rfi'">
+    <ion-item transdrop>
+        <ion-label stacked fnt-light fnt-regular>Select RFI*</ion-label>
+        <ion-select  [selectOptions]="selectOptions1"   cancelText="Cancel" okText="Ok" [(ngModel)]="item" multiple="true" >
+        <!-- (ionChange)="addSubmittal(submittal_type,item)" -->
+            <ion-option *ngFor="let RFI of all_RFIs" value="{{RFI._id}}" >
+                {{RFI.question}}</ion-option>
+        </ion-select>
+    </ion-item>
+</ng-container>
+
+
+
+<ion-item>
+  <ion-label stacked fnt-light fnt-regular>Quantity/Copies</ion-label>
+  <ion-input type="number" [(ngModel)]="quantity"></ion-input>
+</ion-item>
+
+<ion-list radio-group m-b-0 [(ngModel)]="state" >
+     <ion-label headinner fnt-regular> Select State</ion-label>
+<div radioinner>
+  <ion-item>
+    <ion-label>New Submittal</ion-label>
+    <ion-radio checked="true" value="new"></ion-radio>
+  </ion-item>
+
+  <ion-item> 
+    <ion-label>Revised Submittal</ion-label>
+    <ion-radio value="revised"></ion-radio>
+  </ion-item>
+   </div>
+</ion-list>
+
+<ion-item>
+  <ion-label stacked fnt-light fnt-regular>Comments</ion-label>
+  <ion-textarea type="" [(ngModel)] = "sub_comments"></ion-textarea>
+</ion-item>
+
+<ion-grid no-padding actionitems>
+    <ion-label fnt-regular headinner> Action Items</ion-label>
+  <ion-row br-b-btm  row-action>
+    <ion-col col-xl-4 col-lg-6 col-md-6 col-12 col-sm-6 *ngFor="let a_item of all_action_items ">
+      <ion-item p-lr-0  border-none>
+        <ion-label>{{a_item}}</ion-label>
+        <ion-checkbox (ionChange)="insertContactToArray($event,a_item)" ></ion-checkbox>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<div signature>
+  <ion-item>
+    <ion-label stacked fnt-light fnt-regular>Signature <a *ngIf="sub_sign != ''" (click)="clearSignS()">Clear</a></ion-label>
+  </ion-item>
+  <signature-pad [options]="signaturePadOptions" (onEndEvent)="drawCompleteS()"></signature-pad>
+</div>
+
+<ng-container *ngIf="submittal_type != 'contract' && submittal_type != 'rfi' && submittal_type != 'request' && submittal_type != ''">
+<ion-row>
+    <ion-col col-12   col-sm-4 col-xl-4>
+        <ion-item filetype text-center  left (click) = "uploadFiles()">
+            <ion-icon name="cloud-upload" color="blue"></ion-icon>
+            <h4 text-center>Upload From Local System</h4>
+        </ion-item> 
+    </ion-col>
+    <ion-col col-12 col-sm-4 col-xl-4>
+        <ion-item filetype text-center  left (click)="filemanagerFiles()">
+            <ion-icon name="cloud-upload" color="blue"></ion-icon>
+            <h4>Add Files From File Manager</h4>
+        </ion-item> 
+    </ion-col>
+    <ion-col col-12 col-sm-4 col-xl-4>
+        <ion-item filetype text-center  left (click)="jobFiles()">
+            <ion-icon name="cloud-upload" color="blue"></ion-icon>
+            <h4>Add Files From Jobs</h4>
+        </ion-item> 
+    </ion-col>
+</ion-row>
+  <!-- <ion-item>
+  <ion-col file-manager>
+    <div ng2FileDrop [uploader]="uploader" (onFileDrop)="uploadNow()" class="well my-drop-zone">
+        Drag & Drop Here
+    </div>
+    <input type="file" (change)="uploadNow()" ng2FileSelect [uploader]="uploader"  />
+  </ion-col>
+  <div class="progress-outer">
+        <div class="progress-inner" [style.width]="uploader.progress + '%'">
+            {{uploader.progress}}%
+        </div>
+    </div>
+  </ion-item> -->
+</ng-container>
+
+
+<div padding *ngIf="submittal_type == 'rfi' || submittal_type == 'contract'">
+	<button ion-button color="darkblue" fnt-regular type="button" (click) = "addSubmittal(submittal_type,item)">Add</button>
+</div>
+</ng-container>
+</ion-list>
+
+<ion-list br-lt-grey white-bg m-t-10>
+<ion-list-header margin0 no-border br-btm color="light">
+Submittals
+</ion-list-header>
+<div class="submittal">
+<ion-row>
+<ion-col col-12 col-sm-6 col-md-4  col-lg-3 *ngFor="let submittal of all_submittals; let indx = index ">
+<div class="submittalinner">
+ <ion-icon class="icondoc" name="ios-document-outline"></ion-icon>
+ 
+ <h2>{{submittal.type}}</h2>
+ <p> {{(submittal.type != 'contract' && submittal.type != 'rfi' && submittal.type != 'request') ? (submittal.item.search('____') >= 0 ? submittal.item.split('____').pop(-1) : submittal.item.split('_--_').pop(-1)) : (submittal.type == 'contract' ? submittal.item : '')}}
+
+  {{submittal.type == 'rfi' ? (indexed_rfis[submittal.item].question) : ''}}
+
+  {{submittal.type == 'contract' ? '('+(indexed_conts[submittal.item].trade_name +' - '+indexed_conts[submittal.item].trade_task)+')' : ''}} <br>
+  <ion-icon *ngIf="submittal.date_created != null && submittal.date_created != undefined" name="ios-calendar-outline"></ion-icon> {{submittal.date_created | date : 'M/d/y'}}</p>
+  <button act_itm_btn *ngIf="sender_id == userId" (click)="removeSubmittal(indx)"><ion-icon name="close"></ion-icon></button>
+  <button (click)="seeAcItems(submittal.action_items)" title="Action items" *ngIf="submittal.action_items != ''"><ion-icon name="apps" ></ion-icon></button>
+  <button *ngIf="sender_id == userId" edt_sub_btn (click)="editSub(submittal)" title="Edit"><ion-icon name="create" ></ion-icon></button>
+ </div>
+  </ion-col>
+</ion-row>
+</div>
+<!---ion-item *ngFor="let submittal of all_submittals; let indx = index ">
+<ion-row>
+	<ion-col fnt-regular text-capitalize>{{submittal.type}}</ion-col>
+	<ion-col fnt-regular>
+  {{submittal.type == 'files' ? (submittal.item.search('____') >= 0 ? submittal.item.split('____').pop(-1) : submittal.item.split('_--_').pop(-1)) : (submittal.type == 'contract' ? submittal.item : '')}}
+
+  {{submittal.type == 'rfi' ? (indexed_rfis[submittal.item].question) : ''}}
+
+  {{submittal.type == 'contract' ? '('+(indexed_conts[submittal.item].trade_name +' - '+indexed_conts[submittal.item].trade_task)+')' : ''}}  
+  </ion-col>
+	<ion-col><button (click)="removeSubmittal(indx)"><ion-icon name="close"></ion-icon></button></ion-col>
+</ion-row>
+</ion-item-->
+	<ion-item norecord *ngIf="all_submittals == ''">
+	  No Submittals Added.
+	</ion-item>
+</ion-list>
+</ion-list>
+	<button ion-button color="darkblue" fnt-regular type="button" (click) = "editTransmittal(subject,rec_id,tradeId,comments,desc,sending_items)">Save</button>
+	<button ion-button color="darkblue" fnt-regular type="button" (click) = "backPage()">Back</button>
+</div>
+<div footer-height></div> 
+</ion-content>

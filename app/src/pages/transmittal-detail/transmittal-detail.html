@@ -1,0 +1,176 @@
+<ion-content padding has-header>
+ <ion-row main-breadcrumb ion-fixed> 
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="goToJobs()"><a>Jobs</a></li>
+        <li (click)="backToTradeDash()"><a>{{active_job_breadcrumb}}</a></li> 
+        <li (click)="backPage()"><a>Transmittals</a></li> 
+        <li class="active">Transmittal Details</li>
+        
+      </ol>
+    </ion-col>
+    <ion-col>
+    <span print-trans (click)="printIt()" class="pull-right">Print Cover Letter</span>
+    </ion-col>
+ </ion-row>
+<div breadcrumb-height></div>
+ <ion-grid no-padding class="trans_cover_letter">
+  <ion-row >
+    <ion-col col-12  col-md-3 col-lg-3  col-xl-3 no-padding>
+<!-- 		<div margin-bottom fnt-regular text-left>
+		<h5  fnt-regular>{{userCompany}}</h5>
+		{{userAddress}}<br>
+		</div> -->
+
+		<div margin-bottom  fnt-regular text-left *ngIf="sender_id == userId">
+		<div><span>From: </span> {{my_name}}</div>
+		<div>{{userCompany}}</div>
+		<div>{{userAddress}}</div>
+		</div>
+
+		<div margin-bottom  fnt-regular text-left *ngIf="sender_id != userId">
+		<div><span>From: </span> {{toName}}</div>
+		<div>{{toEmail}}</div>
+		<div>{{tocompany}}</div>
+		</div>
+    </ion-col>
+	<ion-col   col-md-6 col-lg-6  col-xl-7  no-padding hidden-xs></ion-col>
+	<ion-col col-12  col-md-3 col-lg-3  col-xl-2  no-padding text-left>
+		<div margin-bottom>
+			<h5  fnt-regular>Letter Of Transmittal</h5>
+			<div><strong fnt-bold>Date :</strong>  {{date_sent == null ? 'N/A' : date_sent | date : 'MM/dd/y'}}</div>
+			<div><span fnt-regular>Sent To: </span>  {{senders?.user_name}}</div> 
+			<!-- <span fnt-regular>Phone: </span> {{toPhone}}<br> -->
+		</div>
+
+		<div margin-bottom fnt-regular text-left>
+			<div><span fnt-regular>Job Title :</span> {{job_name}}</div>
+			<div><span fnt-regular>Job # :</span> {{job_number}}</div>
+			<div><span fnt-regular>Transmittal # :</span> {{transmittal_number}}</div>
+<!-- 			<ng-container *ngIf="sending_items != ''"> 
+				(
+				<ng-container *ngFor="let sending_item of sending_items; let last = last ">
+					{{all_sending_items[sending_item]}} {{last != true ? ',' : ''}}
+				</ng-container>
+				)
+			</ng-container> -->
+		</div>
+	</ion-col>
+  </ion-row>
+
+<ion-row no-padding wearesending margin-top mr_bot_20 *ngIf="sending_items != ''">
+	<ion-col no-padding>
+		<h5  fnt-bold>We are sending</h5>
+		<p actitms *ngFor="let sending_item of sending_items" margin0 fnt-regular><ion-icon name="checkmark-circle"></ion-icon> {{all_sending_items[sending_item]}} </p>
+	</ion-col> 
+</ion-row>
+
+  <div class="table-responsive">
+<table class="table " width="100%">
+
+<tr top-head *ngIf="submittals != ''">
+	<td></td> 
+	<td><strong fnt-bold>Type</strong></td>
+	<td><strong fnt-bold>Pages</strong></td>
+		<td><strong fnt-bold>Ref#</strong></td>
+		<td><strong fnt-bold>Trade</strong></td>
+		<td col-2 ><strong  fnt-bold>Task</strong></td>
+		<td  ><strong  fnt-bold>Comments</strong></td>
+		<td><strong fnt-bold>Submitted by</strong></td>
+		<td><strong fnt-bold>Signature</strong></td>
+		<td><strong  fnt-bold>Action items</strong></td>
+		<td><strong  fnt-bold>Action Taken</strong></td>
+		<!-- <td><strong  fnt-bold><ion-icon class="ion-ios-add-outline"></ion-icon></strong></td> -->
+</tr>
+
+		<tr top-body *ngFor="let submittal of submittals">
+			<td fl-icon><i class="{{alltrades[submittal.tradeId]?.trade_icon}}"></i></td>
+			<td fnt-regular fcap>{{submittal.type}}</td>
+				<td fnt-regular>{{submittal.quantity}}</td>
+			<td fnt-regular>{{(submittal.type != 'contract' && submittal.type != 'rfi' && submittal.type != 'request') ? (submittal.item.search('____') >=0 ? submittal.item.split('____').pop(-1) : submittal.item.split('_--_').pop(-1))  : submittal.submittal_number}}</td>
+			<td  fnt-regular><ion-badge>{{alltrades[submittal.tradeId]?.trade_name}}</ion-badge></td>
+				<td col-2 fnt-regular>{{alltrades[submittal.tradeId]?.trade_task}}</td>
+				<td fnt-regular>{{submittal.sub_comments}}</td>
+				<td fnt-regular>
+				{{errors.indexOf(submittal.date_created) == -1 ? (submittal.date_created | date : 'M/d/y') : ''}}
+				<br>
+				{{errors.indexOf(submittal.sub_by) == -1 ? submittal.sub_by  : ''}}
+				</td>
+				<td>
+					<img height="40" *ngIf="errors.indexOf(submittal.sign) == -1" src="{{APIURL}}/salvum/directory/transmittal_files/{{submittal.sign}}">
+				</td>
+			    <td fnt-regular>
+			    	<p actitms *ngFor="let item of submittal.action_items" margin0 fnt-regular><ion-icon name="checkmark-circle"></ion-icon> {{item}}</p>
+			    </td> 
+				<td class="td_icons_cursor">	
+					<ion-icon *ngIf="isSent == '0'" title="Edit" (click)="editTransmittal('0')" name="create"></ion-icon>	
+					<ion-icon title="Details" (click)="submittalClicked(submittal.type,submittal.item,submittal)" name="list"  ></ion-icon>
+					<!-- <ion-icon *ngIf="submittal.action_items != ''" title="Action items" name="apps" (click)="seeAcItems(submittal.action_items)"></ion-icon> -->
+					<ion-icon title="Delete" *ngIf="isSent == '0'" (click)="editTransmittal('1')" name="close"></ion-icon>
+					</td>
+		</tr>
+</table>
+</div>
+<!--ion-row top-head *ngIf="submittals != ''">
+	<ion-col><strong fnt-bold>Type</strong></ion-col>
+	<ion-col><strong fnt-bold>Pages</strong></ion-col>
+	<ion-col><strong fnt-bold>Ref#</strong></ion-col>
+	<ion-col><strong fnt-bold>Trade</strong></ion-col>
+	<ion-col col-md-3><strong  fnt-bold>Task</strong></ion-col>
+	<ion-col><strong  fnt-bold>Sub For</strong></ion-col>
+	<ion-col><strong  fnt-bold>Action Taken</strong></ion-col>
+	<ion-col><strong  fnt-bold><ion-icon class="ion-ios-add-outline"></ion-icon></strong></ion-col>
+</ion-row>
+
+<ion-row top-body *ngFor="let submittal of submittals">
+	<ion-col  fnt-regular>{{submittal.type}}</ion-col>
+	<ion-col fnt-regular>1</ion-col>
+	<ion-col fnt-regular>{{submittal.type == 'files' ? submittal.item.split('____').pop(-1) : submittal.item}}</ion-col>
+	<ion-col fnt-regular><ion-badge>{{trade_name}}</ion-badge></ion-col>
+	<ion-col col-3 fnt-regular>{{trade_task}}</ion-col> 
+	<ion-col fnt-regular>Approval</ion-col>
+	<ion-col fnt-regular>As Requested</ion-col>
+	<ion-col>	
+	<ion-icon class="ion-ios-document-outline"  ></ion-icon>	
+	<ion-icon class="ion-ios-arrow-dropright-outline"  ></ion-icon>
+	<ion-icon class="ion-ios-close-circle-outline"  ></ion-icon>
+	</ion-col>
+</ion-row-->
+
+<ion-row no-padding trans-desc margin-top>
+	<ion-col no-padding>
+		<h5 margin0 fnt-bold>Description</h5>
+		<p margin0 fnt-regular>{{description}}</p>
+	</ion-col>
+</ion-row>
+<ion-row no-padding trans-desc margin-top>
+	<ion-col no-padding>
+		<h5  fnt-bold>Comments</h5>
+		<p margin0 fnt-regular>{{comments}}</p>
+	</ion-col>
+</ion-row>
+<ion-row no-padding trans-desc margin-top *ngIf="all_action_items != ''">
+	<ion-col no-padding>
+		<h5  fnt-bold>Action items</h5>
+		<p actitms *ngFor="let item of all_action_items" margin0 fnt-regular><ion-icon name="checkmark-circle"></ion-icon> {{item}}</p>
+	</ion-col> 
+</ion-row>
+
+<ion-row no-padding  trans-desc margin-top *ngIf="errors.indexOf(sender_sign) == -1">
+	<ion-col no-padding>
+		<h5  fnt-bold>Sender Sign</h5>
+		<img height="40" src="{{APIURL}}/salvum/directory/transmittal_files/{{sender_sign}}">
+	</ion-col> 
+</ion-row>
+
+<ion-row no-padding  trans-desc margin-top *ngIf="errors.indexOf(rec_sign) == -1">
+	<ion-col no-padding>
+		<h5  fnt-bold>Receiver Sign</h5>
+		<img height="40" src="{{APIURL}}/salvum/directory/transmittal_files/{{rec_sign}}">
+	</ion-col> 
+</ion-row>
+
+</ion-grid>
+<div footer-height></div>
+</ion-content>

@@ -1,0 +1,70 @@
+<ion-content padding lightgrey has-header>
+<ion-row main-breadcrumb ion-fixed>
+  <ion-col> 
+    <ol class="breadcrumb">
+      <li (click)="root()"><a>Home</a></li>
+      <li class="active">Invite</li>
+    </ol>
+  </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+<ion-list invite-list br-lt-grey margintop0>
+  <ion-item-divider margin0 no-border   divider-fnt20>
+    Invite
+    <button ion-button (click)="members()" member_btn>Connect with existing</button>
+  </ion-item-divider>
+<ion-grid no-padding (click)="inviteSpecificCons()">
+  <ion-row>
+    <ion-col col-12 col-md-4 col-xl-4> 
+
+<ion-card class="card " padding="" text-center   no-shadow >
+     <ion-icon name="mail-outline"  fnt31></ion-icon>
+   
+<h1 font-light color="dark" >  Specific Contacts</h1> 
+ </ion-card>
+ </ion-col>
+ 
+    <ion-col col-12 col-md-4 col-xl-4>
+
+  </ion-col>
+    <ion-col col-12 col-md-4 col-xl-4>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+ 
+  </ion-list>
+ <ion-list darkblue2 import-list>
+
+    <ion-item-divider margin0 no-border darkblue2 fnt-white divider-fnt20 font-bold>
+      Import Form
+    </ion-item-divider>
+
+<ion-grid no-padding>
+  <ion-row >
+    <ion-col col-12 col-md-4 col-xl-4 (click)="yahooLogin()"> 
+
+<ion-card  class="card" padding text-center width-invite darkblue2 no-shadow>
+     <ion-icon name="logo-yahoo" fnt-white fnt31></ion-icon>
+   
+<h1 font-light>Yahoo  Mail</h1> 
+ </ion-card>
+ </ion-col>
+ 
+    <ion-col col-12 col-md-4 col-xl-4 (click)="gmailLogin()">
+<ion-card class="card" padding="" text-center width-invite darkblue2 no-shadow>
+    <ion-icon name="mail-outline" fnt-white fnt31></ion-icon>
+   
+<h1 font-light >GMail</h1> 
+ </ion-card>
+  </ion-col>
+    <ion-col col-12 col-md-4 col-xl-4 > <!-- (click)="hotmailLogin()" (click)="outlookLogin()"-->
+    <ion-card class="card " padding="" text-center width-invite darkblue2 no-shadow>
+     <ion-icon name="mail-outline" fnt-white fnt31></ion-icon>
+   
+<h1 font-light  >HotMail</h1> 
+ </ion-card></ion-col>
+  </ion-row>
+</ion-grid>
+  </ion-list>
+<div footer-height></div> 
+</ion-content>

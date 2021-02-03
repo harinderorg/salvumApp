@@ -1,0 +1,12 @@
+page-payment {
+ion-list
+{
+ion-item 
+{
+&:first-child
+{
+border:$none!important
+}
+}
+}
+}

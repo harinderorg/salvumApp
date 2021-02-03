@@ -1,0 +1,24 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Notes</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+<ion-row>
+<ion-col col-12>
+  <ion-item p-lr-0>
+    <ion-label floating fnt-regular>Notes</ion-label>
+    <ion-textarea type="text" [(ngModel)] = "note"></ion-textarea>
+  </ion-item>
+
+  <div padding p-b-0 p-lr-0>
+    <button (click)="addNote()" ion-button color="darkblue" block  fnt-regular type="button">{{isAdd == '1' ? 'Add' : 'Edit'}} Note</button>
+  </div>
+ </ion-col>
+  </ion-row>
+</ion-content>

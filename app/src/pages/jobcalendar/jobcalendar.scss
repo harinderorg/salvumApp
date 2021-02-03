@@ -1,0 +1,72 @@
+page-jobcalendar {
+	.no-events-label{
+		display : none;
+	}
+	.event-detail-container.list
+	{
+		display: none;
+	}
+	@include respond-to(handhelds2)
+	{
+	 [calendar-detail] 
+		{
+		 [year-div]
+				{
+					ion-label
+					{
+					 text-align:right;
+					}
+				}
+			  
+		}
+	}
+}
+[calendar-detail]
+{
+position:relative;
+border-bottom:$none!important;
+[calendar-top]
+{
+padding-right: $value15+1;
+   ion-label
+   {
+    margin:$value0;
+   button
+   {
+     margin:$value0;
+	
+   }
+    [title-year]
+	 {
+	     font-size: 14px;
+    font-weight: 400;  
+	padding-left: 10px;
+    padding-top: 2px;
+	 }
+   }
+}
+[year-div]
+{
+    position: absolute;
+       bottom: 14px;
+    right: 45px;
+	min-height:auto;
+    max-width: 100px;
+	background:transparent;
+	padding:0px;
+	border:none!important;
+	ion-label
+	{
+	margin:0px;
+    color: #000;
+	}
+	ion-select{
+    padding: 0px 5px;
+	max-width:100%;
+	    font-size: 14px;
+		.select-text {
+    margin-top: 2px;
+}
+}
+}
+}

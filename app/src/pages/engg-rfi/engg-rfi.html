@@ -1,0 +1,148 @@
+<ion-content lightgrey padding big-detail has-header>
+	<ion-row class="row" *ngIf="isValid == '0'">
+	<p>Loading,Please wait...</p>
+	</ion-row>
+	<ion-row class="row" *ngIf="isValid == '2'">
+	<p>Invalid Link...</p>
+	</ion-row>
+    <ion-row class="row" *ngIf="isValid == '1'">
+        <ion-col col-12 col-md-12 col-lg-8 col-xl-9>
+            <ion-row>
+                <ion-col col-12 col-md-6 col-lg-4>
+                    <ion-list br-lt-grey margintop0 company-detail>
+                        <ion-list-header margin0 no-border br-btm color="light">
+                            Main Contacts
+                        </ion-list-header>
+                        <ion-item fnt14 no-border>
+                            <ion-avatar item-start>
+                                <ion-icon *ngIf="posted_image == ''"  circle-pic name="person" text-center></ion-icon>
+                                <img circle-pic *ngIf="posted_image !== ''" src="{{APIURL}}/images/{{posted_image}}">
+                            </ion-avatar>
+                            <h2>{{posted_by}}</h2>
+                            <p>{{posted_email}}</p>
+                        </ion-item>
+                    </ion-list>
+                    <ion-list br-lt-grey margintop0 company-detail>
+                        <ion-list-header margin0 no-border br-btm color="light">
+                            Project Manager
+                        </ion-list-header>
+                        <ion-item fnt14>
+                            Name
+                            <ion-note  item-end fnt14>{{pm_name}}</ion-note>
+                        </ion-item>
+                        <ion-item fnt14>
+                            Contact
+                            <ion-note  item-end fnt14>{{pm_contact}}</ion-note>
+                        </ion-item>
+                    </ion-list>
+                    <ion-list br-lt-grey margintop0 company-detail>
+                        <ion-list-header margin0 no-border br-btm color="light">
+                            Job Info
+                        </ion-list-header>
+                        <ion-item fnt14>
+                            PO/Job
+                            <ion-note  item-end fnt14>{{job_number}}</ion-note>
+                        </ion-item>
+                        <ion-item fnt14>
+                            Job Title
+                            <ion-note  item-end fnt14>{{job_name}}</ion-note>
+                        </ion-item>
+                        <ion-item fnt14>
+                            Trade
+                            <ion-note  item-end fnt14>{{trade_name}}</ion-note>
+                        </ion-item>
+                        <ion-item fnt14>
+                            Site Location
+                            <ion-note  item-end fnt14>{{site_address}}</ion-note>
+                        </ion-item>
+                    </ion-list>
+                </ion-col>
+                <ion-col col-12 col-md-6 col-lg-8>
+                    <div class="white-box" m-b-15 centerbox>
+                        <h6 fnt-bold>Trade Task</h6>
+                        <p fnt-light>{{trade_task}}</p>
+                        <h6 fnt-bold>Job Description</h6>
+                        <p fnt-light>{{job_description}}
+                        </p>
+                    </div>
+                    <ion-list br-lt-grey  company-detail *ngIf="all_attachments != ''">
+                        <ion-list-header margin0 no-border br-btm color="light">
+                            Attachments
+                        </ion-list-header> 
+                        <ion-item     fnt14 *ngFor = "let file of all_attachments">
+                            <ion-icon  small name="attach" item-start  left></ion-icon>
+                            {{file.file_name.indexOf('_--_') >= 0 ? file.file_name.split('_--_').pop(-1) : file.file_name.split('____').pop(-1)}}({{this.all_codeTypes[file.code]}} File)
+                            <a *ngIf="isBrowser == 'true'" (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL +'/salvum/directory/jobs_data/'+file.file_name}}&ext={{file.file_name.split('.').pop().toLowerCase()}}" item-end >
+                                <ion-icon name="download" item-end ></ion-icon>
+                            </a>
+                            <a *ngIf="isBrowser == 'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/jobs_data/'+file.file_name,file.file_name)" href="javascript:void(0)" item-end >
+                                <ion-icon name="download" item-end ></ion-icon>
+                            </a>
+                        </ion-item>
+                    </ion-list>
+                    
+                </ion-col>
+            </ion-row>
+        </ion-col>
+        <ion-col col-12  col-md-12 col-lg-4 col-xl-3>
+            <ion-row>
+                <ion-col col-12 >
+	                <a *ngIf="isBrowser == 'true'" (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL +'/salvum/directory/pdfs/'+pdf_link}}&ext={{pdf_link.split('.').pop().toLowerCase()}}" >
+                        <button ion-button block fnt-regular m-b-15 color="blue" >
+                            <ion-icon name="download"></ion-icon>
+                            &nbsp;&nbsp; Download RFI PDF
+                        </button>
+                    </a>
+
+                    <a *ngIf="isBrowser == 'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/pdfs/'+pdf_link,pdf_link)" href="javascript:void(0)" >
+	                    <button ion-button block fnt-regular m-b-15 color="blue" >
+	                        <ion-icon name="download"></ion-icon>
+	                        &nbsp;&nbsp; Download RFI PDF
+	                    </button>
+	                </a>
+                    <button (click)="downloadAll()" ion-button block fnt-regular m-b-15 color="blue" >
+                        <ion-icon name="download"></ion-icon>
+                        &nbsp;&nbsp; Download Job Attachments
+                    </button>
+                </ion-col>
+            </ion-row>
+        </ion-col>
+    </ion-row>
+    <ion-row class="row" *ngIf="isValid == '1'">
+	    <ion-list br-lt-grey margintop0 company-detail>
+		    <ion-list-header margin0 no-border br-btm color="light">
+		        Please Answer the RFI questions:-
+		    </ion-list-header>
+	    </ion-list>
+	    <ion-col col-12 *ngFor="let rfi of all_rfis; let index = index ">
+			<ion-item p-lr-0 >
+				<p>RFI {{index+1}}. {{rfi.question_engg}}</p>
+			</ion-item>
+			<ion-item p-lr-0 *ngFor="let file of rfi.question_files ">
+			{{file.indexOf('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}} &nbsp;&nbsp;
+			<a *ngIf="isBrowser == 'true'" (click)="downloadFile()" href="{{baseUrl}}/download?file={{APIURL}}/salvum/directory/bids_data/{{file}}&ext={{file.split('.').pop().toLowerCase()}}"><button ion-button><ion-icon name="download"></ion-icon></button></a>
+            <a *ngIf="isBrowser == 'false'"  (click)="downloadAndroid(APIURL +'/salvum/directory/bids_data/'+file,file)"><button ion-button><ion-icon name="download"></ion-icon></button></a>
+			</ion-item>
+			<p *ngIf="rfi.engg_answered != '' && rfi.engg_answered != null && rfi.engg_answered != undefined"><ion-icon name="checkmark-circle"></ion-icon> Answered</p>
+			<button [ngClass]="'ansbtn'+index" *ngIf="rfi.engg_answered == '' || rfi.engg_answered == null || rfi.engg_answered == undefined" (click)="AnswerIt(index)" color="blue" ion-button>Answer</button>
+			<p class="ans{{index}}" style="display: none;">
+				<ion-textarea type="text" [(ngModel)] = "rfi.engg_answer" placeholder="Type your answer here..."></ion-textarea>
+				<button ion-button (click)="addAttchs(rfi._id,index)">Add Attachments</button>
+				<ng-container *ngIf="rfi.engg_answered == '' || rfi.engg_answered == null || rfi.engg_answered == undefined">
+				<ion-item p-lr-0 *ngFor="let file of rfi.engg_answer_files; let indx = index ">
+				{{file.indexOf('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}} &nbsp;&nbsp;
+				<button (click)="removeAttach(index,indx)" ion-button><ion-icon name="close"></ion-icon></button>
+				</ion-item>
+				</ng-container>
+			</p>
+	    </ion-col>
+	    <ion-col col-12>
+	    {{description}}
+	    </ion-col>
+	    <ion-col col-12 *ngIf="is_all_answered == '0' ">
+	    	<button ion-button color="blue" (click)="replyRFIEngg()">Submit Answers</button>
+	    </ion-col>
+    </ion-row>
+<a download href="{{downloaded_href}}" id="download_zip_attachments"  style="visibility: hidden;"></a>
+<div footer-height></div>
+</ion-content>

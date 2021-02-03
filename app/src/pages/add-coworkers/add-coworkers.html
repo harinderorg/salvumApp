@@ -1,0 +1,60 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>Add Coworkers</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding select-contact>
+<ion-grid no-padding>
+<ion-row>
+<ion-col col-12>  
+<ion-list margin0>
+  <ion-item p-lr-0 *ngIf="all_employees != ''">
+   <ion-label stacked fnt-light fnt-regular>Select Trade*</ion-label>
+    <ion-select multiple="true"  cancelText="Cancel" okText="Okay!" [(ngModel)] = "tradeId">
+      <ion-option *ngFor="let trade of alltrades" value="{{trade._id}}">
+      {{trade.trade_name}} ({{trade.trade_task}})</ion-option>   
+    </ion-select>
+  </ion-item>
+  <ng-container *ngFor="let single_contact of all_employees">
+    <ion-grid no-padding>
+      <ion-row br-b-btm>
+        <ion-col col-xl-7 col-lg-7 col-md-6 col-6>
+          <ion-item p-lr-0  border-none>
+            <ion-label>{{single_contact.email}}</ion-label>
+            <ion-checkbox [(ngModel)]="single_contact._id" (ionChange)="insertContactToArray($event,single_contact)" ></ion-checkbox>
+          </ion-item>
+        </ion-col>
+        <ion-col col-xl-5 col-lg-5 col-md-6 col-6>
+          <ion-item no-border>
+              <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)] = "single_contact.privilege" >
+              <ion-option value="0">Linked</ion-option>   
+              <ion-option value="1">Admin</ion-option>   
+              <ion-option value="2">Manager</ion-option>   
+              <ion-option value="3">Project Manager</ion-option>   
+              <ion-option value="4">Secretary</ion-option>   
+              </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+  	</ion-grid>
+  </ng-container>
+  <ion-item p-lr-0 *ngIf="all_employees == ''">
+    No contacts found.
+  </ion-item>
+
+</ion-list>
+</ion-col>
+
+<ion-col col-4>
+  <div padding p-b-0 p-lr-0 *ngIf="all_employees != '' && selected_contacts.length > 0">
+  	 <button ion-button color="darkblue" block  fnt-regular type="button" (click) = "addCoworkers(tradeId)">Submit</button>
+  </div>
+</ion-col>
+</ion-row>
+</ion-grid>
+</ion-content>

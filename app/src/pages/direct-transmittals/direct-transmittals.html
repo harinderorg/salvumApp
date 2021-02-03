@@ -1,0 +1,160 @@
+<ion-content lightgrey has-header [ngClass]="errors.indexOf(userId) >= 0 ? 'no-header' : ''" padding>
+<ion-row main-breadcrumb ion-fixed *ngIf="errors.indexOf(userId) == -1">
+   <ion-col>
+      <ol class="breadcrumb"> 
+		<li (click)="root()"><a>Home</a></li>
+		<li (click)="goToBids()"><a>Bidding</a></li>
+		<li (click)="backPage()"><a>{{bid_job_name}}</a></li>
+		<li class="active">Transmittals</li> 
+	  </ol>
+   </ion-col>
+</ion-row>
+<div breadcrumb-height></div>
+
+<ion-row>
+	<ion-col col-9 col-sm-7 col-md-5>
+	 	<ion-searchbar searchmob [(ngModel)]="searchTerm"  placeholder="Search Transmittals..." paddingtop0 search-bar (ionInput)="getItems(searchTerm)" p-lr-0></ion-searchbar>
+	</ion-col>
+<!-- 	<ion-col col-4>
+	 	<ion-item>
+		  <ion-label>Sort by</ion-label>
+		  <ion-select [(ngModel)]="sort_by" (ionChange)="sortby(sort_by)">
+		    <ion-option value="1">Creation date</ion-option>
+		    <ion-option value="2">Modified date</ion-option>
+		  </ion-select>
+		</ion-item>
+	</ion-col> -->
+	<ion-col col-3 col-sm-3 col-md-3 button-hide *ngIf="errors.indexOf(userId) == -1">
+	 <button (click) = "addTransmittal()" ion-button color="blue" fnt-regular m-b-10 fnt-normal left>
+	    <ion-icon name="add" m-r-5></ion-icon>
+	    <span class="hidden-xs">Create New Transmittal</span>
+	 </button>
+	</ion-col>
+</ion-row>
+   <ion-row > 
+      <ion-col col-xl-12 col-sm-12 col-12 paddingtop0 p-lr-0 clearboth>  		  
+        <ion-list margin0 scroll-mobile>
+         	<ion-row *ngIf="sorted_transmittals != ''" hide-head-mobile>
+				<!-- <ion-col col-1 disp-flex></ion-col> -->
+				<ion-col col-1 disp-flex>Transmittal #</ion-col>
+				<ion-col col-2 disp-flex>Subject </ion-col>
+				<ion-col col-1 disp-flex>Sent date</ion-col>
+				<ion-col col-1 disp-flex>Updated date</ion-col>
+				<ion-col col-1 disp-flex>Creation date</ion-col>
+				<ion-col col-2 disp-flex>Sent By</ion-col>
+				<ion-col col-2 disp-flex>Comments</ion-col>
+				<ion-col col-2 disp-flex></ion-col>
+			</ion-row>
+			<expandable-list *ngFor="let transmittal of sorted_transmittals; let t_index = index "><!-- | orderBy: order_trans : order_trans_p  : true -->
+
+				<expandable-list-item disabled = "false">
+					<span title>					 
+						<ion-row main-position>
+							<!-- <ion-col col-1 disp-flex><i class="{{transmittal.trade_icon}}"></i></ion-col> -->
+							<ion-col col-1 disp-flex><span head style="display:none">Transmittal #</span><span paragraph>
+
+							<!-- <ion-icon *ngIf="transmittal.sender_id != userId && transmittal.rec_indicator == 1" indic name="alert" title="Updated"></ion-icon> -->
+
+							<ng-container *ngIf="transmittal.sender_id != userId">
+								<ion-icon *ngIf="transmittal.rec_indicator == 1" indic name="alert" title="Updated"></ion-icon>
+							</ng-container>
+
+							<ng-container *ngIf="transmittal.sender_id == userId">
+								<ion-icon *ngIf="transmittal.sender_indicator == 1" indic name="alert" title="Updated"></ion-icon>
+							</ng-container>
+
+							{{transmittal.transmittal_number}}</span></ion-col>
+							<ion-col col-2 disp-flex><span head style="display:none">Subject</span><span paragraph>{{transmittal.subject}}</span></ion-col>
+							<ion-col col-1 disp-flex><span head style="display:none"> Sent date</span><span paragraph>{{transmittal.date_sent == '' ? 'N/A' : transmittal.date_sent}}</span></ion-col>
+
+							<ion-col col-1 disp-flex><span head style="display:none"> Updated date</span><span paragraph>{{transmittal.date_updated == '' ? 'N/A' : transmittal.date_updated}}</span></ion-col>
+
+							<ion-col col-1 disp-flex><span head style="display:none"> Creation date</span><span paragraph>{{transmittal.date_created }}</span></ion-col>
+
+							<ion-col col-2 disp-flex><span head style="display:none">Sent By </span><span paragraph>{{transmittal.user_name}}</span></ion-col>
+
+							<ion-col col-2 disp-flex comment-para><span head style="display:none">Comments </span><span paragraph>{{transmittal.comments}}</span></ion-col>
+						
+							<ion-col col-2 disp-flex icons-transmittal>
+								<button small  (click)="editTransmittal(transmittal._id)" ion-button clear item-end margin0 button-none pdg0 title="Edit"><ion-icon name="create" fnt20></ion-icon></button>
+
+								<button small (click)="transmittalDetails(transmittal._id)" ion-button clear item-end margin0 button-none pdg0 title="Details"><ion-icon name="list" fnt20></ion-icon></button>
+								
+								<button *ngIf="transmittal.sender_id == userId" small (click)="sendTransmittal(transmittal._id,transmittal.submittals,transmittal.sender_id,transmittal.rec_id)" ion-button clear item-end margin0 button-none pdg0>
+								<!-- <ion-icon name="send" fnt20 title="Send"></ion-icon> -->
+									<img width="18" title="Send" src="assets/img/send_icon.png">
+								<!-- <img title="Send" src="assets/img/send-trans.png"> -->
+								</button>
+
+								<button *ngIf="transmittal.submittals != ''" (click)="downloadTransmittal(transmittal._id)" small ion-button clear item-end margin0 button-none pdg0 title="Download"><ion-icon name="download" fnt20></ion-icon></button>
+							</ion-col>
+						</ion-row>
+					</span>
+					<span item *ngIf="transmittal.submittals != ''">
+					 <div class="table-responsive">
+					<table class="table">
+						<tr *ngIf="transmittal.submittals != ''">
+					   		<td></td>
+					   		<td><b>Type</b></td>
+					   		<td><b>Item</b></td>
+					   		<td><b>Trade</b></td>
+					   		<td><b>Trade Task</b></td>
+					   		<td><b>By</b></td>
+					   		<td><b>State</b></td>
+					   		<td><b>Quantity</b></td>
+					   		<td><b>Action items</b></td>
+					   </tr>
+					   <tr *ngFor="let submittal of transmittal.submittals; let s_index = index ">
+		            	  <td>
+						  <i class="{{submittal.trade_icon}}"></i>
+						  </td>
+						  <td>
+						  {{submittal.type}}
+						  </td>
+						  <td>
+						  {{(submittal.type != 'contract' && submittal.type != 'rfi' && submittal.type != 'request') ? (submittal.item.search('____') >= 0 ? submittal.item.split('____').pop(-1) : submittal.item.split('_--_').pop(-1)) : submittal.submittal_number}}
+						  </td>
+						  <!-- <td>
+						  {{submittal.submittal_number}}
+						  </td> -->
+						  <td>
+						  {{submittal.trade_name}}
+						  </td>
+						  <td>{{submittal.trade_task}}</td>
+						  <td>{{errors.indexOf(submittal.date_created) == -1 ? (submittal.date_created | date : 'M/d/y') : ''}}
+						  {{errors.indexOf(submittal.sub_by) == -1 ? +'('+(submittal.sub_by)+')'  : ''}}</td> 
+						  <td>
+						  {{submittal.state == 'new' ? 'New' : 'Revised'}}
+						  </td>
+						  <td>
+						  {{submittal.quantity}}
+						  </td>
+						  <td>
+						  <ion-icon name="apps" (click)="seeAcItems(submittal.action_items)" title="Action items" *ngIf="submittal.action_items != ''"></ion-icon>
+						  </td>
+							<td  crsr-pntr (click)="submittalClicked(submittal.type,transmittal.tradeId,submittal.item,submittal)" >
+					     	As Requested &nbsp;&nbsp;<ion-icon name="arrow-round-forward"></ion-icon>
+						  </td>
+						  <td><ion-icon *ngIf="transmittal.isSent != '1'" (click)="deleteSub(submittal._id,t_index,s_index)" trsh name="trash"></ion-icon></td>
+					   </tr>					
+					</table>
+					</div>
+					</span>
+					<span item *ngIf="transmittal.submittals == ''">
+						<ion-row><ion-col fnt14>No Submittals Added.</ion-col></ion-row>
+					</span>
+				</expandable-list-item>
+			</expandable-list>
+       <ion-row>
+           <ion-col col-12 col-md-12 col-lg-12 col-xl-12 *ngIf="sorted_transmittals == ''">
+           	<ion-item border-none br-lt-grey>No Transmittals Found.</ion-item>
+           </ion-col>
+		      </ion-row>
+         
+		
+		 </ion-list>
+		 
+      </ion-col>
+   </ion-row>
+<div footer-height></div>
+</ion-content>

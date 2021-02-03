@@ -1,0 +1,339 @@
+<ion-content padding lightgrey  has-header> 
+<div ion-fixed style="width: 100%">
+<ion-row main-breadcrumb> 
+    <ion-col>
+      <ol class="breadcrumb">
+        <li (click)="root()"><a>Home</a></li>
+        <li (click)="goToJobs()"><a>Jobs</a></li>
+        <li (click)="backToTradeDash()"><a>{{active_job_breadcrumb}}</a></li> 
+        <li (click)="backToPage()"><a>Contracts</a></li> 
+        <li class="active">Edit Contract</li>
+      </ol>
+    </ion-col>
+   </ion-row>
+      <ion-toolbar no-border-top add-trade p-lr-0>
+    <ion-segment [(ngModel)]="tabInput">
+      <ion-segment-button value="basicdetail">
+		<ion-icon name="create" fnt14 m-r-5 visible-xs></ion-icon>
+		<span hidden-xs>Basic Detail</span>
+      </ion-segment-button>
+      <ion-segment-button value="tab2">
+		<ion-icon name="logo-usd" fnt14 m-r-5 visible-xs></ion-icon>
+		<span hidden-xs>Financials Quick</span>
+      </ion-segment-button>
+      <ion-segment-button value="tab3">
+		<ion-icon name="calendar" fnt14 m-r-5 visible-xs></ion-icon>
+		<span hidden-xs>Schedule</span>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</div>
+<div breadcrumb-tabs-height></div>
+<form [formGroup]="form" (ngSubmit)="addContract()">
+<div [ngSwitch]="tabInput">
+<ion-list mar-mob-t15 m-t-10 m-b-0 *ngSwitchCase="'basicdetail'">
+	
+	<ion-list br-lt-grey  m-t-10 m-b-0>
+	<ion-list-header margin0 no-border br-btm color="light">
+	Contract Details
+	</ion-list-header> 
+	<ion-item>
+	<ion-label stacked>PO/Job #</ion-label>
+	<ion-input type="text" [(ngModel)] = "job_number" name="job_number" formControlName="job_number" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>     
+	<ion-label stacked>Job Title</ion-label>
+	<ion-input type="text" [(ngModel)] = "job_title" name="job_title" formControlName="job_title" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>Trade</ion-label>
+	<ion-input type="text" [(ngModel)] = "trade_name" name="trade_name" formControlName="trade_name" fnt14></ion-input>
+	</ion-item>
+	<ion-item *ngIf="form.get('trade_name').touched && form.get('trade_name').errors && form.get('trade_name').hasError('required')" class="error-text-danger">Please enter a valid trade name</ion-item>
+
+	<ion-item>
+	<ion-label stacked>Trade Task*</ion-label>
+	<ion-input type="text" [(ngModel)] = "trade_task" name="trade_task" formControlName="trade_task" fnt14></ion-input> 
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>Job  Description*</ion-label>
+	<ion-input type="text" [(ngModel)] = "job_description" name="job_description" formControlName="job_description" fnt14></ion-input>	
+	</ion-item>
+    <ion-item *ngIf="form.get('job_description').touched && form.get('job_description').errors && form.get('job_description').hasError('required')" class="error-text-danger">Please enter a valid job description</ion-item>
+
+	<ion-item>
+	<ion-label stacked>Contract Date*</ion-label>
+	<ion-datetime min="{{contract_date}}" max="{{max_date}}" displayFormat="YYYY-MM-DD" [(ngModel)] = "contract_date" name="contract_date" formControlName="contract_date" fnt14></ion-datetime>
+	</ion-item>
+	<ion-item *ngIf="form.get('contract_date').touched && form.get('contract_date').errors && form.get('contract_date').hasError('required')" class="error-text-danger">Please enter a valid contract date</ion-item>
+
+	</ion-list>
+
+	<ion-list br-lt-grey m-t-10 m-b-0>
+
+	<ion-list-header margin0 no-border br-btm color="light">
+	Project Manager
+	</ion-list-header>
+
+	<ion-item>
+	<ion-label stacked>Name</ion-label>
+	<ion-input type="text" [(ngModel)] = "pm_name" name="pm_name" formControlName="pm_name" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>Contact Number</ion-label>
+	<ion-input type="text" [(ngModel)] = "pm_contact" name="pm_contact" formControlName="pm_contact" fnt14></ion-input>
+	</ion-item>
+
+	</ion-list>
+
+	 <ion-list br-lt-grey m-t-10 m-b-0>
+		  <ion-list-header margin0 no-border br-btm color="light">
+		   Site Location
+		</ion-list-header>
+	<ion-item>
+	<ion-label stacked>Street Address</ion-label>
+	<ion-input type="text" [(ngModel)] = "site_address" name="site_address" formControlName="site_address" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>2nd Address</ion-label>
+	<ion-input type="text" [(ngModel)] = "site_address2" name="site_address2" formControlName="site_address2" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>City</ion-label>
+	<ion-input type="text" [(ngModel)] = "site_city" name="site_city" formControlName="site_city" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>State</ion-label>
+	<ion-input type="text" [(ngModel)] = "site_state" name="site_state" formControlName="site_state" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>Country</ion-label>
+	<ion-input type="text" [(ngModel)] = "site_country" name="site_country" formControlName="site_country" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked for="">Zip Code</ion-label>
+	<ion-input type="text" [(ngModel)] = "site_zip" name="site_zip" formControlName="site_zip"  fnt14></ion-input>
+	</ion-item>
+	</ion-list>
+
+	 <ion-list br-lt-grey m-t-10 m-b-50>
+	  <ion-list-header margin0 no-border br-btm color="light">
+	Owner Details
+	</ion-list-header>
+	<ion-item>
+	<ion-label stacked>Name</ion-label>
+	<ion-input type="text" [(ngModel)] = "owner_name" name="owner_name" formControlName="owner_name" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>Address</ion-label>
+	<ion-input type="text" [(ngModel)] = "owner_address" name="owner_address" formControlName="owner_address" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>City</ion-label>
+	<ion-input type="text" [(ngModel)] = "owner_city" name="owner_city" formControlName="owner_city" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>State</ion-label>
+	<ion-input type="text" [(ngModel)] = "owner_state" name="owner_state" formControlName="owner_state" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked>Country</ion-label>
+	<ion-input type="text" [(ngModel)] = "owner_country" name="owner_country" formControlName="owner_country" fnt14></ion-input>
+	</ion-item>
+
+	<ion-item>
+	<ion-label stacked for="">Zip Code</ion-label>
+	<ion-input type="text" [(ngModel)] = "owner_zip" name="owner_zip" formControlName="owner_zip"  fnt14></ion-input>
+	</ion-item>
+	</ion-list>  
+	
+	</ion-list>
+
+	<ion-list mar-mob-t15 m-t-10 m-b-0 *ngSwitchCase="'tab2'">
+		
+			<ion-list br-lt-grey  m-t-10 m-b-50 >
+			<ion-list-header margin0 no-border br-btm color="light">
+			Contract Financials Quick
+			</ion-list-header> 
+
+		
+			<ion-item>
+			<ion-label stacked>Last Updated</ion-label>
+			<ion-datetime min="{{min_date}}" max="{{max_date}}" displayFormat="YYYY-MM-DD" [(ngModel)] = "last_updated" name="last_updated" formControlName="last_updated" fnt14></ion-datetime>
+
+			</ion-item>
+			
+			<ion-item>     
+			<ion-label stacked>Total owned by owner</ion-label>
+			<ion-input type="text" [(ngModel)] = "total_owned_by_owner" name="total_owned_by_owner" formControlName="total_owned_by_owner" fnt14></ion-input>
+			</ion-item>
+		 
+			<ion-item>
+			<ion-label stacked>Total GC owes Subs</ion-label>
+			<ion-input type="text" [(ngModel)] = "total_gc_owes_subs" name="total_gc_owes_subs" formControlName="total_gc_owes_subs" fnt14></ion-input>
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Original Contract Amount</ion-label>
+			<ion-input type="text" [(ngModel)] = "original_contract_amount" name="original_contract_amount" formControlName="original_contract_amount" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Sub Contractor Cost</ion-label>
+			<ion-input type="text" [(ngModel)] = "sub_contract_amount" name="sub_contract_amount" formControlName="sub_contract_amount" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Net CO’s to date</ion-label>
+			<ion-input type="text" [(ngModel)] = "net_co_to_date" name="net_co_to_date" formControlName="net_co_to_date" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Subs change orders</ion-label>
+			<ion-input type="text" [(ngModel)] = "subs_change_orders" name="subs_change_orders" formControlName="subs_change_orders" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Updated contract amount </ion-label>
+			<ion-input type="text" [(ngModel)] = "updated_contract_amount" name="updated_contract_amount" formControlName="updated_contract_amount" fnt14></ion-input> 
+			</ion-item>
+
+	
+
+			<ion-item>
+			<ion-label stacked>Total sub contractors</ion-label>
+			<ion-input type="text" [(ngModel)] = "total_sub_contractors" name="total_sub_contractors" formControlName="total_sub_contractors" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Retainage Due</ion-label>
+			<ion-input type="text" [(ngModel)] = "retainage_due" name="retainage_due" formControlName="retainage_due" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Sub Retainage Due</ion-label>
+			<ion-input type="text" [(ngModel)] = "sub_retainage_due" name="sub_retainage_due" formControlName="sub_retainage_due" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Total paid by Owner </ion-label>
+			<ion-input type="text" [(ngModel)] = "total_paid_by_owner" name="total_paid_by_owner" formControlName="total_paid_by_owner" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Total GC paid to subs </ion-label>
+			<ion-input type="text" [(ngModel)] = "total_gc_paid_subs" name="total_gc_paid_subs" formControlName="total_gc_paid_subs" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Retainage Contractor (Rate %)</ion-label>
+			<ion-input type="text" [(ngModel)] = "retainage_contractor" name="retainage_contractor" formControlName="retainage_contractor" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item>
+			<ion-label stacked>Retainage for Subs (Rate %)</ion-label>
+			<ion-input type="text" [(ngModel)] = "retainage_for_subs" name="retainage_for_subs" formControlName="retainage_for_subs" fnt14></ion-input> 
+			</ion-item>
+
+			<ion-item >
+			<ion-label stacked>Bonding due or withheld</ion-label>
+			<ion-input type="text" [(ngModel)] = "bonding_due_or_withheld" name="bonding_due_or_withheld" formControlName="bonding_due_or_withheld" fnt14></ion-input> 
+			</ion-item>
+
+	
+
+			</ion-list>
+	
+	</ion-list>
+
+	<ion-list mar-mob-t15 schedule-contract m-t-10 m-b-50 *ngSwitchCase="'tab3'">
+		<div  schedule-main br-lt-grey>
+		<ion-grid edit-schedule>
+		<ion-row>
+		<ion-col col-12 col-md-6 col-xl-3>
+			<ion-item date-contract>       
+			<ion-label stacked>Project Start Date </ion-label>
+			<ion-datetime min="{{min_date}}" max="{{max_date}}" displayFormat="YYYY-MM-DD" [(ngModel)] = "project_start_date" name="project_start_date" formControlName="project_start_date" fnt14></ion-datetime>
+			</ion-item>
+		</ion-col>
+		<ion-col col-12 col-md-6 col-xl-3>
+			<ion-item border-none>     
+			<ion-label stacked>Schedule (Days)</ion-label>
+			<ion-input type="text" [(ngModel)] = "schedule_days" name="schedule_days" formControlName="schedule_days" fnt14></ion-input>
+			</ion-item>
+		</ion-col>
+		<ion-col col-12 col-md-6 col-xl-3>
+		<ion-item border-none>       
+			<ion-label stacked>Schedule Impact (Days)</ion-label>
+			<ion-input type="text" [(ngModel)] = "schedule_impact_days" name="schedule_impact_days" formControlName="schedule_impact_days" fnt14></ion-input>
+			</ion-item>
+		</ion-col>
+		<ion-col col-12 col-md-6 col-xl-3>
+		<ion-item date-contract>       
+			<ion-label stacked>Proposed Finish Date </ion-label>
+			<ion-datetime min="{{min_date}}" max="{{max_date}}" displayFormat="YYYY-MM-DD" [(ngModel)] = "proposed_finish_date" name="proposed_finish_date" formControlName="proposed_finish_date" fnt14></ion-datetime>
+			</ion-item>
+		</ion-col>
+		</ion-row>
+		</ion-grid>
+		
+		<ion-row>
+	<ion-col col-12 col-md-6 col-xl-6>
+			<ion-list radio-group br-lt-grey margin0 formControlName="bonding_required" [(ngModel)]="bonding_required">
+			  <ion-list-header margin0 no-border br-btm color="light">
+			Bonding Required
+			  </ion-list-header>
+
+			  <ion-item>
+			    <ion-label>Yes</ion-label>
+			    <ion-radio value="1"></ion-radio>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>No</ion-label>
+			    <ion-radio checked="true" value="0"></ion-radio>
+			  </ion-item>
+
+			  <ion-item>
+			  	<ion-input placeholder="%" type="text" [(ngModel)] = "bonding_input" name="bonding_input" formControlName="bonding_input" fnt14></ion-input>
+			  </ion-item>
+
+			</ion-list>
+		</ion-col>
+	<ion-col col-12 col-md-6 col-xl-6 edit-schedule>
+			<ion-item border-none>     
+			<ion-label stacked>Profit & Overhead (Rate %)</ion-label>
+			<ion-input type="text" [(ngModel)] = "profit_overhead" name="profit_overhead" formControlName="profit_overhead" fnt14></ion-input>
+			</ion-item>
+		</ion-col>
+		</ion-row>
+		</div>
+	</ion-list>
+</div> 
+<button style="display: none;" id="submit_cont_edit" ion-button type="submit" color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left >
+  <ion-icon name="checkmark" m-r-5></ion-icon>
+  <span>Save</span>
+</button>
+</form>
+<div footer-height></div> 
+</ion-content>
+
+<div button-fix>
+<button (click)="submit_cont_edit()" ion-button type="button" color="blue" fnt-regular m-b-10 m-t-10 fnt-normal left >
+  <ion-icon name="checkmark" m-r-5></ion-icon>
+  <span>Save</span>
+</button>
+</div>

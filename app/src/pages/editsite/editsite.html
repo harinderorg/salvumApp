@@ -1,0 +1,72 @@
+<ion-header modal-white>
+
+  <ion-navbar>
+    <ion-title text-centers>Edit  Site Details</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+   <ion-row>
+   <ion-col col-12 *ngIf="filetype_error == '1'">
+    <p>Only png,jpg,jpeg,gif files are allowed.</p><button (click)="closeError()" ion-button><ion-icon name="close"></ion-icon></button>
+  </ion-col>
+  <ion-col  no-padding   col-12 *ngIf="filesize_error == '1'">
+  <p error-file>File size exceeded.please upload files upto 500 MB.<button small type="button" (click)="closeErrorS()" ion-button><ion-icon name="close"></ion-icon></button></p>
+</ion-col>
+      <ion-col col-12>
+         <ion-item p-lr-0>
+            <!-- <ion-label floating fnt-regular >Upload Logo</ion-label> -->
+            <img alt="image" class="rounded-circle" width="100px" height="100px"  src="assets/img/m7.png" style="" *ngIf="!addweb.logo">
+            <img alt="image" class="rounded-circle"  width="100px" height="100px"  src="{{API_ENDPOINT_URL}}images/{{addweb.logo}}" style=" " *ngIf="!imageData && addweb.logo">
+            <img alt="image" class="rounded-circle"  width="100px" height="100px"  src="{{imageData}}" style=""
+               *ngIf="imageData">
+            <ion-buttons>
+               <button ion-button icon-left (click)="presentActionSheet()" *ngIf="isBrowser == 'false'">
+               <ion-icon name="camera"></ion-icon>
+               Select Image
+               </button>
+			   
+               <input type="file" ng2FileSelect [uploader]="uploader"  *ngIf="isBrowser =='true' " [(ngModel)]="image">
+            </ion-buttons>
+         </ion-item>
+         <ion-item p-lr-0>
+            <ion-label floating fnt-light fnt-regular selected="true">Select Category</ion-label>
+            <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)]="addweb.selectCategory">
+            <ion-option value="Social" >Social</ion-option>
+            <ion-option value="Marketing">Marketing</ion-option>
+            <ion-option value="Store">Store</ion-option>
+            </ion-select>
+         </ion-item>
+         <ion-item p-lr-0>
+            <ion-label floating fnt-regular> Website Link</ion-label>
+            <ion-input type="text" [(ngModel)]="addweb.weblink"></ion-input>
+         </ion-item>
+         <ion-item p-lr-0>
+            <ion-label floating fnt-light fnt-regular>User Name / Email</ion-label>
+            <ion-input type="email" [(ngModel)]="addweb.username"></ion-input>
+         </ion-item>
+         <ion-item p-lr-0>
+            <ion-label floating fnt-light fnt-regular>Password</ion-label>
+            <ion-input type="password" clearOnEdit="false" [(ngModel)]="addweb.password"></ion-input>
+         </ion-item>
+         <ion-item p-lr-0>
+            <ion-label floating fnt-light fnt-regular selected="true">Select Level</ion-label>
+            <ion-select cancelText="Cancel" okText="Okay!" [(ngModel)]="addweb.weblevel">
+            <ion-option value="1" >Level 1</ion-option>
+            <ion-option value="2">Level 2</ion-option>
+            <ion-option value="3">Level 3</ion-option>
+            <ion-option value="4">Level 4</ion-option>
+            </ion-select>
+         </ion-item>
+         <div padding p-b-0 p-lr-0>
+            <button ion-button color="darkblue" block  fnt-regular (click)="updateWebsite(addweb)">Update</button>
+         </div>
+      </ion-col>
+   </ion-row>
+</ion-content>

@@ -1,0 +1,146 @@
+<ion-header modal-white>
+
+  <ion-navbar>
+    <ion-title text-centers>{{modal_title}}</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss(tradeId)">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-content padding>
+<ion-row>
+<ion-col  no-padding  col-12 *ngIf="filetype_error == '1'">
+  <p error-file>Only txt,docx,xls,xlsx,zip,doc,odt,png,jpg,jpeg,gif,pdf,csv,mp4,mov,wmv,3gp,avi,ppt,pptx,psd files are allowed.<button  small (click)="closeError()" ion-button><ion-icon name="close"></ion-icon></button></p>
+</ion-col>
+<ion-col  no-padding   col-12 *ngIf="filesize_error == '1'">
+  <p error-file>File size exceeded.please upload files upto 500 MB.<button small type="button" (click)="closeErrorS()" ion-button><ion-icon name="close"></ion-icon></button></p>
+</ion-col>
+<ion-col  no-padding   col-12 *ngIf="fileQueue_error == '1'">
+  <p error-file>You can only upload one file.<button small type="button" (click)="closeErrorQ()" ion-button><ion-icon name="close"></ion-icon></button></p>
+</ion-col>
+<ion-col col-12>  
+
+  <ion-item p-lr-0 *ngIf="filterTradeId == '0'">
+   <ion-label stacked fnt-light fnt-regular>Select Trade*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "tradeId">
+      <ion-option *ngFor="let trade of alltrades" value="{{trade._id}}">
+      {{trade.trade_name}} ({{trade.trade_task}})</ion-option>   
+    </ion-select>
+  </ion-item>
+
+  <ion-item p-lr-0 *ngIf="isShared == '1' && file_path == 'nopath'">
+   <ion-label stacked fnt-light fnt-regular>Select level*</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)] = "onLevel">
+      <ion-option *ngFor="let level of allowed_levels" value="{{level}}">
+      Level {{level}}</ion-option>   
+    </ion-select>
+  </ion-item>
+
+  <ion-item p-lr-0 class="linesnone">
+    <div hidden-xs ng2FileDrop [uploader]="uploader" [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                 (fileOver)="fileOverBase($event)" class="well my-drop-zone">
+				 <ion-icon name="ios-cloud-upload-outline"></ion-icon>
+	    <h2>Drag & drop files here</h2>
+	</div>
+	<label visible-xs for="choosefiles"  fileschoose style="display:none"> 
+					          <ion-item filetype text-center  left>
+					                <ion-icon name="cloud-upload" color="blue"></ion-icon>
+                                    <h4>Choose Files</h4>
+							   </ion-item>
+	</label>
+	<input type="file" id="choosefiles" ng2FileSelect [uploader]="uploader" multiple  />
+  </ion-item>
+  <h6 class="heading-upload">Upload files queue</h6>
+<p>Queue length: {{ uploader?.queue?.length }}</p>
+ <div table-responsive *ngIf="uploader?.queue?.length > 0">
+  <ion-item  class="upload-queue" *ngFor="let item of uploader.queue ">
+  <ion-icon icon-upload name="ios-document-outline" item-start></ion-icon>
+ <h2>{{ item?.file?.name }}</h2>
+ 
+ <button item-end small type="button" class="blue" ion-button
+                    (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+              
+				
+				  <ion-icon name="cloud-upload"></ion-icon>
+            </button>
+            <button item-end small type="button" class="blue" ion-button
+                    (click)="item.cancel()" [disabled]="!item.isUploading">
+              
+				
+				 <ion-icon name="close"></ion-icon>
+            </button>
+</ion-item>
+
+            <table class="table table-queue table-queue-width" style="display:none"> 
+    <thead>
+    <tr>
+        <th width="">Name</th>
+        <!--th>Size</th>
+        <th>Progress</th>
+        <th>Status</th-->
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of uploader.queue ">
+        <td><strong>{{ item?.file?.name }}</strong></td>
+        <!--td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+        <td *ngIf="uploader.isHTML5">
+            <div class="progress-outer">
+                <div class="progress-inner" [style.width]="item.progress + '%'">
+                    {{item.progress}}%
+                </div>
+            </div>
+        </td>
+        <td class="text-center">
+            <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+            <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+            <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+        </td-->
+        <td nowrap>
+            <button small type="button" class="blue" ion-button
+                    (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                <!--<span class="glyphicon glyphicon-upload"></span> Upload-->
+				
+				  <ion-icon name="cloud-upload"></ion-icon>
+            </button>
+            <button small type="button" class="blue" ion-button
+                    (click)="item.cancel()" [disabled]="!item.isUploading">
+                <!--<span class="glyphicon glyphicon-ban-circle"></span> Cancel-->
+				
+				 <ion-icon name="close"></ion-icon>
+            </button>
+            <!-- <button  small type="button" class="blue" ion-button
+                    (click)="item.remove()" [disabled]="!item.isSuccess">
+				 <ion-icon name="trash"></ion-icon>
+            </button> -->
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<div >
+    <div>
+        <h6 class="heading-upload">Queue progress</h6>
+        <div class="progress-outer">
+            <div class="progress-inner" [style.width]="uploader.progress + '%'">
+                {{uploader.progress}}%
+            </div>
+        </div>
+    </div>
+    <button small type="button" class="blue" ion-button
+            (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+        <span class="glyphicon glyphicon-upload"></span> Upload all
+    </button>
+
+    <button  small type="button" class="blue" ion-button (click) = "dismiss(tradeId)">
+        <span class="glyphicon glyphicon-remove"></span> Close
+    </button>
+</div>
+
+
+</ion-col>
+</ion-row>
+</ion-content>

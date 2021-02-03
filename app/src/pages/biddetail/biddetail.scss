@@ -1,0 +1,159 @@
+page-biddetail 
+{
+	.no-header{
+		margin-top:$value0!important;
+	}[centerbox]
+        {
+		   @include respond-to(handhelds2)
+		   {  
+		      padding:$value15;
+			  background:$whitecolor;
+			  h6
+			  {
+			    margin-bottom:$value0;
+			  } p
+			  {
+			    margin-top:$value5;
+			  }
+		   }
+		}
+	.list-ios {
+    margin-bottom: $value10;
+    }
+	[company-detail]
+	{
+		ion-item
+		{
+		  @include respond-to(handhelds2)
+			{
+			  padding-right:$value15+1;
+			}
+			.item-inner
+			{
+				margin-left:$value5!important;
+				@include respond-to(handhelds2)
+				{ padding-right:$value0!important;
+				  margin-left:$value0!important;
+				}
+			}
+		}
+		
+	}
+	button
+	{
+	 &[ion-button]
+	 {
+	 @include respond-to(handhelds2)
+	 {
+	  box-shadow:none;
+	 }
+	 }
+	}
+	@include respond-to(handhelds2)
+	{
+	  [padd-mob-0]
+	  {
+	    padding:$value0;
+	  }
+	}
+}
+[p-b-15]
+{
+padding-bottom:$value15!important;
+}
+[right-dashboard]
+{
+[dashboard]
+{
+ ion-label
+ {
+     font-size: $value15!important;
+ }
+ h2
+ { 
+     font-size:  $value17 !important;
+	 margin-top:$value0!important
+ }  
+ padding: $value10 $value15;
+}
+   
+}
+[big-detail]
+{
+@include respond-to(handhelds2)
+{
+	.scroll-content
+	{
+	margin-bottom:$value30+5;
+	}
+}
+ion-list-header
+{
+ion-label
+{
+font-weight:700;
+font-family:$font-bold
+}
+}
+}
+[mediumblue]
+{
+    background: $mediumblue;
+}
+[dashboard-right1][lightblue]
+{
+ion-icon
+{
+background:$none;
+}
+    background:$lightblue;
+}
+
+[dashboard-right2][mediumblue]
+{
+    background:$mediumblue;
+}
+[applied-bid]
+{
+ion-label
+{
+h2
+{
+margin-bottom:$value10;
+
+    font-size: $value14;
+}
+p
+{
+margin-top:$value10;
+white-space:normal
+}
+}
+}
+[centerbox]
+{
+h6
+{
+    font-weight: 700;
+	font-size:$value14
+}
+}
+[blue]
+{
+color:$darkblue2
+}
+[green]
+{
+color:green
+}
+ion-content
+{
+&[lightgrey]
+{
+   .toolbar-background
+	{
+		background:transparent;
+		
+	}
+}	
+}

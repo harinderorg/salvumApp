@@ -1,0 +1,43 @@
+
+<ion-header modal-white>
+
+  <ion-navbar>
+    <ion-title *ngIf="PageType=='add'" text-centers>Add Company</ion-title>
+    <ion-title *ngIf="PageType=='edit'" text-centers>Edit Company</ion-title>
+
+    <ion-buttons end>
+    <button btn-grid (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-content padding>
+<ion-row>
+
+<ion-col col-12>
+<form [formGroup]="form" (ngSubmit)="addCompany()">
+  <ion-item p-lr-0 col-12 left>
+    <ion-label floating fnt-regular>Company Name</ion-label>
+
+    <ion-input *ngIf="PageType=='edit'" type="hidden" [(ngModel)] = "id" name="id" formControlName="id"></ion-input>
+
+    <ion-input type="text" [(ngModel)] = "company_name" name="company_name" formControlName="company_name"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="form.get('company_name').touched && form.get('company_name').errors && form.get('company_name').hasError('required')" class="error-text-danger">Please enter a valid company name</ion-item>
+
+  <ion-item p-lr-0 col-12 left >
+    <ion-label floating fnt-light fnt-regular>Address</ion-label>
+    <ion-textarea type="text" [(ngModel)] = "address" name="address" formControlName="address"></ion-textarea>
+  </ion-item>
+   <ion-item *ngIf="form.get('address').touched && form.get('address').errors && form.get('address').hasError('required')" class="error-text-danger">Please enter a valid company address</ion-item>
+
+ <div padding p-b-0 p-lr-0  col-12  clearboth>
+    <button ion-button  block  fnt-regular type="submit">Submit</button>
+  </div>
+
+</form>
+ </ion-col>
+  </ion-row>
+</ion-content>

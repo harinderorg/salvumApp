@@ -1,0 +1,70 @@
+<ion-header modal-white>
+
+  <ion-navbar>
+    <ion-title text-centers>Add Level 1 Cards</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<ion-row>
+
+<ion-col col-12>
+
+  <ion-item p-lr-0 style="display: none;">
+    <ion-label floating fnt-regular>Card Name</ion-label>
+    <ion-input type="text" [(ngModel)]="cardName"></ion-input>
+  </ion-item>
+
+  <ion-item p-lr-0>
+    <ion-label floating fnt-light fnt-regular>Card Holder Name</ion-label>
+    <ion-input type="text" maxlength="30" [(ngModel)]="cardHolderName" ></ion-input>
+  </ion-item>
+   
+  <ion-item p-lr-0>
+<ion-label floating fnt-light fnt-regular>Card Number</ion-label>
+    <ion-input type="tel" [(ngModel)]="cardNumber" maxlength="16"></ion-input>
+</ion-item>
+
+<ion-item p-lr-0>
+    <ion-label floating fnt-light fnt-regular>CVV</ion-label>
+    <ion-input type="tel" [(ngModel)]="cvv" maxlength="6"></ion-input>
+  </ion-item>
+
+
+ <ion-item p-lr-0>
+      <ion-label floating fnt-light fnt-regular>Expiry Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="expiryDate"></ion-datetime>
+    </ion-item>
+		<ion-item p-lr-0>
+   <ion-label floating fnt-light fnt-regular selected="true">Card Type</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)]="cardType" >
+      <ion-option value="Visa" >Visa</ion-option>
+      <ion-option value="Master Card">Master Card</ion-option>
+      <ion-option value="AMEX">AMEX</ion-option>
+      <ion-option value="Discover">Discover</ion-option>
+      <ion-option value="Diners Club">Diners Club</ion-option>
+    </ion-select>
+  </ion-item>
+	<ion-item p-lr-0>
+     <ion-label floating fnt-light fnt-regular selected="true">Select Level</ion-label>
+    <ion-select  cancelText="Cancel" okText="Okay!" [(ngModel)]="level">
+      <ion-option value="{{level}}" *ngFor="let level of allowed_levels">Level {{level}}</ion-option>
+      <!-- <ion-option value="2">Level 2</ion-option>
+      <ion-option value="3">Level 3</ion-option>
+      <ion-option value="4">Level 4</ion-option> -->
+     
+    </ion-select>
+  </ion-item>
+ <div padding p-b-0 p-lr-0>
+    <button ion-button color="darkblue" block  fnt-regular (click)="login()">Submit</button>
+  </div>
+
+ </ion-col>
+  </ion-row>
+</ion-content>

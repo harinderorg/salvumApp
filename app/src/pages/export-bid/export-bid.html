@@ -1,0 +1,120 @@
+<ion-header modal-white>
+  <ion-navbar>
+    <ion-title text-centers>{{page_type == '1' ? 'Select destination to export' : 'Export bid' }}</ion-title><ion-buttons end>
+    <button btn-grid  (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-row>
+		<ng-container *ngIf="page_type != '1'">
+		<ion-col col-12>
+			{{comment}}
+			<ng-container *ngIf="files.length > 0">
+				<div question *ngFor="let file of files">
+				 	<ion-item>
+				   	<ion-icon name="document"></ion-icon>
+				      {{file.search('_--_') >= 0 ? file.split('_--_').pop(-1) : file.split('____').pop(-1)}}
+					</ion-item>
+				</div>
+			</ng-container>
+		</ion-col>
+		<p *ngIf="bid_breakdown.submitted_categories_vals.length > 0 || (bid_breakdown.bid_breakdown_type == 1 && bid_breakdown.bid_breakdown_manual != undefined && bid_breakdown.bid_breakdown_manual != '' && bid_breakdown.bid_breakdown_manual != null) || (bid_breakdown.bid_breakdown_type == 0 && bid_breakdown.bid_breakdown_files.length > 0)">
+			Select the categories to export:-
+		</p>
+		<ion-col col-12 *ngIf="(bid_breakdown.bid_breakdown_type == 1 && bid_breakdown.bid_breakdown_manual != undefined && bid_breakdown.bid_breakdown_manual != '' && bid_breakdown.bid_breakdown_manual != null) || (bid_breakdown.bid_breakdown_type == 0 && bid_breakdown.bid_breakdown_files.length > 0)">
+			<div cat-white >
+				<ion-checkbox (ionChange)="catChecked($event,'Bid breakdown')" class="checker_box"></ion-checkbox>
+				Bid breakdown
+				<br>
+				<div cat-white *ngIf="bid_breakdown?.bid_breakdown_type == '0'">
+					<ng-container *ngFor="let file of bid_breakdown?.bid_breakdown_files">
+						<ion-item>
+				   		<ion-icon name="document"></ion-icon>
+							{{file.file_name}}
+						</ion-item>
+						<br>
+					</ng-container>
+				</div>
+				<div *ngIf="bid_breakdown?.bid_breakdown_type == '1'">
+					{{bid_breakdown?.bid_breakdown_manual}}
+				</div>
+				<div cat-white *ngIf="bid_breakdown?.bid_breakdown_tasks?.length > 0">
+				<ng-container>
+					<ion-row table-submit>
+						<ion-col th-head>Task</ion-col>
+						<ion-col th-head>Cost</ion-col>
+						<ion-col th-head>Percent</ion-col>
+						<ion-col th-head>Days</ion-col>
+					</ion-row>
+					<ion-list>
+					<ion-item p-lr-0 *ngFor="let task of bid_breakdown?.bid_breakdown_tasks; let i = index ">
+					<ion-row  table-inner >
+						<ion-col  td-data>{{task.task}}</ion-col>
+						<ion-col  td-data>${{task.cost}}</ion-col>
+						<ion-col  td-data>{{task.percent}}%</ion-col>
+						<ion-col  td-data>{{task.days}}</ion-col>
+					</ion-row>
+					</ion-item>
+					<ion-item p-lr-0> 
+						<ion-row  table-inner >
+							<ion-col colspan="4" td-data>Total Cost - ${{bid_breakdown?.bid_total_price}}</ion-col>
+						</ion-row>
+					</ion-item>
+					</ion-list>
+				</ng-container>
+				</div>
+			</div>
+		</ion-col>
+		<ion-col col-12 *ngFor="let cats of bid_breakdown.submitted_categories_vals">
+				<ng-container *ngIf="cats.cat != 'Total Estimated Cost'">
+					<div cat-white>
+						 <ion-checkbox (ionChange)="catChecked($event,cats.cat)" class="checker_box"></ion-checkbox>
+						 {{cats.cat}}
+						<br>
+						<div *ngIf="cats.type == '0'">
+							<ng-container *ngFor="let file of cats.files">
+								<ion-item>
+				   				<ion-icon name="document"></ion-icon>
+									{{file.file_name}}
+								</ion-item>
+								<br>
+							</ng-container>
+						</div>
+						<div *ngIf="cats.type == '1'">
+							{{cats.summary}}
+						</div>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="cats.cat == 'Total Estimated Cost'">
+				<div cat-white>
+					<ion-checkbox (ionChange)="catChecked($event,cats.cat)" class="checker_box"></ion-checkbox>
+					{{cats.cat}}
+						<br>
+						{{(cats.summary != undefined && cats.summary != '') ? '$'+cats.summary : ''}}
+						</div>
+				</ng-container>
+		</ion-col>
+		</ng-container>
+		<ion-col col-12>
+			<ion-item  no_pdg>
+			    <ion-label stacked>Select the destination of export</ion-label>
+			    <ion-select [(ngModel)]="destination">
+			      <ion-option value="local">Local Device</ion-option>
+			      <ion-option value="job">Files section with in the job</ion-option>
+			      <ion-option value="file_manager">Salvum file manager</ion-option>  
+			    </ion-select>
+		  	</ion-item>
+		  	<ng-container *ngIf="direct_link != '1'">
+		  		<button ion-button color="blue" (click)="export(destination)" title="Export">Export</button>
+		  	</ng-container>
+		  	<ng-container *ngIf="direct_link == '1'">
+		  		<a href="{{direct_href}}" *ngIf="destination == 'local'" ion-button color="blue" (click)="export(destination)" title="Export">Export</a>
+		  		<button *ngIf="destination != 'local'" ion-button color="blue" (click)="export(destination)" title="Export">Export</button>
+		  	</ng-container>
+		</ion-col>
+	</ion-row>
+</ion-content>

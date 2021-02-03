@@ -1,0 +1,128 @@
+page-adendum {
+ 	.breadcrumbs-row [class^="flaticon-"]:before, .breadcrumbs-row [class*=" flaticon-"]:before, .breadcrumbs-row [class^="flaticon-"]:after, .breadcrumbs-row [class*=" flaticon-"]:after{
+    font-size: 1.2em;
+}
+ion-content
+{   margin-top: $value10;
+	     @include respond-to(handhelds2)
+    { margin-top: $value0;
+			[button-hide ]
+				{
+				  button
+				  {
+				       box-shadow:none;
+					   &[ion-button]
+					   {
+						   ion-icon
+						   {
+							margin:$value0;
+						   }
+					   }
+				  }
+				}	
+		.top-scorll-list
+		{
+			min-height:30px
+		}
+    	.breadcrumbs-row {
+   
+			margin-bottom: $value0!important;
+		}
+    }
+}
+[fixed-top-div]
+{
+    width: 100%;
+    background: #e6e6e6;
+    /*padding: $value0 $value0 $value0  12px;*/
+   
+    @include respond-to(handhelds2)
+    {  background:transparent;
+      padding: $value0;
+      ion-list
+      {
+      margin: $value0;
+      }
+    }
+}
+ [right-adendum]  ion-item-sliding , [right-adendum] ion-item ,  [right-adendum] ion-list , [right-adendum]  ion-label ,  [right-adendum].item-md , [right-adendum] .item-block , [right-adendum] .item , [right-adendum] .item-inner , [right-adendum] .input-wrapper , [right-adendum] .rel-container , [right-adendum] .button-effect
+{
+  overflow: visible!important;	
+}	
+[right-adendum]
+{
+
+ .item 
+ {
+contain:none!important;
+
+	h3
+
+{
+span
+
+{
+font-size:$value10+2;
+}
+
+}	
+ion-note
+{
+font-size:$value10+2;
+}	   
+
+ }
+ ion-fab
+ {
+ position: relative;
+ z-index: 9999;
+ 
+	button
+	{
+	&.fab
+	{
+    width: $value20;
+    height:  $value20;
+    line-height:  $value20;
+	    border-radius: 0;
+    margin-top: $value0;
+	margin-bottom: $value0; 
+	ion-icon
+	{
+	 font-size:$value14;  
+	 line-height:  $value20!important;	
+	}
+	}	
+		
+	}	
+	ion-fab-list
+	{
+		margin-top:$value30;
+		box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2);
+		background:$fnt-white;
+	    width: $value100*2;
+		min-height:auto;
+		
+	ion-item
+		{
+		.item-inner
+		{
+		ion-label
+		{
+		   font-size:$value10+2!important;
+		  white-space: normal;
+          word-break: break-all;
+          display: flex;
+ion-icon
+{
+margin-right:$value10;
+}
+		}
+			border-bottom: 1px solid #dedede!important;
+		}
+		}	
+	}	
+	
+ }
+}	
+}
